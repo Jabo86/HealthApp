@@ -14,6 +14,11 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js">
     </script>
+    <!-- Google Identity Services + Calendar API -->
+    <script src="https://accounts.google.com/gsi/client">
+    </script>
+    <script src="https://apis.google.com/js/api.js">
+    </script>
     <style>
         /* ===== VARIABILI ===== */
         :root {
@@ -910,55 +915,89 @@
         .toggle-switch.active::after {
             left: 20px;
         }
-        /* ===== IMPOSTAZIONI GRID ===== */
-        .settings-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 4px;
+        /* ===== SETTINGS ===== */
+        .settings-group {
+            margin-bottom: 16px;
         }
-        .settings-grid .settings-item-tile {
-            background: var(--card);
-            border-radius: var(--radius-sm);
-            padding: 16px 8px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80px;
-            user-select: none;
-        }
-        .settings-grid .settings-item-tile:hover {
-            transform: translateY(-2px);
-            border-color: var(--primary);
-        }
-        .settings-grid .settings-item-tile:active {
-            transform: scale(0.95);
-        }
-        .settings-grid .settings-item-tile .icon {
-            font-size: 30px;
-            line-height: 1.2;
-        }
-        .settings-grid .settings-item-tile .label {
-            font-size: 11px;
+        .settings-group h4 {
+            font-size: 13px;
             font-weight: 600;
             color: var(--text);
-            margin-top: 4px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
         }
-        .settings-grid .settings-item-tile .sub {
-            font-size: 9px;
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        .settings-item .label {
+            font-size: 13px;
+            color: var(--text);
+        }
+        .settings-item .value {
+            font-size: 13px;
             color: var(--text-secondary);
-            margin-top: 1px;
         }
-        @media (max-width: 380px) {
-            .settings-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .settings-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .settings-actions .btn {
+            flex: 1;
+            min-width: 80px;
+        }
+        .webdav-status {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        .webdav-status.ok {
+            background: #bbf7d0;
+            color: #166534;
+        }
+        .webdav-status.err {
+            background: #fecaca;
+            color: #991b1b;
+        }
+        .webdav-status.wait {
+            background: #fde68a;
+            color: #92400e;
+        }
+        .gc-connected {
+            color: var(--success);
+            font-weight: 600;
+        }
+        .gc-disconnected {
+            color: var(--muted);
+            font-weight: 400;
+        }
+        /* ===== ONBOARDING ===== */
+        .onboarding-logo {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+        .onboarding-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .onboarding-sub {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 16px;
         }
         /* ===== BACK BUTTON ===== */
         .back-btn {
@@ -983,7 +1022,7 @@
         .back-btn:active {
             transform: scale(0.95);
         }
-        /* ===== INSTALL BANNER ===== */
+        /* ===== APP INSTALL BANNER ===== */
         .install-banner {
             background: var(--primary);
             color: white;
@@ -1007,156 +1046,344 @@
         .install-banner .btn:hover {
             background: #f0f4f9;
         }
-        /* ===== MODAL SETTINGS ===== */
-        .modal-settings-content {
-            max-height: 65vh;
-            overflow-y: auto;
-        }
-        .modal-settings-content .settings-item-detail {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .modal-settings-content .settings-item-detail:last-child {
-            border-bottom: none;
-        }
-        .modal-settings-content .settings-item-detail .label {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text);
-            display: block;
-            margin-bottom: 4px;
-        }
-        /* ===== PROMEMORIA ===== */
-        .reminder-item {
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-            padding: 10px 14px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid var(--primary);
-        }
-        .reminder-item .info h5 {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            margin: 0;
-        }
-        .reminder-item .info p {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin: 0;
-        }
-        .reminder-item .actions {
-            display: flex;
-            gap: 6px;
-        }
-        /* ===== SONNO ===== */
-        .sleep-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .sleep-stats .sleep-stat {
-            background: var(--bg);
-            padding: 10px;
-            border-radius: var(--radius-sm);
-            text-align: center;
-            border: 1px solid var(--border);
-        }
-        .sleep-stats .sleep-stat .value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        .sleep-stats .sleep-stat .label {
-            font-size: 9px;
-            color: var(--text-secondary);
-        }
-        /* ===== WIDGET HOME PERSONALIZZABILE ===== */
-        .widget-settings {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 6px 0;
-        }
-        .widget-settings .widget-option {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            color: var(--text-secondary);
-        }
-        .widget-settings .widget-option.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .widget-settings .widget-option:hover {
-            border-color: var(--primary);
-        }
-        .widget-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .widget-container .widget-item {
-            display: none;
-        }
-        .widget-container .widget-item.visible {
-            display: block;
-        }
-        /* ===== BACKUP AUTOMATICO ===== */
-        .backup-status {
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            display: inline-block;
-        }
-        .backup-status.ok {
-            background: #bbf7d0;
-            color: #166534;
-        }
-        .backup-status.err {
-            background: #fecaca;
-            color: #991b1b;
-        }
-        .backup-status.wait {
-            background: #fde68a;
-            color: #92400e;
-        }
-        /* ===== LINGUA ===== */
-        .lang-selector {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .lang-selector .lang-btn {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            color: var(--text-secondary);
-        }
-        .lang-selector .lang-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .lang-selector .lang-btn:hover {
-            border-color: var(--primary);
-        }
-    </style>
+    
+/* ===== BOTTOM NAVIGATION ===== */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+    z-index: 2000;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+}
+[data-theme="dark"] .bottom-nav {
+    background: rgba(22,42,68,0.92);
+    border-top-color: var(--border);
+}
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    font-family: var(--font);
+}
+.bottom-nav-item .icon {
+    font-size: 22px;
+    line-height: 1;
+    transition: 0.2s;
+}
+.bottom-nav-item.active {
+    color: var(--primary);
+    background: rgba(26,75,122,0.08);
+}
+.bottom-nav-item.active .icon {
+    transform: translateY(-2px);
+}
+
+/* ===== SETTINGS HERO ===== */
+.settings-hero {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    margin-bottom: 16px;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(26,75,122,0.25);
+}
+.settings-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+}
+.settings-hero .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 10px;
+    border: 3px solid rgba(255,255,255,0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+.settings-hero h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+.settings-hero p {
+    font-size: 13px;
+    opacity: 0.85;
+    margin: 0;
+}
+.settings-hero .edit-btn {
+    margin-top: 12px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: var(--font);
+}
+.settings-hero .edit-btn:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+/* ===== SETTINGS CARD ===== */
+.settings-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: 0.3s;
+}
+.settings-card:hover {
+    box-shadow: 0 12px 32px rgba(0,20,50,0.08);
+}
+.settings-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+.settings-card-header .icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.settings-card-header h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+.settings-card-header .subtitle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ===== SETTINGS ROW ===== */
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+}
+.settings-row:last-child {
+    border-bottom: none;
+}
+.settings-row .row-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+.settings-row .row-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: var(--bg);
+    flex-shrink: 0;
+}
+.settings-row .row-text {
+    min-width: 0;
+}
+.settings-row .row-text .label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.settings-row .row-text .desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: block;
+}
+.settings-row input[type="text"],
+.settings-row input[type="password"],
+.settings-row input[type="url"],
+.settings-row input[type="date"],
+.settings-row select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    outline: none;
+    transition: 0.2s;
+    min-width: 0;
+    flex-shrink: 1;
+}
+.settings-row input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,75,122,0.1);
+}
+.settings-row .row-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* ===== iOS TOGGLE ===== */
+.ios-toggle {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    background: var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+.ios-toggle.active {
+    background: #34c759;
+}
+.ios-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.ios-toggle.active::after {
+    left: 24px;
+}
+
+/* ===== BUTTON ROW ===== */
+.btn-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+.btn-row .btn {
+    flex: 1;
+    min-width: 80px;
+}
+
+/* ===== TABLET LAYOUT ===== */
+@media (min-width: 768px) {
+    .app-container {
+        max-width: 720px;
+        border-radius: 32px;
+        max-height: 95vh;
+    }
+    .home-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 14px;
+    }
+    .home-grid .home-item {
+        min-height: 90px;
+    }
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+    .settings-grid .settings-card {
+        margin-bottom: 0;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .content {
+        padding: 20px 24px;
+    }
+    .header {
+        padding: 16px 24px 14px;
+    }
+    .bottom-nav {
+        display: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .bottom-nav {
+        display: flex;
+    }
+    .content {
+        padding-bottom: 80px;
+    }
+    .header-actions button#settingsHomeBtn {
+        display: none;
+    }
+}
+
+@media (max-width: 520px) {
+    .app-container {
+        max-height: 100vh;
+        border-radius: 0;
+        max-width: 100%;
+    }
+    .bottom-nav {
+        max-width: 100%;
+        border-radius: 0;
+    }
+}
+
+</style>
+<base target="_blank">
 </head>
 <body>
 
@@ -1164,9 +1391,9 @@
     <div class="modal-overlay active" id="onboardingModal">
         <div class="modal-box">
             <div class="onboarding-logo">🏥</div>
-            <div class="onboarding-title" data-i18n="appName">HealthApp</div>
-            <div class="onboarding-sub" data-i18n="onboardingSub">Il tuo diario sanitario personale</div>
-            <div class="terms-text" data-i18n="termsText">
+            <div class="onboarding-title">HealthApp</div>
+            <div class="onboarding-sub">Il tuo diario sanitario personale</div>
+            <div class="terms-text">
                 <strong>Termini e Condizioni</strong><br>
                 L'app è fornita "così com'è". I dati sono salvati in locale.<br><br>
                 <strong>GDPR</strong><br>
@@ -1176,460 +1403,596 @@
             </div>
             <div class="checkbox-group">
                 <input type="checkbox" id="termsCheck1">
-                <label for="termsCheck1" data-i18n="termsAccept">Accetto i <strong>Termini</strong></label>
+                <label for="termsCheck1">Accetto i <strong>Termini</strong></label>
             </div>
             <div class="checkbox-group">
                 <input type="checkbox" id="termsCheck2">
-                <label for="termsCheck2" data-i18n="gdprAccept">Acconsento al trattamento dati (<strong>GDPR</strong>)</label>
+                <label for="termsCheck2">Acconsento al trattamento dati (<strong>GDPR</strong>)</label>
             </div>
-            <button class="btn btn-success" id="acceptTermsBtn" disabled style="opacity:0.6;" data-i18n="acceptBtn">Accetta e continua</button>
+            <button class="btn btn-success" id="acceptTermsBtn" disabled style="opacity:0.6;">Accetta e continua</button>
         </div>
     </div>
 
     <!-- ===== PIN ===== -->
     <div class="modal-overlay" id="pinModal">
         <div class="modal-box" style="text-align:center;">
-            <h2 data-i18n="pinTitle">🔒 PIN</h2>
-            <p data-i18n="pinDesc">Inserisci il codice a 4 cifre.</p>
+            <h2>🔒 PIN</h2>
+            <p>Inserisci il codice a 4 cifre.</p>
             <div class="input-group">
                 <input type="password" id="pinInput" class="pin-input" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="****">
             </div>
-            <button class="btn btn-success" onclick="verificaPIN()" data-i18n="unlockBtn">🔓 Sblocca</button>
-            <p style="margin-top:8px;font-size:11px;color:var(--text-secondary);" data-i18n="defaultPin">PIN predefinito: <strong>1234</strong></p>
+            <button class="btn btn-success" onclick="verificaPIN()">🔓 Sblocca</button>
+            <p style="margin-top:8px;font-size:11px;color:var(--text-secondary);">PIN predefinito: <strong>1234</strong></p>
         </div>
     </div>
 
     <!-- ===== APP ===== -->
     <div class="app-container" id="appContainer" style="display:none;">
+        <!-- HEADER con orologio -->
         <div class="header">
             <div class="header-left">
                 <div class="header-clock" id="clockDisplay">--:--</div>
                 <div class="header-title">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                    <span data-i18n="appName">HealthApp</span>
+                    HealthApp
                 </div>
             </div>
             <div class="header-actions">
                 <button onclick="toggleDarkMode()" id="darkToggle">🌙</button>
-                <button onclick="goToHome()" title="Home">🏠</button>
+                <button onclick="goToHome()" id="settingsHomeBtn" title="Home">🏠</button>
             </div>
         </div>
 
+        <!-- CONTENT -->
         <div class="content">
-            <!-- ===== HOME ===== -->
+            <!-- ===== HOME (schermata principale con griglia) ===== -->
             <div id="home" class="screen active">
+                <!-- Install banner (solo se PWA non installata) -->
                 <div class="install-banner" id="installBanner" style="display:none;">
-                    <span data-i18n="installBannerText">📲 Installa HealthApp</span>
-                    <button class="btn" onclick="installaPWA()" data-i18n="installBtn">Installa</button>
+                    <span>📲 Installa HealthApp</span>
+                    <button class="btn" onclick="installaPWA()">Installa</button>
                 </div>
 
-                <div class="greeting"><span data-i18n="greeting">Ciao</span>, <span id="greetingName">Utente</span> 👋</div>
+                <!-- Benvenuto -->
+                <div class="greeting">Ciao, <span id="greetingName">Utente</span> 👋</div>
                 <div class="sub-greeting">
-                    <span><span data-i18n="today">Oggi</span>, <span id="dataOggi"></span></span>
-                    <button class="btn-outline btn-sm" onclick="esportaReport()" data-i18n="pdfBtn">📄 PDF</button>
+                    <span>Oggi, <span id="dataOggi"></span></span>
+                    <button class="btn-outline btn-sm" onclick="esportaReport()">📄 PDF</button>
                 </div>
 
-                <!-- WIDGET APPUNTAMENTI (sempre visibile) -->
+                <!-- Widget appuntamenti oggi -->
                 <div class="daily-appointments-widget">
-                    <div class="widget-title" data-i18n="appointmentsToday">📅 Appuntamenti oggi</div>
+                    <div class="widget-title">📅 Appuntamenti oggi</div>
                     <div id="widgetAppuntamentiList">Caricamento...</div>
                 </div>
 
-                <!-- WIDGET HOME PERSONALIZZABILI -->
+                <!-- Statistiche veloci -->
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="value" id="sTotReferti">0</div><div class="label">Referti</div></div>
+                    <div class="stat-card"><div class="value" id="sUltimaPress">--/--</div><div class="label">Pressione</div><div class="alert-badge" id="alertPressione" style="display:none;">🟢</div></div>
+                    <div class="stat-card"><div class="value" id="sSpO2">--%</div><div class="label">SpO₂</div><div class="alert-badge" id="alertSpO2" style="display:none;">🟢</div></div>
+                </div>
+
+                <!-- GRAFICO -->
                 <div class="card">
-                    <div class="card-title" data-i18n="widgetSettingsTitle">🧩 Widget Home</div>
-                    <div class="widget-settings" id="widgetSettings">
-                        <span class="widget-option active" data-widget="stats" onclick="toggleWidget('stats')" data-i18n="widgetStats">Statistiche</span>
-                        <span class="widget-option active" data-widget="chart" onclick="toggleWidget('chart')" data-i18n="widgetChart">Grafico</span>
-                        <span class="widget-option active" data-widget="tip" onclick="toggleWidget('tip')" data-i18n="widgetTip">Consiglio</span>
-                        <span class="widget-option active" data-widget="badge" onclick="toggleWidget('badge')" data-i18n="widgetBadge">Badge</span>
+                    <div class="card-title">📈 Pressione (ultimi 30)</div>
+                    <div class="chart-container"><canvas id="pressioneChart"></canvas></div>
+                </div>
+
+                <div class="card" style="background:var(--bg);border-left:4px solid var(--success);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div><strong>💡 Consiglio</strong><br><span style="font-size:12px;color:var(--text-secondary);">SpO₂ > 95%, 2L acqua/giorno.</span></div>
+                        <span class="tag">Buono</span>
                     </div>
                 </div>
 
-                <div class="widget-container">
-                    <!-- Stats -->
-                    <div class="widget-item visible" id="widgetStats">
-                        <div class="stats-grid">
-                            <div class="stat-card"><div class="value" id="sTotReferti">0</div><div class="label" data-i18n="refertiLabel">Referti</div></div>
-                            <div class="stat-card"><div class="value" id="sUltimaPress">--/--</div><div class="label" data-i18n="pressureLabel">Pressione</div><div class="alert-badge" id="alertPressione" style="display:none;">🟢</div></div>
-                            <div class="stat-card"><div class="value" id="sSpO2">--%</div><div class="label" data-i18n="spo2Label">SpO₂</div><div class="alert-badge" id="alertSpO2" style="display:none;">🟢</div></div>
-                        </div>
-                    </div>
-
-                    <!-- Chart -->
-                    <div class="widget-item visible" id="widgetChart">
-                        <div class="card">
-                            <div class="card-title" data-i18n="chartTitle">📈 Pressione (ultimi 30)</div>
-                            <div class="chart-container"><canvas id="pressioneChart"></canvas></div>
-                        </div>
-                    </div>
-
-                    <!-- Tip -->
-                    <div class="widget-item visible" id="widgetTip">
-                        <div class="card" style="background:var(--bg);border-left:4px solid var(--success);">
-                            <div style="display:flex;justify-content:space-between;align-items:center;">
-                                <div><strong data-i18n="tipTitle">💡 Consiglio</strong><br><span style="font-size:12px;color:var(--text-secondary);" data-i18n="tipText">SpO₂ > 95%, 2L acqua/giorno.</span></div>
-                                <span class="tag" data-i18n="goodTag">Buono</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Badge -->
-                    <div class="widget-item visible" id="widgetBadge">
-                        <div class="card">
-                            <div class="card-title" data-i18n="badgeTitle">🏅 Badge</div>
-                            <div class="badge-container" id="badgeContainer">
-                                <div class="badge-item locked" id="badgeCuore" data-i18n="badgeHeart">❤️ Cuore</div>
-                                <div class="badge-item locked" id="badgeAcqua" data-i18n="badgeWater">💧 Idratato</div>
-                                <div class="badge-item locked" id="badgeSpO2" data-i18n="badgeO2">🫁 Ossigeno</div>
-                                <div class="badge-item locked" id="badgeReferti" data-i18n="badgeArchivist">📁 Archivist</div>
-                            </div>
-                        </div>
+                <div class="card">
+                    <div class="card-title">🏅 Badge</div>
+                    <div class="badge-container" id="badgeContainer">
+                        <div class="badge-item locked" id="badgeCuore">❤️ Cuore</div>
+                        <div class="badge-item locked" id="badgeAcqua">💧 Idratato</div>
+                        <div class="badge-item locked" id="badgeSpO2">🫁 Ossigeno</div>
+                        <div class="badge-item locked" id="badgeReferti">📁 Archivist</div>
                     </div>
                 </div>
 
-                <!-- GRIGLIA HOME -->
+                <!-- GRIGLIA ICONE -->
                 <div class="home-grid">
                     <div class="home-item" onclick="switchTab('parametri')">
                         <div class="icon">📋</div>
-                        <div class="label" data-i18n="navParams">Parametri</div>
+                        <div class="label">Parametri</div>
                     </div>
                     <div class="home-item" onclick="switchTab('referti')">
                         <div class="icon">📁</div>
-                        <div class="label" data-i18n="navReports">Referti</div>
+                        <div class="label">Referti</div>
                     </div>
                     <div class="home-item" onclick="switchTab('appuntamenti')">
                         <div class="icon">📅</div>
-                        <div class="label" data-i18n="navAppointments">Appuntamenti</div>
+                        <div class="label">Appuntamenti</div>
                     </div>
                     <div class="home-item" onclick="switchTab('farmaci')">
                         <div class="icon">💊</div>
-                        <div class="label" data-i18n="navDrugs">Farmaci</div>
+                        <div class="label">Farmaci</div>
                     </div>
                     <div class="home-item" onclick="switchTab('vaccinazioni')">
                         <div class="icon">💉</div>
-                        <div class="label" data-i18n="navVaccines">Vaccinazioni</div>
+                        <div class="label">Vaccinazioni</div>
                     </div>
                     <div class="home-item" onclick="switchTab('sintomi')">
                         <div class="icon">🤒</div>
-                        <div class="label" data-i18n="navSymptoms">Sintomi</div>
-                    </div>
-                    <div class="home-item" onclick="switchTab('sonno')">
-                        <div class="icon">😴</div>
-                        <div class="label" data-i18n="navSleep">Sonno</div>
+                        <div class="label">Sintomi</div>
                     </div>
                     <div class="home-item" onclick="switchTab('condividi')">
                         <div class="icon">🔗</div>
-                        <div class="label" data-i18n="navShare">Condividi</div>
-                    </div>
-                    <div class="home-item" onclick="switchTab('promemoria')">
-                        <div class="icon">⏰</div>
-                        <div class="label" data-i18n="navReminders">Promemoria</div>
+                        <div class="label">Condividi</div>
                     </div>
                     <div class="home-item" onclick="switchTab('impostazioni')">
                         <div class="icon">⚙️</div>
-                        <div class="label" data-i18n="navSettings">Impostazioni</div>
+                        <div class="label">Impostazioni</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ===== SCHERMATE SECONDARIE ===== -->
+            <!-- ===== SCHERMATE (tutte le altre) ===== -->
             <!-- REFERTI -->
             <div id="referti" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
+                <button class="back-btn" onclick="goToHome()">← Home</button>
                 <div class="card">
-                    <div class="card-title" data-i18n="newReport">📁 Nuovo referto</div>
-                    <div class="input-group"><label data-i18n="dateLabel">Data</label><input type="date" id="refData"></div>
-                    <div class="input-group"><label data-i18n="hospitalLabel">Ospedale</label><input type="text" id="refOspedale" placeholder="Ospedale"></div>
-                    <div class="input-group"><label data-i18n="specialistLabel">Specialista</label><input type="text" id="refSpecialista" placeholder="Specialista"></div>
-                    <div class="input-group"><label data-i18n="notesLabel">Note</label><input type="text" id="refNote" placeholder="Diagnosi..."></div>
+                    <div class="card-title">📁 Nuovo referto</div>
+                    <div class="input-group"><label>Data</label><input type="date" id="refData"></div>
+                    <div class="input-group"><label>Ospedale</label><input type="text" id="refOspedale" placeholder="Ospedale"></div>
+                    <div class="input-group"><label>Specialista</label><input type="text" id="refSpecialista" placeholder="Specialista"></div>
+                    <div class="input-group"><label>Note</label><input type="text" id="refNote" placeholder="Diagnosi..."></div>
                     <div class="form-row" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-                        <div class="input-group" style="margin-bottom:0;"><label data-i18n="pdfLabel">PDF</label><input type="file" id="refFile" accept="application/pdf"></div>
-                        <div class="input-group" style="margin-bottom:0;"><label data-i18n="photoLabel">Scatta</label><button class="btn btn-accent btn-sm" onclick="apriFotocamera()">📸</button></div>
+                        <div class="input-group" style="margin-bottom:0;"><label>PDF</label><input type="file" id="refFile" accept="application/pdf"></div>
+                        <div class="input-group" style="margin-bottom:0;"><label>Scatta</label><button class="btn btn-accent btn-sm" onclick="apriFotocamera()">📸</button></div>
                     </div>
-                    <button class="btn btn-success" onclick="aggiungiReferto()" data-i18n="saveBtn">💾 Salva</button>
+                    <button class="btn btn-success" onclick="aggiungiReferto()">💾 Salva</button>
                 </div>
-                <div class="section-title" data-i18n="yourReports">I tuoi referti</div>
+                <div class="section-title">I tuoi referti</div>
                 <div id="refertiList"></div>
             </div>
 
             <!-- PARAMETRI -->
             <div id="parametri" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
+                <button class="back-btn" onclick="goToHome()">← Home</button>
                 <div class="card">
-                    <div class="card-title" data-i18n="newMeasurement">📋 Nuova rilevazione</div>
-                    <div class="input-group"><label data-i18n="dateLabel">Data</label><input type="date" id="parData"></div>
-                    <div class="input-group"><label data-i18n="timeLabel">Ora</label><input type="time" id="parOra" value="12:00"></div>
+                    <div class="card-title">📋 Nuova rilevazione</div>
+                    <div class="input-group"><label>Data</label><input type="date" id="parData"></div>
+                    <div class="input-group"><label>Ora</label><input type="time" id="parOra" value="12:00"></div>
                     <div class="form-row">
-                        <div class="input-group"><label data-i18n="weightLabel">Peso (kg)</label><input type="number" id="parPeso" placeholder="75" step="0.1"></div>
-                        <div class="input-group"><label data-i18n="spo2Label">SpO₂ (%)</label><input type="number" id="parSpo2" placeholder="98" min="70" max="100"></div>
+                        <div class="input-group"><label>Peso (kg)</label><input type="number" id="parPeso" placeholder="75" step="0.1"></div>
+                        <div class="input-group"><label>SpO₂ (%)</label><input type="number" id="parSpo2" placeholder="98" min="70" max="100"></div>
                     </div>
                     <div class="form-row">
-                        <div class="input-group"><label data-i18n="systolicLabel">Sistolica</label><input type="number" id="parSis" placeholder="120"></div>
-                        <div class="input-group"><label data-i18n="diastolicLabel">Diastolica</label><input type="number" id="parDia" placeholder="80"></div>
+                        <div class="input-group"><label>Sistolica</label><input type="number" id="parSis" placeholder="120"></div>
+                        <div class="input-group"><label>Diastolica</label><input type="number" id="parDia" placeholder="80"></div>
                     </div>
                     <div class="form-row">
-                        <div class="input-group"><label data-i18n="bpmLabel">Battito (bpm)</label><input type="number" id="parBpm" placeholder="70"></div>
-                        <div class="input-group"><label data-i18n="glucoseLabel">Glicemia (mg/dL)</label><input type="number" id="parGlu" placeholder="95"></div>
+                        <div class="input-group"><label>Battito (bpm)</label><input type="number" id="parBpm" placeholder="70"></div>
+                        <div class="input-group"><label>Glicemia (mg/dL)</label><input type="number" id="parGlu" placeholder="95"></div>
                     </div>
                     <div class="form-row">
-                        <div class="input-group"><label data-i18n="tempLabel">Temperatura (°C)</label><input type="number" id="parTemp" placeholder="36.5" step="0.1"></div>
-                        <div class="input-group"><label data-i18n="waterLabel">Acqua (bicch.)</label><input type="number" id="parAcqua" placeholder="8" min="0"></div>
+                        <div class="input-group"><label>Temperatura (°C)</label><input type="number" id="parTemp" placeholder="36.5" step="0.1"></div>
+                        <div class="input-group"><label>Acqua (bicch.)</label><input type="number" id="parAcqua" placeholder="8" min="0"></div>
                     </div>
-                    <div class="input-group"><label data-i18n="notesLabel">Note</label><input type="text" id="parNote" placeholder="Sintomi..."></div>
-                    <button class="btn btn-success" onclick="aggiungiParametro()" data-i18n="saveBtn">💾 Salva</button>
+                    <div class="input-group"><label>Note</label><input type="text" id="parNote" placeholder="Sintomi..."></div>
+                    <button class="btn btn-success" onclick="aggiungiParametro()">💾 Salva</button>
                 </div>
                 <div class="card">
-                    <div class="card-title" data-i18n="historyTitle">📅 Storico</div>
+                    <div class="card-title">📅 Storico</div>
                     <div class="input-group" style="margin-bottom:0;"><input type="date" id="storicoData"></div>
                     <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
-                        <button class="btn-outline btn-sm" onclick="aggiornaStoricoPerData()" data-i18n="viewBtn">Visualizza</button>
-                        <button class="btn-outline btn-sm" onclick="esportaCSV()" data-i18n="csvBtn">📊 CSV</button>
-                        <button class="btn-outline btn-sm" onclick="esportaJSON()" data-i18n="jsonBtn">📦 JSON</button>
+                        <button class="btn-outline btn-sm" onclick="aggiornaStoricoPerData()">Visualizza</button>
+                        <button class="btn-outline btn-sm" onclick="esportaCSV()">📊 CSV</button>
+                        <button class="btn-outline btn-sm" onclick="esportaJSON()">📦 JSON</button>
                     </div>
                 </div>
-                <div class="section-title"><span data-i18n="historyOf">Storico del</span> <span id="storicoDataLabel">--/--/----</span></div>
+                <div class="section-title">Storico del <span id="storicoDataLabel">--/--/----</span></div>
                 <div id="parametriList"></div>
             </div>
 
             <!-- APPUNTAMENTI -->
             <div id="appuntamenti" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
+                <button class="back-btn" onclick="goToHome()">← Home</button>
                 <div class="card">
-                    <div class="card-title" data-i18n="calendarTitle">📅 Calendario</div>
+                    <div class="card-title">📅 Calendario</div>
                     <div class="calendar-header">
                         <button class="calendar-nav-btn" onclick="cambiaMese(-1)">◀</button>
                         <span class="month-year" id="meseAnnoTitolo">Agosto 2026</span>
                         <button class="calendar-nav-btn" onclick="cambiaMese(1)">▶</button>
                     </div>
                     <div class="calendar-grid" id="calendarGrid"></div>
+                    <div style="margin-top:8px;">
+                        <button class="btn-outline btn-sm" onclick="sincronizzaGoogleCalendar()" style="width:auto;">🔄 Sincronizza Google Calendar</button>
+                        <span id="gcStatus" style="font-size:11px;color:var(--text-secondary);margin-left:8px;">Disconnesso</span>
+                    </div>
                 </div>
                 <div class="card">
-                    <div class="card-title" data-i18n="newAppointment">✏️ Nuovo appuntamento</div>
-                    <div class="input-group"><label data-i18n="dateLabel">Data</label><input type="date" id="appData"></div>
+                    <div class="card-title">✏️ Nuovo appuntamento</div>
+                    <div class="input-group"><label>Data</label><input type="date" id="appData"></div>
                     <div class="form-row">
-                        <div class="input-group"><label data-i18n="timeLabel">Orario</label><input type="time" id="appOrario" value="09:00"></div>
-                        <div class="input-group"><label data-i18n="titleLabel">Titolo</label><input type="text" id="appTitolo" placeholder="Visita"></div>
+                        <div class="input-group"><label>Orario</label><input type="time" id="appOrario" value="09:00"></div>
+                        <div class="input-group"><label>Titolo</label><input type="text" id="appTitolo" placeholder="Visita"></div>
                     </div>
-                    <div class="input-group"><label data-i18n="notesLabel">Note</label><input type="text" id="appNote" placeholder="Note..."></div>
-                    <button class="btn btn-success" onclick="aggiungiAppuntamento()" data-i18n="saveBtn">💾 Salva</button>
+                    <div class="input-group"><label>Note</label><input type="text" id="appNote" placeholder="Note..."></div>
+                    <button class="btn btn-success" onclick="aggiungiAppuntamento()">💾 Salva</button>
                 </div>
-                <div class="section-title"><span data-i18n="appointmentsOf">Appuntamenti del</span> <span id="giornoSelezionatoLabel">--/--/----</span></div>
+                <div class="section-title">Appuntamenti del <span id="giornoSelezionatoLabel">--/--/----</span></div>
                 <div id="appuntamentiList"></div>
             </div>
 
             <!-- FARMACI -->
             <div id="farmaci" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
+                <button class="back-btn" onclick="goToHome()">← Home</button>
                 <div class="card">
-                    <div class="card-title" data-i18n="newDrug">💊 Nuovo farmaco</div>
-                    <div class="input-group"><label data-i18n="drugNameLabel">Nome</label>
+                    <div class="card-title">💊 Nuovo farmaco</div>
+                    <div class="input-group"><label>Nome</label>
                         <input type="text" id="farmNome" placeholder="Amlodipina" list="drugList" oninput="cercaFarmaco(this.value)">
                         <datalist id="drugList"></datalist>
                     </div>
                     <div id="drugInfoDisplay"></div>
                     <div class="form-row">
-                        <div class="input-group"><label data-i18n="dosageLabel">Dosaggio</label><input type="text" id="farmDosaggio" placeholder="5 mg"></div>
-                        <div class="input-group"><label data-i18n="timeLabel">Orario</label><input type="time" id="farmOrario" value="08:00"></div>
+                        <div class="input-group"><label>Dosaggio</label><input type="text" id="farmDosaggio" placeholder="5 mg"></div>
+                        <div class="input-group"><label>Orario</label><input type="time" id="farmOrario" value="08:00"></div>
                     </div>
                     <div class="form-row">
-                        <div class="input-group"><label data-i18n="startLabel">Inizio</label><input type="date" id="farmInizio"></div>
-                        <div class="input-group"><label data-i18n="endLabel">Fine</label><input type="date" id="farmFine"></div>
+                        <div class="input-group"><label>Inizio</label><input type="date" id="farmInizio"></div>
+                        <div class="input-group"><label>Fine</label><input type="date" id="farmFine"></div>
                     </div>
                     <div style="display:flex;gap:6px;">
-                        <button class="btn btn-success" onclick="aggiungiFarmaco()" style="flex:1;" data-i18n="saveBtn">💾 Salva</button>
-                        <button class="btn btn-accent btn-sm" onclick="apriScannerFarmaci()" style="flex:1;" data-i18n="scanBtn">📷 Scanner</button>
+                        <button class="btn btn-success" onclick="aggiungiFarmaco()" style="flex:1;">💾 Salva</button>
+                        <button class="btn btn-accent btn-sm" onclick="apriScannerFarmaci()" style="flex:1;">📷 Scanner</button>
                     </div>
                 </div>
-                <div class="section-title" data-i18n="yourDrugs">I tuoi farmaci</div>
+                <div class="section-title">I tuoi farmaci</div>
                 <div id="farmaciList"></div>
                 <div class="card" style="background:#fef2f2;border-color:#fecaca;display:none;" id="interazioniCard">
-                    <div class="card-title" data-i18n="interactionsTitle">⚠️ Interazioni</div>
+                    <div class="card-title">⚠️ Interazioni</div>
                     <div id="interazioniOutput"></div>
                 </div>
             </div>
 
             <!-- VACCINAZIONI -->
             <div id="vaccinazioni" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
+                <button class="back-btn" onclick="goToHome()">← Home</button>
                 <div class="card">
-                    <div class="card-title" data-i18n="newVaccine">💉 Nuova vaccinazione</div>
-                    <div class="input-group"><label data-i18n="vaccineNameLabel">Vaccino</label><input type="text" id="vaccNome" placeholder="Pfizer"></div>
+                    <div class="card-title">💉 Nuova vaccinazione</div>
+                    <div class="input-group"><label>Vaccino</label><input type="text" id="vaccNome" placeholder="Pfizer"></div>
                     <div class="form-row">
-                        <div class="input-group"><label data-i18n="dateLabel">Data</label><input type="date" id="vaccData"></div>
-                        <div class="input-group"><label data-i18n="expiryLabel">Scadenza</label><input type="date" id="vaccScadenza"></div>
+                        <div class="input-group"><label>Data</label><input type="date" id="vaccData"></div>
+                        <div class="input-group"><label>Scadenza</label><input type="date" id="vaccScadenza"></div>
                     </div>
-                    <div class="input-group"><label data-i18n="notesLabel">Note</label><input type="text" id="vaccNote" placeholder="Lotto..."></div>
-                    <button class="btn btn-success" onclick="aggiungiVaccinazione()" data-i18n="saveBtn">💾 Salva</button>
+                    <div class="input-group"><label>Note</label><input type="text" id="vaccNote" placeholder="Lotto..."></div>
+                    <button class="btn btn-success" onclick="aggiungiVaccinazione()">💾 Salva</button>
                 </div>
-                <div class="section-title" data-i18n="yourVaccines">Le tue vaccinazioni</div>
+                <div class="section-title">Le tue vaccinazioni</div>
                 <div id="vaccinazioniList"></div>
             </div>
 
             <!-- SINTOMI -->
             <div id="sintomi" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
+                <button class="back-btn" onclick="goToHome()">← Home</button>
                 <div class="card">
-                    <div class="card-title" data-i18n="newSymptom">🤒 Nuovo sintomo</div>
-                    <div class="input-group"><label data-i18n="dateLabel">Data</label><input type="date" id="symData"></div>
-                    <div class="input-group"><label data-i18n="symptomTypeLabel">Tipo</label><input type="text" id="symTipo" placeholder="Eruzione"></div>
-                    <div class="input-group"><label data-i18n="notesLabel">Note</label><input type="text" id="symNote" placeholder="Dettagli"></div>
-                    <div class="input-group"><label data-i18n="photoLabel">Foto</label><input type="file" id="symFoto" accept="image/*"></div>
-                    <button class="btn btn-success" onclick="aggiungiSintomo()" data-i18n="saveBtn">💾 Salva</button>
+                    <div class="card-title">🤒 Nuovo sintomo</div>
+                    <div class="input-group"><label>Data</label><input type="date" id="symData"></div>
+                    <div class="input-group"><label>Tipo</label><input type="text" id="symTipo" placeholder="Eruzione"></div>
+                    <div class="input-group"><label>Note</label><input type="text" id="symNote" placeholder="Dettagli"></div>
+                    <div class="input-group"><label>Foto</label><input type="file" id="symFoto" accept="image/*"></div>
+                    <button class="btn btn-success" onclick="aggiungiSintomo()">💾 Salva</button>
                 </div>
-                <div class="section-title" data-i18n="symptomDiary">Diario sintomi</div>
+                <div class="section-title">Diario sintomi</div>
                 <div id="sintomiList"></div>
-            </div>
-
-            <!-- ===== SONNO ===== -->
-            <div id="sonno" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
-                <div class="card">
-                    <div class="card-title" data-i18n="newSleep">😴 Nuova registrazione sonno</div>
-                    <div class="input-group"><label data-i18n="dateLabel">Data</label><input type="date" id="sleepData"></div>
-                    <div class="form-row">
-                        <div class="input-group"><label data-i18n="sleepHoursLabel">Ore di sonno</label><input type="number" id="sleepOre" placeholder="7.5" step="0.5" min="0" max="24"></div>
-                        <div class="input-group"><label data-i18n="sleepQualityLabel">Qualità (1-5)</label><input type="number" id="sleepQualita" placeholder="4" min="1" max="5" step="1"></div>
-                    </div>
-                    <div class="input-group"><label data-i18n="sleepNotesLabel">Note</label><input type="text" id="sleepNote" placeholder="Sogni, risvegli..."></div>
-                    <button class="btn btn-success" onclick="aggiungiSonno()" data-i18n="saveBtn">💾 Salva</button>
-                </div>
-                <div class="card">
-                    <div class="card-title" data-i18n="sleepStatsTitle">📊 Statistiche sonno (ultimi 30)</div>
-                    <div class="sleep-stats" id="sleepStats">
-                        <div class="sleep-stat"><div class="value" id="sleepMedia">--</div><div class="label" data-i18n="avgHours">Media ore</div></div>
-                        <div class="sleep-stat"><div class="value" id="sleepQualitaMedia">--</div><div class="label" data-i18n="avgQuality">Qualità media</div></div>
-                        <div class="sleep-stat"><div class="value" id="sleepTotale">--</div><div class="label" data-i18n="totalNights">Notti totali</div></div>
-                    </div>
-                    <div class="chart-container" style="height:120px;"><canvas id="sleepChart"></canvas></div>
-                </div>
-                <div class="section-title" data-i18n="sleepHistory">Storico sonno</div>
-                <div id="sonnoList"></div>
-            </div>
-
-            <!-- ===== PROMEMORIA ===== -->
-            <div id="promemoria" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
-                <div class="card">
-                    <div class="card-title" data-i18n="newReminder">⏰ Nuovo promemoria</div>
-                    <div class="input-group"><label data-i18n="reminderTitleLabel">Titolo</label><input type="text" id="remTitolo" placeholder="Prendi pasto"></div>
-                    <div class="form-row">
-                        <div class="input-group"><label data-i18n="timeLabel">Orario</label><input type="time" id="remOrario" value="12:00"></div>
-                        <div class="input-group"><label data-i18n="repeatLabel">Ripeti</label>
-                            <select id="remRipeti">
-                                <option value="once" data-i18n="once">Una volta</option>
-                                <option value="daily" data-i18n="daily">Giornaliero</option>
-                                <option value="weekly" data-i18n="weekly">Settimanale</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="input-group"><label data-i18n="notesLabel">Note</label><input type="text" id="remNote" placeholder="Dettagli..."></div>
-                    <button class="btn btn-success" onclick="aggiungiPromemoria()" data-i18n="saveBtn">💾 Salva</button>
-                </div>
-                <div class="section-title" data-i18n="yourReminders">I tuoi promemoria</div>
-                <div id="promemoriaList"></div>
             </div>
 
             <!-- CONDIVIDI -->
             <div id="condividi" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
+                <button class="back-btn" onclick="goToHome()">← Home</button>
                 <div class="card">
-                    <div class="card-title" data-i18n="shareTitle">🔗 Condividi con il medico</div>
-                    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;" data-i18n="shareDesc">Genera un link con tutti i tuoi dati sanitari (parametri, farmaci, vaccinazioni, sintomi, referti).</p>
+                    <div class="card-title">🔗 Condividi con il medico</div>
+                    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">Genera un link con tutti i tuoi dati sanitari (parametri, farmaci, vaccinazioni, sintomi, referti).</p>
                     <div class="share-options">
                         <div class="option-row">
-                            <label data-i18n="expiryLabel">Scadenza</label>
+                            <label>Scadenza</label>
                             <select id="shareExpiry">
-                                <option value="1" data-i18n="1day">1 giorno</option>
-                                <option value="7" selected data-i18n="7days">7 giorni</option>
-                                <option value="30" data-i18n="30days">30 giorni</option>
-                                <option value="0" data-i18n="never">Mai</option>
+                                <option value="1">1 giorno</option>
+                                <option value="7" selected>7 giorni</option>
+                                <option value="30">30 giorni</option>
+                                <option value="0">Mai</option>
                             </select>
                         </div>
                         <div class="option-row">
-                            <label data-i18n="passwordLabel">Password</label>
+                            <label>Password</label>
                             <input type="text" id="sharePassword" placeholder="Opzionale" maxlength="20">
                         </div>
                     </div>
-                    <button class="btn btn-success" onclick="generaLinkCondivisioneAvanzato()" data-i18n="generateLinkBtn">🔗 Genera link</button>
+                    <button class="btn btn-success" onclick="generaLinkCondivisioneAvanzato()">🔗 Genera link</button>
                     <div id="linkContainer" style="margin-top:14px;display:none;">
                         <div class="qr-container">
                             <div id="qrcode"></div>
                             <input type="text" id="linkOutput" readonly>
                             <div style="display:flex;gap:6px;margin-top:6px;">
-                                <button class="btn-outline btn-sm" onclick="copiaLink()" data-i18n="copyBtn">📋 Copia</button>
-                                <button class="btn-outline btn-sm" onclick="stampaPDFMedico()" data-i18n="printPdfBtn">🖨️ Stampa PDF</button>
+                                <button class="btn-outline btn-sm" onclick="copiaLink()">📋 Copia</button>
+                                <button class="btn-outline btn-sm" onclick="stampaPDFMedico()">🖨️ Stampa PDF</button>
                             </div>
-                            <p style="font-size:10px;color:var(--text-secondary);margin-top:6px;" data-i18n="qrHint">Scansiona il QR o copia il link. Il medico vedrà tutti i tuoi dati.</p>
+                            <p style="font-size:10px;color:var(--text-secondary);margin-top:6px;">Scansiona il QR o copia il link. Il medico vedrà tutti i tuoi dati.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ===== IMPOSTAZIONI ===== -->
+            <!-- IMPOSTAZIONI (professionali) -->
             <div id="impostazioni" class="screen">
-                <button class="back-btn" onclick="goToHome()">← <span data-i18n="homeBtn">Home</span></button>
-                <div class="card">
-                    <div class="card-title" data-i18n="settingsTitle">⚙️ Impostazioni</div>
-                    <div class="settings-grid">
-                        <div class="settings-item-tile" onclick="openSettingsModal('profilo')">
-                            <div class="icon">👤</div>
-                            <div class="label" data-i18n="profileLabel">Profilo</div>
-                            <div class="sub" data-i18n="profileSub">Nome, sesso, PIN</div>
+                <button class="back-btn" onclick="goToHome()">← Home</button>
+
+                <!-- HERO PROFILO -->
+                <div class="settings-hero">
+                    <div class="avatar" id="settingsAvatar">👤</div>
+                    <h3 id="settingsHeroName">Utente</h3>
+                    <p id="settingsHeroSub">HealthApp Premium</p>
+                    <button class="edit-btn" onclick="document.getElementById('settingsNome').focus()">✏️ Modifica profilo</button>
+                </div>
+
+                <div class="settings-grid">
+                    <!-- PROFILO -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="icon-box" style="background:#dbeafe;color:#1a4b7a;">👤</div>
+                            <div>
+                                <h4>Profilo</h4>
+                                <p class="subtitle">I tuoi dati personali</p>
+                            </div>
                         </div>
-                        <div class="settings-item-tile" onclick="openSettingsModal('preferenze')">
-                            <div class="icon">🌓</div>
-                            <div class="label" data-i18n="preferencesLabel">Preferenze</div>
-                            <div class="sub" data-i18n="preferencesSub">Tema, notifiche, lingua</div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">📝</div>
+                                <div class="row-text">
+                                    <span class="label">Nome</span>
+                                </div>
+                            </div>
+                            <input type="text" id="settingsNome" placeholder="Mario Rossi" style="width:140px;text-align:right;">
                         </div>
-                        <div class="settings-item-tile" onclick="openSettingsModal('backup')">
-                            <div class="icon">☁️</div>
-                            <div class="label" data-i18n="backupLabel">Backup</div>
-                            <div class="sub" data-i18n="backupSub">WebDAV + automatico</div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">⚧</div>
+                                <div class="row-text">
+                                    <span class="label">Sesso</span>
+                                </div>
+                            </div>
+                            <select id="settingsSesso">
+                                <option>Maschio</option><option>Femmina</option><option>Altro</option>
+                            </select>
                         </div>
-                        <div class="settings-item-tile" onclick="openSettingsModal('privacy')">
-                            <div class="icon">🔐</div>
-                            <div class="label" data-i18n="privacyLabel">Privacy</div>
-                            <div class="sub" data-i18n="privacySub">Dati, GDPR</div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">🎂</div>
+                                <div class="row-text">
+                                    <span class="label">Data di nascita</span>
+                                </div>
+                            </div>
+                            <input type="date" id="settingsNascita" style="width:auto;">
                         </div>
-                        <div class="settings-item-tile" onclick="openSettingsModal('widget')">
-                            <div class="icon">🧩</div>
-                            <div class="label" data-i18n="widgetLabel">Widget Home</div>
-                            <div class="sub" data-i18n="widgetSub">Personalizza Home</div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">🔐</div>
+                                <div class="row-text">
+                                    <span class="label">PIN di accesso</span>
+                                    <span class="desc">4 cifre numeriche</span>
+                                </div>
+                            </div>
+                            <input type="password" id="settingsPin" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="****" style="width:70px;text-align:center;">
                         </div>
-                        <div class="settings-item-tile" onclick="openSettingsModal('info')">
-                            <div class="icon">ℹ️</div>
-                            <div class="label" data-i18n="infoLabel">Info</div>
-                            <div class="sub" data-i18n="infoSub">Versione, about</div>
+                        <button class="btn btn-success" style="margin-top:8px;" onclick="salvaImpostazioniProfilo()">💾 Salva profilo</button>
+                    </div>
+
+                    <!-- ASPETTO -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="icon-box" style="background:#fef3c7;color:#92400e;">🎨</div>
+                            <div>
+                                <h4>Aspetto</h4>
+                                <p class="subtitle">Personalizza l'app</p>
+                            </div>
                         </div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">🌓</div>
+                                <div class="row-text">
+                                    <span class="label">Modalità scura</span>
+                                    <span class="desc">Riduce l'affaticamento visivo</span>
+                                </div>
+                            </div>
+                            <div class="ios-toggle" id="darkToggleSwitch2" onclick="toggleDarkMode()"></div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">🔔</div>
+                                <div class="row-text">
+                                    <span class="label">Notifiche</span>
+                                    <span class="desc">Promemoria farmaci e vaccini</span>
+                                </div>
+                            </div>
+                            <div class="ios-toggle active" id="notifToggle2" onclick="toggleNotifiche()"></div>
+                        </div>
+                    </div>
+
+                    <!-- CLOUD BACKUP -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="icon-box" style="background:#e0f2fe;color:#0369a1;">☁️</div>
+                            <div>
+                                <h4>Backup Cloud</h4>
+                                <p class="subtitle">WebDAV remoto</p>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">🌐</div>
+                                <div class="row-text">
+                                    <span class="label">Server URL</span>
+                                </div>
+                            </div>
+                            <input type="url" id="webdavUrl" placeholder="https://..." style="width:180px;">
+                        </div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">👤</div>
+                                <div class="row-text">
+                                    <span class="label">Username</span>
+                                </div>
+                            </div>
+                            <input type="text" id="webdavUser" placeholder="utente" style="width:120px;">
+                        </div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">🔑</div>
+                                <div class="row-text">
+                                    <span class="label">Password</span>
+                                </div>
+                            </div>
+                            <input type="password" id="webdavPass" placeholder="••••" style="width:120px;">
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn btn-success btn-sm" onclick="webdavBackup()">☁️ Backup</button>
+                            <button class="btn-outline btn-sm" onclick="webdavRestore()">⬇️ Ripristina</button>
+                            <button class="btn-outline btn-sm" onclick="webdavTest()">🔍 Test</button>
+                        </div>
+                        <div style="margin-top:8px;text-align:center;">
+                            <span id="webdavStatus" class="webdav-status wait">Non configurato</span>
+                        </div>
+                    </div>
+
+                    <!-- GOOGLE CALENDAR -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="icon-box" style="background:#dcfce7;color:#166534;">📅</div>
+                            <div>
+                                <h4>Google Calendar</h4>
+                                <p class="subtitle">Sincronizza appuntamenti</p>
+                            </div>
+                        </div>
+                        <div class="settings-row" style="border:none;">
+                            <div class="row-left">
+                                <div class="row-icon" style="font-size:20px;">🔗</div>
+                                <div class="row-text">
+                                    <span class="label">Stato connessione</span>
+                                    <span class="desc" id="gcStatusSettings">Disconnesso</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn btn-success btn-sm" onclick="connettiGoogleCalendar()">🔗 Connetti</button>
+                            <button class="btn-outline btn-sm" onclick="sincronizzaGoogleCalendar()">🔄 Sincronizza</button>
+                            <button class="btn-danger btn-sm" onclick="disconnettiGoogleCalendar()">🚫 Disconnetti</button>
+                        </div>
+                    </div>
+
+                    <!-- PRIVACY -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="icon-box" style="background:#fee2e2;color:#991b1b;">🛡️</div>
+                            <div>
+                                <h4>Privacy & Dati</h4>
+                                <p class="subtitle">GDPR e gestione dati</p>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">📋</div>
+                                <div class="row-text">
+                                    <span class="label">Consenso GDPR</span>
+                                    <span class="desc" id="gdprStatus">✅ Accettato</span>
+                                </div>
+                            </div>
+                            <button class="btn-outline btn-sm" onclick="revocaConsensoGDPR()">Revoca</button>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn-outline btn-sm" onclick="esportaDatiCompletiJSON()">📦 JSON</button>
+                            <button class="btn-outline btn-sm" onclick="esportaDatiCompletiCSV()">📊 CSV</button>
+                            <button class="btn-danger btn-sm" onclick="cancellaTuttiIDati()">🗑️ Cancella</button>
+                        </div>
+                        <div style="margin-top:8px;">
+                            <button class="btn-outline btn-sm" style="width:100%;" onclick="mostraTermini()">📄 Leggi Termini e Privacy</button>
+                        </div>
+                    </div>
+
+                    <!-- INFO -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="icon-box" style="background:#f3e8ff;color:#7c3aed;">ℹ️</div>
+                            <div>
+                                <h4>Informazioni</h4>
+                                <p class="subtitle">Versione e dettagli app</p>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">📦</div>
+                                <div class="row-text">
+                                    <span class="label">Versione</span>
+                                </div>
+                            </div>
+                            <span style="font-size:13px;color:var(--text-secondary);font-weight:600;">v3.1 Premium</span>
+                        </div>
+                        <div class="settings-row">
+                            <div class="row-left">
+                                <div class="row-icon">💾</div>
+                                <div class="row-text">
+                                    <span class="label">Dati salvati</span>
+                                </div>
+                            </div>
+                            <span style="font-size:13px;color:var(--text-secondary);font-weight:600;" id="datiSalvatiInfo">0 KB</span>
+                        </div>
+                        <div class="settings-row" style="border:none;">
+                            <div class="row-left">
+                                <div class="row-icon">🏥</div>
+                                <div class="row-text">
+                                    <span class="label">HealthApp</span>
+                                    <span class="desc">Monitoraggio sanitario</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-outline btn-sm" style="width:100%;margin-top:4px;" onclick="aboutApp()">📖 Info app</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="bottom-nav-item active" onclick="switchTabBottom('home')" data-tab="home">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTabBottom('parametri')" data-tab="parametri">
+            <span class="icon">📋</span>
+            <span>Parametri</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTabBottom('appuntamenti')" data-tab="appuntamenti">
+            <span class="icon">📅</span>
+            <span>Agenda</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTabBottom('farmaci')" data-tab="farmaci">
+            <span class="icon">💊</span>
+            <span>Farmaci</span>
+        </button>
+        <button class="bottom-nav-item" onclick="switchTabBottom('impostazioni')" data-tab="impostazioni">
+            <span class="icon">⚙️</span>
+            <span>Impostazioni</span>
+        </button>
+    </nav>
 
     <!-- ===== MODALI ===== -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-box">
-            <h2 id="settingsModalTitle">Impostazioni</h2>
-            <p id="settingsModalDesc"></p>
-            <div id="settingsModalContent" class="modal-settings-content"></div>
-            <button class="btn" onclick="closeSettingsModal()" data-i18n="closeBtn">Chiudi</button>
-        </div>
-    </div>
-
     <div class="modal-overlay" id="scannerModal">
         <div class="modal-box">
-            <h2 data-i18n="scanTitle">📷 Scanner</h2>
-            <p data-i18n="scanDesc">Inquadra il codice a barre o inseriscilo.</p>
+            <h2>📷 Scanner</h2>
+            <p>Inquadra il codice a barre o inseriscilo.</p>
             <video id="scannerVideo" autoplay playsinline style="width:100%;border-radius:10px;background:#000;"></video>
             <div class="input-group" style="margin-top:8px;">
-                <label data-i18n="barcodeLabel">Codice</label>
+                <label>Codice</label>
                 <input type="text" id="barcodeInput" placeholder="8012345678901">
             </div>
             <div style="display:flex;gap:6px;">
-                <button class="btn btn-success" onclick="cercaFarmacoPerCodice()" style="flex:1;" data-i18n="searchBtn">🔍 Cerca</button>
-                <button class="btn btn-danger" onclick="chiudiScannerFarmaci()" style="flex:1;" data-i18n="closeBtn">✕</button>
+                <button class="btn btn-success" onclick="cercaFarmacoPerCodice()" style="flex:1;">🔍 Cerca</button>
+                <button class="btn btn-danger" onclick="chiudiScannerFarmaci()" style="flex:1;">✕</button>
             </div>
             <div id="scannerResult" class="scan-result" style="margin-top:8px;padding:10px;background:var(--bg);border-radius:8px;border:1px solid var(--border);font-size:13px;text-align:center;"></div>
         </div>
@@ -1637,8 +2000,8 @@
 
     <div class="modal-overlay" id="termsModal">
         <div class="modal-box">
-            <h2 data-i18n="termsTitle">📄 Termini e Privacy</h2>
-            <div class="terms-text" style="max-height:300px;height:auto;" data-i18n="termsFull">
+            <h2>📄 Termini e Privacy</h2>
+            <div class="terms-text" style="max-height:300px;height:auto;">
                 <strong>Termini e Condizioni</strong><br><br>
                 L'utilizzo di HealthApp è soggetto alle seguenti condizioni:<br>
                 • L'app è fornita "così com'è".<br>
@@ -1653,26 +2016,29 @@
                 • <strong>Conservazione:</strong> Solo sul dispositivo (localStorage).<br>
                 • <strong>Diritti:</strong> Accesso, rettifica, cancellazione, limitazione, opposizione.
             </div>
-            <button class="btn" onclick="chiudiTermsModal()" data-i18n="closeBtn">Chiudi</button>
+            <button class="btn" onclick="chiudiTermsModal()">Chiudi</button>
         </div>
     </div>
 
     <div class="modal-overlay" id="cameraModal">
         <div class="modal-box" style="max-width:400px;text-align:center;">
-            <h3 style="margin-bottom:8px;" data-i18n="photoTitle">📸 Scatta</h3>
+            <h3 style="margin-bottom:8px;">📸 Scatta</h3>
             <video id="video" autoplay playsinline style="width:100%;border-radius:10px;background:#000;"></video>
             <canvas id="canvas" style="display:none;"></canvas>
             <div style="display:flex;gap:8px;margin-top:10px;justify-content:center;">
-                <button class="btn btn-danger btn-sm" onclick="chiudiFotocamera()" data-i18n="closeBtn">✕</button>
-                <button class="btn btn-success btn-sm" onclick="catturaFoto()" data-i18n="captureBtn">📷 Scatta</button>
+                <button class="btn btn-danger btn-sm" onclick="chiudiFotocamera()">✕</button>
+                <button class="btn btn-success btn-sm" onclick="catturaFoto()">📷 Scatta</button>
             </div>
             <div id="fotoAnteprima" style="margin-top:8px;"></div>
         </div>
     </div>
 
+    <!-- ================================================================ -->
+    <!-- SCRIPT (stesso di prima, con piccole modifiche per la home) -->
+    <!-- ================================================================ -->
     <script>
         // ================================================================
-        // 1. DATABASE FARMACI (120+ reali)
+        // DATABASE FARMACI (120+ reali)
         // ================================================================
         const drugDB = {
             "Acetaminofene": { desc: "Analgesico", uso: "Dolore e febbre.", effetti: "Nausea, eruzione." },
@@ -1815,7 +2181,7 @@
         let customDrugs = JSON.parse(localStorage.getItem('customDrugs')) || {};
 
         // ================================================================
-        // 2. INTERAZIONI FARMACOLOGICHE
+        // INTERAZIONI
         // ================================================================
         const interazioniDB = {
             "Warfarin": ["Aspirina", "Eparina", "Clopidogrel", "Amiodarone", "Dabigatran", "Rivaroxaban"],
@@ -1875,7 +2241,7 @@
         };
 
         // ================================================================
-        // 3. DATI GLOBALI
+        // DATI GLOBALI
         // ================================================================
         let parametri = JSON.parse(localStorage.getItem('healthParams')) || [];
         let referti = JSON.parse(localStorage.getItem('healthReports')) || [];
@@ -1884,20 +2250,10 @@
         let farmaci = JSON.parse(localStorage.getItem('farmaci')) || [];
         let sintomi = JSON.parse(localStorage.getItem('sintomi')) || [];
         let vaccinazioni = JSON.parse(localStorage.getItem('vaccinazioni')) || [];
-        let sonno = JSON.parse(localStorage.getItem('sonno')) || [];
-        let promemoria = JSON.parse(localStorage.getItem('promemoria')) || [];
         let badge = JSON.parse(localStorage.getItem('badge')) || { cuore: false, acqua: false, spo2: false, referti: false };
         let pinSalvato = localStorage.getItem('appPin') || '1234';
-        let pinAbilitato = localStorage.getItem('pinAbilitato') !== 'false';
         let notificheAbilitate = localStorage.getItem('notificheAbilitate') !== 'false';
-        let lingua = localStorage.getItem('lingua') || 'it';
-        let widgetStati = JSON.parse(localStorage.getItem('widgetStati')) || { stats: true, chart: true, tip: true,
-            badge: true };
-        let backupAutomatico = localStorage.getItem('backupAutomatico') === 'true';
-        let backupIntervalId = null;
-
         let chartInstance = null;
-        let sleepChartInstance = null;
         let stream = null,
             scannerStream = null;
         let fotoScattataData = null;
@@ -1906,13 +2262,16 @@
         let termsAccepted = localStorage.getItem('termsAccepted') === 'true';
         let gdprConsent = localStorage.getItem('gdprConsent') === 'true';
 
+        // Google Calendar
+        let gcToken = localStorage.getItem('gcToken') || null;
+
         // WebDAV
         let webdavUrl = localStorage.getItem('webdavUrl') || '';
         let webdavUser = localStorage.getItem('webdavUser') || '';
         let webdavPass = localStorage.getItem('webdavPass') || '';
 
         // ================================================================
-        // 4. UTILITY
+        // UTILITY
         // ================================================================
         function getLocalDateString(date) {
             const y = date.getFullYear(),
@@ -1956,409 +2315,7 @@
         }
 
         // ================================================================
-        // 5. MULTI-LINGUA (i18n)
-        // ================================================================
-        const translations = {
-            it: {
-                appName: "HealthApp",
-                onboardingSub: "Il tuo diario sanitario personale",
-                termsAccept: "Accetto i Termini",
-                gdprAccept: "Acconsento al trattamento dati (GDPR)",
-                acceptBtn: "Accetta e continua",
-                pinTitle: "🔒 PIN",
-                pinDesc: "Inserisci il codice a 4 cifre.",
-                unlockBtn: "🔓 Sblocca",
-                defaultPin: "PIN predefinito: 1234",
-                greeting: "Ciao",
-                today: "Oggi",
-                pdfBtn: "📄 PDF",
-                appointmentsToday: "📅 Appuntamenti oggi",
-                widgetSettingsTitle: "🧩 Widget Home",
-                widgetStats: "Statistiche",
-                widgetChart: "Grafico",
-                widgetTip: "Consiglio",
-                widgetBadge: "Badge",
-                refertiLabel: "Referti",
-                pressureLabel: "Pressione",
-                spo2Label: "SpO₂",
-                chartTitle: "📈 Pressione (ultimi 30)",
-                tipTitle: "💡 Consiglio",
-                tipText: "SpO₂ > 95%, 2L acqua/giorno.",
-                goodTag: "Buono",
-                badgeTitle: "🏅 Badge",
-                badgeHeart: "❤️ Cuore",
-                badgeWater: "💧 Idratato",
-                badgeO2: "🫁 Ossigeno",
-                badgeArchivist: "📁 Archivist",
-                navParams: "Parametri",
-                navReports: "Referti",
-                navAppointments: "Appuntamenti",
-                navDrugs: "Farmaci",
-                navVaccines: "Vaccinazioni",
-                navSymptoms: "Sintomi",
-                navSleep: "Sonno",
-                navShare: "Condividi",
-                navReminders: "Promemoria",
-                navSettings: "Impostazioni",
-                homeBtn: "Home",
-                newReport: "📁 Nuovo referto",
-                dateLabel: "Data",
-                hospitalLabel: "Ospedale",
-                specialistLabel: "Specialista",
-                notesLabel: "Note",
-                pdfLabel: "PDF",
-                photoLabel: "Scatta",
-                saveBtn: "💾 Salva",
-                yourReports: "I tuoi referti",
-                newMeasurement: "📋 Nuova rilevazione",
-                timeLabel: "Ora",
-                weightLabel: "Peso (kg)",
-                systolicLabel: "Sistolica",
-                diastolicLabel: "Diastolica",
-                bpmLabel: "Battito (bpm)",
-                glucoseLabel: "Glicemia (mg/dL)",
-                tempLabel: "Temperatura (°C)",
-                waterLabel: "Acqua (bicch.)",
-                historyTitle: "📅 Storico",
-                viewBtn: "Visualizza",
-                csvBtn: "📊 CSV",
-                jsonBtn: "📦 JSON",
-                historyOf: "Storico del",
-                calendarTitle: "📅 Calendario",
-                newAppointment: "✏️ Nuovo appuntamento",
-                titleLabel: "Titolo",
-                appointmentsOf: "Appuntamenti del",
-                newDrug: "💊 Nuovo farmaco",
-                drugNameLabel: "Nome",
-                dosageLabel: "Dosaggio",
-                startLabel: "Inizio",
-                endLabel: "Fine",
-                scanBtn: "📷 Scanner",
-                yourDrugs: "I tuoi farmaci",
-                interactionsTitle: "⚠️ Interazioni",
-                newVaccine: "💉 Nuova vaccinazione",
-                vaccineNameLabel: "Vaccino",
-                expiryLabel: "Scadenza",
-                yourVaccines: "Le tue vaccinazioni",
-                newSymptom: "🤒 Nuovo sintomo",
-                symptomTypeLabel: "Tipo",
-                symptomDiary: "Diario sintomi",
-                newSleep: "😴 Nuova registrazione sonno",
-                sleepHoursLabel: "Ore di sonno",
-                sleepQualityLabel: "Qualità (1-5)",
-                sleepNotesLabel: "Note",
-                sleepStatsTitle: "📊 Statistiche sonno (ultimi 30)",
-                avgHours: "Media ore",
-                avgQuality: "Qualità media",
-                totalNights: "Notti totali",
-                sleepHistory: "Storico sonno",
-                newReminder: "⏰ Nuovo promemoria",
-                reminderTitleLabel: "Titolo",
-                repeatLabel: "Ripeti",
-                once: "Una volta",
-                daily: "Giornaliero",
-                weekly: "Settimanale",
-                yourReminders: "I tuoi promemoria",
-                shareTitle: "🔗 Condividi con il medico",
-                shareDesc: "Genera un link con tutti i tuoi dati sanitari.",
-                expiryLabel: "Scadenza",
-                1day: "1 giorno",
-                7days: "7 giorni",
-                30days: "30 giorni",
-                never: "Mai",
-                passwordLabel: "Password",
-                generateLinkBtn: "🔗 Genera link",
-                copyBtn: "📋 Copia",
-                printPdfBtn: "🖨️ Stampa PDF",
-                qrHint: "Scansiona il QR o copia il link.",
-                settingsTitle: "⚙️ Impostazioni",
-                profileLabel: "Profilo",
-                profileSub: "Nome, sesso, PIN",
-                preferencesLabel: "Preferenze",
-                preferencesSub: "Tema, notifiche, lingua",
-                backupLabel: "Backup",
-                backupSub: "WebDAV + automatico",
-                privacyLabel: "Privacy",
-                privacySub: "Dati, GDPR",
-                widgetLabel: "Widget Home",
-                widgetSub: "Personalizza Home",
-                infoLabel: "Info",
-                infoSub: "Versione, about",
-                closeBtn: "Chiudi",
-                scanTitle: "📷 Scanner",
-                scanDesc: "Inquadra il codice a barre o inseriscilo.",
-                barcodeLabel: "Codice",
-                searchBtn: "🔍 Cerca",
-                termsTitle: "📄 Termini e Privacy",
-                termsFull: "Termini e Condizioni...",
-                photoTitle: "📸 Scatta",
-                captureBtn: "📷 Scatta",
-                installBannerText: "📲 Installa HealthApp",
-                installBtn: "Installa",
-                enablePin: "Abilita PIN",
-                disablePin: "Disabilita PIN",
-                backupNow: "☁️ Backup ora",
-                restoreNow: "⬇️ Ripristina",
-                testConnection: "🔍 Test",
-                autoBackup: "Backup automatico",
-                autoBackupDesc: "Ogni 12 ore (se configurato)",
-                resetWidgets: "Ripristina widget",
-                changeLanguage: "Cambia lingua",
-                italiano: "Italiano",
-                english: "English",
-                noData: "Nessun dato",
-                deleteAll: "🗑️ Cancella tutti i dati",
-                exportJson: "📦 Esporta JSON",
-                exportCsv: "📊 Esporta CSV",
-                gdprStatus: "GDPR",
-                revokeConsent: "Revoca",
-                version: "Versione",
-                drugCount: "Farmaci disponibili",
-                dataSize: "Dati memorizzati",
-                about: "📖 Info dettagliate",
-                confirmDelete: "⚠️ Cancellare PERMANENTEMENTE tutti i dati?",
-                confirmDeleteFinal: "🔴 Conferma finale?",
-                deleteSuccess: "✅ Tutti i dati cancellati.",
-                pinChanged: "✅ PIN aggiornato.",
-                profileUpdated: "✅ Profilo aggiornato.",
-                reminderSet: "✅ Promemoria impostato.",
-                reminderDelete: "Eliminare questo promemoria?",
-                sleepAdded: "✅ Sonno registrato.",
-                sleepDelete: "Eliminare questa registrazione?",
-                webdavConfigured: "Configurato",
-                webdavNotConfigured: "Non configurato",
-                webdavTestOk: "✅ Connesso!",
-                webdavTestErr: "❌ Errore",
-                webdavBackupOk: "✅ Backup completato!",
-                webdavBackupErr: "❌ Errore",
-                webdavRestoreOk: "✅ Dati ripristinati!",
-                webdavRestoreErr: "❌ Errore",
-                gcConnected: "✅ Connesso",
-                gcDisconnected: "❌ Disconnesso",
-                pinEnabled: "PIN abilitato",
-                pinDisabled: "PIN disabilitato"
-            },
-            en: {
-                appName: "HealthApp",
-                onboardingSub: "Your personal health diary",
-                termsAccept: "I accept the Terms",
-                gdprAccept: "I consent to data processing (GDPR)",
-                acceptBtn: "Accept and continue",
-                pinTitle: "🔒 PIN",
-                pinDesc: "Enter your 4-digit code.",
-                unlockBtn: "🔓 Unlock",
-                defaultPin: "Default PIN: 1234",
-                greeting: "Hello",
-                today: "Today",
-                pdfBtn: "📄 PDF",
-                appointmentsToday: "📅 Today's appointments",
-                widgetSettingsTitle: "🧩 Home Widgets",
-                widgetStats: "Stats",
-                widgetChart: "Chart",
-                widgetTip: "Tip",
-                widgetBadge: "Badges",
-                refertiLabel: "Reports",
-                pressureLabel: "Pressure",
-                spo2Label: "SpO₂",
-                chartTitle: "📈 Pressure (last 30)",
-                tipTitle: "💡 Tip",
-                tipText: "SpO₂ > 95%, 2L water/day.",
-                goodTag: "Good",
-                badgeTitle: "🏅 Badges",
-                badgeHeart: "❤️ Heart",
-                badgeWater: "💧 Hydrated",
-                badgeO2: "🫁 Oxygen",
-                badgeArchivist: "📁 Archivist",
-                navParams: "Params",
-                navReports: "Reports",
-                navAppointments: "Appointments",
-                navDrugs: "Drugs",
-                navVaccines: "Vaccinations",
-                navSymptoms: "Symptoms",
-                navSleep: "Sleep",
-                navShare: "Share",
-                navReminders: "Reminders",
-                navSettings: "Settings",
-                homeBtn: "Home",
-                newReport: "📁 New report",
-                dateLabel: "Date",
-                hospitalLabel: "Hospital",
-                specialistLabel: "Specialist",
-                notesLabel: "Notes",
-                pdfLabel: "PDF",
-                photoLabel: "Photo",
-                saveBtn: "💾 Save",
-                yourReports: "Your reports",
-                newMeasurement: "📋 New measurement",
-                timeLabel: "Time",
-                weightLabel: "Weight (kg)",
-                systolicLabel: "Systolic",
-                diastolicLabel: "Diastolic",
-                bpmLabel: "BPM",
-                glucoseLabel: "Glucose (mg/dL)",
-                tempLabel: "Temperature (°C)",
-                waterLabel: "Water (glasses)",
-                historyTitle: "📅 History",
-                viewBtn: "View",
-                csvBtn: "📊 CSV",
-                jsonBtn: "📦 JSON",
-                historyOf: "History of",
-                calendarTitle: "📅 Calendar",
-                newAppointment: "✏️ New appointment",
-                titleLabel: "Title",
-                appointmentsOf: "Appointments of",
-                newDrug: "💊 New drug",
-                drugNameLabel: "Name",
-                dosageLabel: "Dosage",
-                startLabel: "Start",
-                endLabel: "End",
-                scanBtn: "📷 Scan",
-                yourDrugs: "Your drugs",
-                interactionsTitle: "⚠️ Interactions",
-                newVaccine: "💉 New vaccination",
-                vaccineNameLabel: "Vaccine",
-                expiryLabel: "Expiry",
-                yourVaccines: "Your vaccinations",
-                newSymptom: "🤒 New symptom",
-                symptomTypeLabel: "Type",
-                symptomDiary: "Symptom diary",
-                newSleep: "😴 New sleep record",
-                sleepHoursLabel: "Sleep hours",
-                sleepQualityLabel: "Quality (1-5)",
-                sleepNotesLabel: "Notes",
-                sleepStatsTitle: "📊 Sleep stats (last 30)",
-                avgHours: "Avg hours",
-                avgQuality: "Avg quality",
-                totalNights: "Total nights",
-                sleepHistory: "Sleep history",
-                newReminder: "⏰ New reminder",
-                reminderTitleLabel: "Title",
-                repeatLabel: "Repeat",
-                once: "Once",
-                daily: "Daily",
-                weekly: "Weekly",
-                yourReminders: "Your reminders",
-                shareTitle: "🔗 Share with doctor",
-                shareDesc: "Generate a link with all your health data.",
-                expiryLabel: "Expiry",
-                1day: "1 day",
-                7days: "7 days",
-                30days: "30 days",
-                never: "Never",
-                passwordLabel: "Password",
-                generateLinkBtn: "🔗 Generate link",
-                copyBtn: "📋 Copy",
-                printPdfBtn: "🖨️ Print PDF",
-                qrHint: "Scan QR or copy link. Doctor will see all data.",
-                settingsTitle: "⚙️ Settings",
-                profileLabel: "Profile",
-                profileSub: "Name, gender, PIN",
-                preferencesLabel: "Preferences",
-                preferencesSub: "Theme, notifications, language",
-                backupLabel: "Backup",
-                backupSub: "WebDAV + automatic",
-                privacyLabel: "Privacy",
-                privacySub: "Data, GDPR",
-                widgetLabel: "Home Widgets",
-                widgetSub: "Customize Home",
-                infoLabel: "Info",
-                infoSub: "Version, about",
-                closeBtn: "Close",
-                scanTitle: "📷 Scan",
-                scanDesc: "Scan or enter barcode.",
-                barcodeLabel: "Barcode",
-                searchBtn: "🔍 Search",
-                termsTitle: "📄 Terms & Privacy",
-                termsFull: "Terms and Conditions...",
-                photoTitle: "📸 Photo",
-                captureBtn: "📷 Capture",
-                installBannerText: "📲 Install HealthApp",
-                installBtn: "Install",
-                enablePin: "Enable PIN",
-                disablePin: "Disable PIN",
-                backupNow: "☁️ Backup now",
-                restoreNow: "⬇️ Restore",
-                testConnection: "🔍 Test",
-                autoBackup: "Auto backup",
-                autoBackupDesc: "Every 12 hours (if configured)",
-                resetWidgets: "Reset widgets",
-                changeLanguage: "Change language",
-                italiano: "Italian",
-                english: "English",
-                noData: "No data",
-                deleteAll: "🗑️ Delete all data",
-                exportJson: "📦 Export JSON",
-                exportCsv: "📊 Export CSV",
-                gdprStatus: "GDPR",
-                revokeConsent: "Revoke",
-                version: "Version",
-                drugCount: "Drugs available",
-                dataSize: "Data stored",
-                about: "📖 About",
-                confirmDelete: "⚠️ Permanently delete all data?",
-                confirmDeleteFinal: "🔴 Final confirmation?",
-                deleteSuccess: "✅ All data deleted.",
-                pinChanged: "✅ PIN updated.",
-                profileUpdated: "✅ Profile updated.",
-                reminderSet: "✅ Reminder set.",
-                reminderDelete: "Delete this reminder?",
-                sleepAdded: "✅ Sleep recorded.",
-                sleepDelete: "Delete this record?",
-                webdavConfigured: "Configured",
-                webdavNotConfigured: "Not configured",
-                webdavTestOk: "✅ Connected!",
-                webdavTestErr: "❌ Error",
-                webdavBackupOk: "✅ Backup completed!",
-                webdavBackupErr: "❌ Error",
-                webdavRestoreOk: "✅ Data restored!",
-                webdavRestoreErr: "❌ Error",
-                gcConnected: "✅ Connected",
-                gcDisconnected: "❌ Disconnected",
-                pinEnabled: "PIN enabled",
-                pinDisabled: "PIN disabled"
-            }
-        };
-
-        function t(key) {
-            const lang = lingua || 'it';
-            return translations[lang] && translations[lang][key] ? translations[lang][key] : key;
-        }
-
-        function applyLanguage() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                const text = t(key);
-                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
-                    el.placeholder = text;
-                } else {
-                    el.textContent = text;
-                }
-            });
-            // Aggiorna anche i toggle e i valori dinamici
-            document.querySelectorAll('.lang-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.lang === lingua);
-            });
-        }
-
-        function changeLanguage(lang) {
-            lingua = lang;
-            localStorage.setItem('lingua', lang);
-            applyLanguage();
-            // Ricarica i testi dinamici
-            aggiornaDashboard();
-            renderReferti();
-            renderFarmaci();
-            renderVaccinazioni();
-            renderSintomi();
-            renderSonno();
-            renderPromemoria();
-            renderAppuntamentiDelGiorno(selectedDate);
-            renderCalendario();
-            closeSettingsModal();
-        }
-
-        // ================================================================
-        // 6. OROLOGIO
+        // OROLOGIO DIGITALE
         // ================================================================
         function updateClock() {
             const now = new Date();
@@ -2370,7 +2327,7 @@
         updateClock();
 
         // ================================================================
-        // 7. ONBOARDING + PIN
+        // ONBOARDING + PIN
         // ================================================================
         function initOnboarding() {
             const c1 = document.getElementById('termsCheck1'),
@@ -2391,14 +2348,14 @@
                 gdprConsent = true;
                 document.getElementById('onboardingModal').classList.remove('active');
                 document.getElementById('appContainer').style.display = 'flex';
-                if (pinAbilitato && pinSalvato) setTimeout(mostraPIN, 300);
+                if (pinSalvato) setTimeout(mostraPIN, 300);
                 aggiornaHeader();
                 avviaApp();
             });
             if (termsAccepted && gdprConsent) {
                 document.getElementById('onboardingModal').classList.remove('active');
                 document.getElementById('appContainer').style.display = 'flex';
-                if (pinAbilitato && pinSalvato) setTimeout(mostraPIN, 300);
+                if (pinSalvato) setTimeout(mostraPIN, 300);
                 aggiornaHeader();
                 avviaApp();
             }
@@ -2409,22 +2366,20 @@
                 document.getElementById('pinModal').classList.remove('active');
                 document.getElementById('appContainer').style.display = 'flex';
                 document.getElementById('pinInput').value = '';
-            } else { alert(t('pinDesc'));
+            } else { alert('PIN errato.');
                 document.getElementById('pinInput').value = ''; }
         }
 
         function mostraPIN() {
-            if (pinAbilitato && pinSalvato) {
+            if (pinSalvato) {
                 document.getElementById('pinModal').classList.add('active');
                 document.getElementById('appContainer').style.display = 'none';
                 document.getElementById('pinInput').focus();
-            } else {
-                document.getElementById('appContainer').style.display = 'flex';
             }
         }
 
         // ================================================================
-        // 8. DARK MODE
+        // DARK MODE
         // ================================================================
         function toggleDarkMode() {
             darkMode = !darkMode;
@@ -2436,27 +2391,24 @@
         }
 
         // ================================================================
-        // 9. NOTIFICHE
+        // NOTIFICHE
         // ================================================================
         function toggleNotifiche() {
             notificheAbilitate = !notificheAbilitate;
             localStorage.setItem('notificheAbilitate', notificheAbilitate);
             const sw = document.getElementById('notifToggle');
             if (sw) sw.className = 'toggle-switch' + (notificheAbilitate ? ' active' : '');
-            if (notificheAbilitate && 'Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
         }
 
         // ================================================================
-        // 10. PROFILO
+        // PROFILO
         // ================================================================
         function salvaImpostazioniProfilo() {
             const nome = document.getElementById('settingsNome').value.trim();
             const sesso = document.getElementById('settingsSesso').value;
             const nascita = document.getElementById('settingsNascita').value;
             const pin = document.getElementById('settingsPin').value.trim();
-            if (!nome) { alert(t('profileUpdated')); return; }
+            if (!nome) { alert('Inserisci il nome.'); return; }
             if (pin && pin.length === 4 && /^\d{4}$/.test(pin)) {
                 pinSalvato = pin;
                 localStorage.setItem('appPin', pinSalvato);
@@ -2464,20 +2416,19 @@
             userProfile = { nome, sesso, nascita };
             localStorage.setItem('userProfile', JSON.stringify(userProfile));
             aggiornaHeader();
-            alert(t('profileUpdated'));
-            closeSettingsModal();
+            alert('✅ Profilo aggiornato.');
         }
 
         function aggiornaHeader() {
             if (userProfile) {
                 document.getElementById('greetingName').textContent = userProfile.nome;
             }
-            document.getElementById('dataOggi').textContent = new Date().toLocaleDateString(lingua === 'it' ? 'it-IT' :
-                'en-US', { weekday: 'long', day: 'numeric', month: 'long' });
+            document.getElementById('dataOggi').textContent = new Date().toLocaleDateString('it-IT', { weekday: 'long',
+                day: 'numeric', month: 'long' });
         }
 
         // ================================================================
-        // 11. STATO CALENDARIO
+        // STATO CALENDARIO
         // ================================================================
         let today = new Date(),
             currentMonth = today.getMonth(),
@@ -2486,20 +2437,30 @@
         const todayStrLocal = getLocalDateString(today);
 
         // ================================================================
-        // 12. NAVIGAZIONE
+        // NAVIGAZIONE (Home + schermate)
         // ================================================================
         function goToHome() {
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             document.getElementById('home').classList.add('active');
+            document.querySelectorAll('.bottom-nav-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.tab === 'home');
+            });
             aggiornaDashboard();
             aggiornaWidgetAppuntamenti();
         }
 
         function switchTab(tabId) {
+            // Nascondi tutte le schermate
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            // Mostra quella richiesta
             const target = document.getElementById(tabId);
             if (target) target.classList.add('active');
+            // Aggiorna bottom nav
+            document.querySelectorAll('.bottom-nav-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.tab === tabId);
+            });
 
+            // Se la home non è attiva, aggiorna i dati delle varie sezioni
             if (tabId === 'parametri') {
                 document.getElementById('storicoData').value = todayStrLocal;
                 aggiornaStoricoPerData();
@@ -2509,9 +2470,7 @@
                 riempiListaFarmaci(); }
             if (tabId === 'vaccinazioni') { renderVaccinazioni(); }
             if (tabId === 'sintomi') { renderSintomi(); }
-            if (tabId === 'sonno') { renderSonno();
-                aggiornaStatisticheSonno(); }
-            if (tabId === 'promemoria') { renderPromemoria(); }
+            if (tabId === 'impostazioni') { aggiornaImpostazioni(); }
             if (tabId === 'appuntamenti') {
                 if (!selectedDate || !isDateInMonth(selectedDate, currentMonth, currentYear)) {
                     selectedDate = getLocalDateString(new Date(currentYear, currentMonth, 1));
@@ -2524,289 +2483,16 @@
         }
 
         // ================================================================
-        // 13. WIDGET HOME PERSONALIZZABILE
+        // FOTOCAMERA (stessa identica)
         // ================================================================
-        function toggleWidget(widgetId) {
-            widgetStati[widgetId] = !widgetStati[widgetId];
-            localStorage.setItem('widgetStati', JSON.stringify(widgetStati));
-            const el = document.getElementById('widget' + widgetId.charAt(0).toUpperCase() + widgetId.slice(1));
-            if (el) el.classList.toggle('visible', widgetStati[widgetId]);
-            document.querySelectorAll('.widget-option').forEach(opt => {
-                if (opt.dataset.widget === widgetId) {
-                    opt.classList.toggle('active', widgetStati[widgetId]);
-                }
-            });
-        }
+        function switchTabBottom(tabId) {
+    switchTab(tabId);
+    document.querySelectorAll('.bottom-nav-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.tab === tabId);
+    });
+}
 
-        function resetWidgets() {
-            widgetStati = { stats: true, chart: true, tip: true, badge: true };
-            localStorage.setItem('widgetStati', JSON.stringify(widgetStati));
-            Object.keys(widgetStati).forEach(id => {
-                const el = document.getElementById('widget' + id.charAt(0).toUpperCase() + id.slice(1));
-                if (el) el.classList.toggle('visible', widgetStati[id]);
-                document.querySelectorAll('.widget-option').forEach(opt => {
-                    if (opt.dataset.widget === id) opt.classList.toggle('active', widgetStati[id]);
-                });
-            });
-            closeSettingsModal();
-        }
-
-        // ================================================================
-        // 14. IMPOSTAZIONI MODAL
-        // ================================================================
-        function openSettingsModal(section) {
-            const modal = document.getElementById('settingsModal');
-            const title = document.getElementById('settingsModalTitle');
-            const desc = document.getElementById('settingsModalDesc');
-            const content = document.getElementById('settingsModalContent');
-
-            modal.classList.add('active');
-
-            switch (section) {
-                case 'profilo':
-                    title.textContent = t('profileLabel');
-                    desc.textContent = t('profileSub');
-                    content.innerHTML = `
-                            <div class="settings-item-detail">
-                                <span class="label">${t('profileLabel')}</span>
-                                <input type="text" id="settingsNome" value="${userProfile?.nome||''}" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">Sesso</span>
-                                <select id="settingsSesso" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
-                                    <option ${userProfile?.sesso==='Maschio'?'selected':''}>Maschio</option>
-                                    <option ${userProfile?.sesso==='Femmina'?'selected':''}>Femmina</option>
-                                    <option ${userProfile?.sesso==='Altro'?'selected':''}>Altro</option>
-                                </select>
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">Data di nascita</span>
-                                <input type="date" id="settingsNascita" value="${userProfile?.nascita||''}" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">PIN</span>
-                                <div style="display:flex;align-items:center;gap:10px;">
-                                    <input type="password" id="settingsPin" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="****" value="${pinSalvato!=='1234'?pinSalvato:''}" style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);text-align:center;">
-                                    <div class="toggle-switch ${pinAbilitato?'active':''}" id="pinToggle" onclick="togglePIN()"></div>
-                                </div>
-                                <span style="font-size:11px;color:var(--text-secondary);">${pinAbilitato?t('pinEnabled'):t('pinDisabled')}</span>
-                            </div>
-                            <button class="btn btn-success btn-sm" style="margin-top:8px;width:auto;" onclick="salvaImpostazioniProfilo()">💾 ${t('saveBtn')}</button>
-                        `;
-                    break;
-
-                case 'preferenze':
-                    title.textContent = t('preferencesLabel');
-                    desc.textContent = t('preferencesSub');
-                    content.innerHTML = `
-                            <div class="settings-item-detail">
-                                <span class="label">${t('changeLanguage')}</span>
-                                <div class="lang-selector">
-                                    <button class="lang-btn ${lingua==='it'?'active':''}" data-lang="it" onclick="changeLanguage('it')">${t('italiano')}</button>
-                                    <button class="lang-btn ${lingua==='en'?'active':''}" data-lang="en" onclick="changeLanguage('en')">${t('english')}</button>
-                                </div>
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">${t('preferencesLabel')}</span>
-                                <div class="toggle-switch ${darkMode?'active':''}" id="darkToggleSwitch" onclick="toggleDarkMode(); closeSettingsModal(); setTimeout(()=>openSettingsModal('preferenze'),100);"></div>
-                                <span style="font-size:11px;color:var(--text-secondary);">${darkMode?'🌙 Scuro':'☀️ Chiaro'}</span>
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">Notifiche</span>
-                                <div class="toggle-switch ${notificheAbilitate?'active':''}" id="notifToggle" onclick="toggleNotifiche(); closeSettingsModal(); setTimeout(()=>openSettingsModal('preferenze'),100);"></div>
-                                <span style="font-size:11px;color:var(--text-secondary);">${notificheAbilitate?'✅ Attive':'❌ Disattive'}</span>
-                            </div>
-                        `;
-                    break;
-
-                case 'backup':
-                    title.textContent = t('backupLabel');
-                    desc.textContent = t('backupSub');
-                    content.innerHTML = `
-                            <div class="settings-item-detail">
-                                <span class="label">Server URL</span>
-                                <input type="url" id="webdavUrl" value="${webdavUrl}" placeholder="https://..." style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">Username</span>
-                                <input type="text" id="webdavUser" value="${webdavUser}" placeholder="utente" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">Password</span>
-                                <input type="password" id="webdavPass" value="${webdavPass}" placeholder="••••••••" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">${t('autoBackup')}</span>
-                                <div class="toggle-switch ${backupAutomatico?'active':''}" id="autoBackupToggle" onclick="toggleBackupAutomatico()"></div>
-                                <span style="font-size:11px;color:var(--text-secondary);">${backupAutomatico?'✅ '+t('autoBackupDesc'):'❌ '+t('disablePin')}</span>
-                            </div>
-                            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
-                                <button class="btn-success btn-sm" onclick="webdavSaveConfig();webdavBackup();">${t('backupNow')}</button>
-                                <button class="btn-outline btn-sm" onclick="webdavSaveConfig();webdavRestore();">${t('restoreNow')}</button>
-                                <button class="btn-outline btn-sm" onclick="webdavSaveConfig();webdavTest();">${t('testConnection')}</button>
-                                <span id="webdavStatus" class="backup-status ${webdavUrl?'ok':'wait'}">${webdavUrl?t('webdavConfigured'):t('webdavNotConfigured')}</span>
-                            </div>
-                        `;
-                    break;
-
-                case 'privacy':
-                    title.textContent = t('privacyLabel');
-                    desc.textContent = t('privacySub');
-                    content.innerHTML = `
-                            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
-                                <button class="btn-outline btn-sm" onclick="esportaDatiCompletiJSON()">${t('exportJson')}</button>
-                                <button class="btn-outline btn-sm" onclick="esportaDatiCompletiCSV()">${t('exportCsv')}</button>
-                                <button class="btn-danger btn-sm" onclick="cancellaTuttiIDati()">${t('deleteAll')}</button>
-                            </div>
-                            <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-                                <button class="btn-outline btn-sm" onclick="mostraTermini()">📄 ${t('termsTitle')}</button>
-                                <span style="font-size:11px;color:var(--text-secondary);align-self:center;">${t('gdprStatus')}: <span id="gdprStatus">${gdprConsent?'✅ Accettato':'❌ Non accettato'}</span></span>
-                                <button class="btn-outline btn-sm" style="padding:2px 8px;font-size:10px;" onclick="revocaConsensoGDPR()">${t('revokeConsent')}</button>
-                            </div>
-                            <p style="font-size:12px;color:var(--text-secondary);margin-top:6px;">${t('dataSize')}: <span id="datiSalvatiInfo">${(JSON.stringify(localStorage).length/1024).toFixed(1)} KB</span></p>
-                        `;
-                    break;
-
-                case 'widget':
-                    title.textContent = t('widgetLabel');
-                    desc.textContent = t('widgetSub');
-                    content.innerHTML = `
-                            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">Mostra/nascondi i widget nella Home:</p>
-                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                                <button class="btn-outline btn-sm ${widgetStati.stats?'active':''}" onclick="toggleWidget('stats');closeSettingsModal();setTimeout(()=>openSettingsModal('widget'),100);">📊 Statistiche</button>
-                                <button class="btn-outline btn-sm ${widgetStati.chart?'active':''}" onclick="toggleWidget('chart');closeSettingsModal();setTimeout(()=>openSettingsModal('widget'),100);">📈 Grafico</button>
-                                <button class="btn-outline btn-sm ${widgetStati.tip?'active':''}" onclick="toggleWidget('tip');closeSettingsModal();setTimeout(()=>openSettingsModal('widget'),100);">💡 Consiglio</button>
-                                <button class="btn-outline btn-sm ${widgetStati.badge?'active':''}" onclick="toggleWidget('badge');closeSettingsModal();setTimeout(()=>openSettingsModal('widget'),100);">🏅 Badge</button>
-                            </div>
-                            <button class="btn btn-sm" style="margin-top:10px;width:auto;" onclick="resetWidgets()">🔄 ${t('resetWidgets')}</button>
-                        `;
-                    break;
-
-                case 'info':
-                    title.textContent = t('infoLabel');
-                    desc.textContent = t('infoSub');
-                    content.innerHTML = `
-                            <div class="settings-item-detail">
-                                <span class="label">${t('version')}</span>
-                                <span style="color:var(--text-secondary);">v3.1 (PWA+Cloud)</span>
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">${t('drugCount')}</span>
-                                <span style="color:var(--text-secondary);">${Object.keys(getFullDrugDB()).length}</span>
-                            </div>
-                            <div class="settings-item-detail">
-                                <span class="label">${t('dataSize')}</span>
-                                <span style="color:var(--text-secondary);" id="datiSalvatiInfo2">${(JSON.stringify(localStorage).length/1024).toFixed(1)} KB</span>
-                            </div>
-                            <button class="btn-outline btn-sm" style="margin-top:6px;width:auto;" onclick="aboutApp()">${t('about')}</button>
-                        `;
-                    break;
-
-                default:
-                    title.textContent = t('settingsTitle');
-                    desc.textContent = 'Seleziona una categoria.';
-                    content.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">Scegli una voce dal menu.</p>';
-            }
-        }
-
-        function closeSettingsModal() {
-            document.getElementById('settingsModal').classList.remove('active');
-        }
-
-        // ================================================================
-        // 15. PIN TOGGLE
-        // ================================================================
-        function togglePIN() {
-            pinAbilitato = !pinAbilitato;
-            localStorage.setItem('pinAbilitato', pinAbilitato);
-            const toggle = document.getElementById('pinToggle');
-            if (toggle) toggle.className = 'toggle-switch' + (pinAbilitato ? ' active' : '');
-            if (!pinAbilitato) {
-                localStorage.removeItem('appPin');
-                pinSalvato = '';
-                alert(t('pinDisabled'));
-            } else {
-                const nuovoPin = prompt('Imposta un PIN a 4 cifre:', pinSalvato || '1234');
-                if (nuovoPin && /^\d{4}$/.test(nuovoPin)) {
-                    pinSalvato = nuovoPin;
-                    localStorage.setItem('appPin', pinSalvato);
-                    alert(t('pinChanged'));
-                } else {
-                    alert('PIN non valido (4 cifre).');
-                    pinAbilitato = false;
-                    localStorage.setItem('pinAbilitato', 'false');
-                    if (toggle) toggle.className = 'toggle-switch';
-                }
-            }
-            closeSettingsModal();
-            setTimeout(() => openSettingsModal('profilo'), 100);
-        }
-
-        // ================================================================
-        // 16. BACKUP AUTOMATICO
-        // ================================================================
-        function toggleBackupAutomatico() {
-            backupAutomatico = !backupAutomatico;
-            localStorage.setItem('backupAutomatico', backupAutomatico);
-            const toggle = document.getElementById('autoBackupToggle');
-            if (toggle) toggle.className = 'toggle-switch' + (backupAutomatico ? ' active' : '');
-            if (backupAutomatico) {
-                avviaBackupAutomatico();
-            } else {
-                if (backupIntervalId) clearInterval(backupIntervalId);
-                backupIntervalId = null;
-            }
-            closeSettingsModal();
-            setTimeout(() => openSettingsModal('backup'), 100);
-        }
-
-        function avviaBackupAutomatico() {
-            if (backupIntervalId) clearInterval(backupIntervalId);
-            backupIntervalId = setInterval(() => {
-                if (backupAutomatico && webdavUrl && webdavUser) {
-                    webdavBackupSilent();
-                }
-            }, 12 * 60 * 60 * 1000); // ogni 12 ore
-            // Esegui subito un backup se configurato
-            if (webdavUrl && webdavUser) {
-                setTimeout(webdavBackupSilent, 5000);
-            }
-        }
-
-        function webdavBackupSilent() {
-            const auth = webdavGetAuth();
-            if (!auth.url || !auth.user) return;
-            const data = {
-                profilo: userProfile,
-                parametri,
-                referti,
-                appuntamenti,
-                farmaci,
-                vaccinazioni,
-                sintomi,
-                sonno,
-                promemoria,
-                badge,
-                timestamp: new Date().toISOString()
-            };
-            const json = JSON.stringify(data, null, 2);
-            const filename = `healthapp_auto_backup_${getLocalDateString(new Date())}.json`;
-            const url = auth.url.endsWith('/') ? auth.url + filename : auth.url + '/' + filename;
-            fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Basic ' + btoa(auth.user + ':' + auth.pass),
-                    'Content-Type': 'application/json'
-                },
-                body: json,
-                mode: 'cors'
-            }).catch(() => {});
-        }
-
-        // ================================================================
-        // 17. FOTOCAMERA
-        // ================================================================
-        function apriFotocamera() {
+function apriFotocamera() {
             if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
                 alert('⚠️ HTTPS richiesto.'); return;
             }
@@ -2883,7 +2569,7 @@
         }
 
         // ================================================================
-        // 18. REFERTI
+        // REFERTI (funzioni principali)
         // ================================================================
         function aggiungiReferto() {
             const data = document.getElementById('refData').value,
@@ -2946,8 +2632,7 @@
         function renderReferti() {
             const list = document.getElementById('refertiList');
             if (!referti.length) { list.innerHTML =
-                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">' + t('noData') +
-                    '</div>'; return; }
+                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun referto</div>'; return; }
             list.innerHTML = referti.slice().reverse().map(r => `
                     <div class="list-item" onclick="apriPDF(${r.id})">
                         <div class="info">
@@ -2964,7 +2649,7 @@
         }
 
         // ================================================================
-        // 19. PARAMETRI
+        // PARAMETRI
         // ================================================================
         function aggiungiParametro() {
             const data = document.getElementById('parData').value,
@@ -3021,8 +2706,7 @@
             .timestamp));
             const list = document.getElementById('parametriList');
             if (!filtered.length) { list.innerHTML =
-                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">' + t('noData') +
-                    '</div>'; return; }
+                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessuna misurazione</div>'; return; }
             let html = `<div class="date-group-header">📅 ${formatDateForDisplay(dataSel)} (${filtered.length})</div>`;
             filtered.forEach(p => {
                 html += `
@@ -3039,7 +2723,7 @@
         }
 
         function esportaCSV() {
-            if (!parametri.length) { alert(t('noData')); return; }
+            if (!parametri.length) { alert('Nessun parametro.'); return; }
             let csv = 'Data,Ora,Peso,SpO2,Sistolica,Diastolica,BPM,Glicemia,Temperatura,Acqua,Note\n';
             parametri.forEach(p => { csv +=
                     `${p.data},${p.ora||''},${p.peso||0},${p.spo2||0},${p.sis},${p.dia},${p.bpm||0},${p.glu||0},${p.temp||0},${p.acqua||0},"${p.note||''}"\n`
@@ -3048,12 +2732,12 @@
         }
 
         function esportaJSON() {
-            if (!parametri.length) { alert(t('noData')); return; }
+            if (!parametri.length) { alert('Nessun parametro.'); return; }
             scaricaFile(JSON.stringify(parametri, null, 2), 'application/json', `parametri_${getLocalDateString(new Date())}.json`);
         }
 
         // ================================================================
-        // 20. APPUNTAMENTI
+        // APPUNTAMENTI
         // ================================================================
         function aggiungiAppuntamento() {
             const data = document.getElementById('appData').value,
@@ -3077,6 +2761,7 @@
             renderAppuntamentiDelGiorno(selectedDate);
             document.getElementById('giornoSelezionatoLabel').textContent = formatDateForDisplay(selectedDate);
             aggiornaWidgetAppuntamenti();
+            if (gcToken) sincronizzaGoogleCalendar();
         }
 
         function eliminaAppuntamento(id) {
@@ -3159,8 +2844,7 @@
             const list = document.getElementById('appuntamentiList');
             const apps = appuntamenti.filter(a => a.data === dateStr);
             if (!apps.length) { list.innerHTML =
-                    '<div style="text-align:center;padding:20px;color:var(--text-secondary);">' + t('noData') +
-                    '</div>'; return; }
+                '<div style="text-align:center;padding:20px;color:var(--text-secondary);">Nessun appuntamento</div>'; return; }
             list.innerHTML = apps.map(a => `
                     <div class="list-item" style="border-left-color:${a.fatto?'var(--success)':'#f59e0b'};">
                         <div class="info" style="flex:1;">
@@ -3180,14 +2864,14 @@
         function aggiornaWidgetAppuntamenti() {
             const container = document.getElementById('widgetAppuntamentiList');
             const apps = appuntamenti.filter(a => a.data === todayStrLocal && !a.fatto);
-            if (!apps.length) { container.innerHTML = '<div class="empty-msg">🎉 ' + t('noData') + '</div>'; return; }
+            if (!apps.length) { container.innerHTML = '<div class="empty-msg">Nessun appuntamento oggi 🎉</div>'; return; }
             container.innerHTML = apps.map(a =>
                 `<div class="app-item"><span>${a.titolo}</span><span><span class="time">${a.orario||'--:--'}</span></span></div>`
                 ).join('');
         }
 
         // ================================================================
-        // 21. FARMACI
+        // FARMACI
         // ================================================================
         function riempiListaFarmaci() {
             const full = getFullDrugDB();
@@ -3267,8 +2951,7 @@
         function renderFarmaci() {
             const list = document.getElementById('farmaciList');
             if (!farmaci.length) { list.innerHTML =
-                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">' + t('noData') +
-                    '</div>'; return; }
+                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun farmaco</div>'; return; }
             const full = getFullDrugDB();
             list.innerHTML = farmaci.map(f => {
                 const info = full[f.nome];
@@ -3303,7 +2986,7 @@
         }
 
         // ================================================================
-        // 22. SCANNER FARMACI
+        // SCANNER FARMACI
         // ================================================================
         function apriScannerFarmaci() {
             document.getElementById('scannerModal').classList.add('active');
@@ -3361,7 +3044,7 @@
         }
 
         // ================================================================
-        // 23. VACCINAZIONI
+        // VACCINAZIONI
         // ================================================================
         function aggiungiVaccinazione() {
             const nome = document.getElementById('vaccNome').value.trim(),
@@ -3394,8 +3077,7 @@
         function renderVaccinazioni() {
             const list = document.getElementById('vaccinazioniList');
             if (!vaccinazioni.length) { list.innerHTML =
-                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">' + t('noData') +
-                    '</div>'; return; }
+                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessuna vaccinazione</div>'; return; }
             list.innerHTML = vaccinazioni.slice().reverse().map(v => {
                 const oggi = new Date(),
                     scad = v.scadenza ? new Date(v.scadenza) : null;
@@ -3422,7 +3104,7 @@
         }
 
         // ================================================================
-        // 24. SINTOMI
+        // SINTOMI
         // ================================================================
         function aggiungiSintomo() {
             const data = document.getElementById('symData').value,
@@ -3464,8 +3146,7 @@
         function renderSintomi() {
             const list = document.getElementById('sintomiList');
             if (!sintomi.length) { list.innerHTML =
-                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">' + t('noData') +
-                    '</div>'; return; }
+                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun sintomo</div>'; return; }
             list.innerHTML = sintomi.slice().reverse().map(s => `
                     <div class="list-item">
                         <div class="info">
@@ -3479,177 +3160,7 @@
         }
 
         // ================================================================
-        // 25. SONNO
-        // ================================================================
-        function aggiungiSonno() {
-            const data = document.getElementById('sleepData').value,
-                ore = document.getElementById('sleepOre').value,
-                qualita = document.getElementById('sleepQualita').value,
-                note = document.getElementById('sleepNote').value.trim();
-            if (!data || !ore || !qualita) { alert('Compila tutti i campi.'); return; }
-            sonno.push({ data, ore: parseFloat(ore), qualita: parseInt(qualita), note, id: Date.now() });
-            localStorage.setItem('sonno', JSON.stringify(sonno));
-            document.getElementById('sleepData').value = '';
-            document.getElementById('sleepOre').value = '';
-            document.getElementById('sleepQualita').value = '';
-            document.getElementById('sleepNote').value = '';
-            renderSonno();
-            aggiornaStatisticheSonno();
-        }
-
-        function eliminaSonno(id) {
-            if (!confirm(t('sleepDelete'))) return;
-            sonno = sonno.filter(s => s.id !== id);
-            localStorage.setItem('sonno', JSON.stringify(sonno));
-            renderSonno();
-            aggiornaStatisticheSonno();
-        }
-
-        function renderSonno() {
-            const list = document.getElementById('sonnoList');
-            if (!sonno.length) { list.innerHTML =
-                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">' + t('noData') +
-                    '</div>'; return; }
-            list.innerHTML = sonno.slice().reverse().map(s => `
-                    <div class="list-item">
-                        <div class="info">
-                            <h5>${s.data} – ${s.ore} ore</h5>
-                            <p>Qualità: ${s.qualita}/5 ${s.note?'| '+s.note:''}</p>
-                        </div>
-                        <div class="actions"><button class="btn-icon" onclick="eliminaSonno(${s.id})">✕</button></div>
-                    </div>
-                `).join('');
-        }
-
-        function aggiornaStatisticheSonno() {
-            const ultimi30 = sonno.slice(-30);
-            if (!ultimi30.length) {
-                document.getElementById('sleepMedia').textContent = '--';
-                document.getElementById('sleepQualitaMedia').textContent = '--';
-                document.getElementById('sleepTotale').textContent = '0';
-                return;
-            }
-            const mediaOre = ultimi30.reduce((a, b) => a + b.ore, 0) / ultimi30.length;
-            const mediaQualita = ultimi30.reduce((a, b) => a + b.qualita, 0) / ultimi30.length;
-            document.getElementById('sleepMedia').textContent = mediaOre.toFixed(1);
-            document.getElementById('sleepQualitaMedia').textContent = mediaQualita.toFixed(1);
-            document.getElementById('sleepTotale').textContent = ultimi30.length;
-
-            // Grafico sonno
-            const ctx = document.getElementById('sleepChart').getContext('2d');
-            if (sleepChartInstance) { sleepChartInstance.destroy();
-                sleepChartInstance = null; }
-            const sorted = sonno.slice(-30).sort((a, b) => new Date(a.data) - new Date(b.data));
-            const labels = sorted.map(s => s.data);
-            const dataOre = sorted.map(s => s.ore);
-            const dataQualita = sorted.map(s => s.qualita);
-            sleepChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        { label: 'Ore', data: dataOre, backgroundColor: 'rgba(26,75,122,0.6)', borderColor: '#1a4b7a',
-                            borderWidth: 1 },
-                        { label: 'Qualità', data: dataQualita, backgroundColor: 'rgba(108,92,231,0.6)',
-                            borderColor: '#6c5ce7', borderWidth: 1 }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 9 } } } },
-                    scales: { y: { beginAtZero: true, grid: { color: 'var(--border)' } }, x: { grid: { display: false },
-                            ticks: { maxTicksLimit: 6 } } }
-                }
-            });
-        }
-
-        // ================================================================
-        // 26. PROMEMORIA
-        // ================================================================
-        function aggiungiPromemoria() {
-            const titolo = document.getElementById('remTitolo').value.trim(),
-                orario = document.getElementById('remOrario').value,
-                ripeti = document.getElementById('remRipeti').value,
-                note = document.getElementById('remNote').value.trim();
-            if (!titolo || !orario) { alert('Titolo e orario.'); return; }
-            promemoria.push({ titolo, orario, ripeti, note, id: Date.now(), attivo: true });
-            localStorage.setItem('promemoria', JSON.stringify(promemoria));
-            document.getElementById('remTitolo').value = '';
-            document.getElementById('remOrario').value = '12:00';
-            document.getElementById('remRipeti').value = 'once';
-            document.getElementById('remNote').value = '';
-            renderPromemoria();
-            if (notificheAbilitate && 'Notification' in window && Notification.permission === 'granted') {
-                new Notification('⏰ Promemoria impostato', { body: `${titolo} alle ${orario}` });
-            }
-        }
-
-        function eliminaPromemoria(id) {
-            if (!confirm(t('reminderDelete'))) return;
-            promemoria = promemoria.filter(p => p.id !== id);
-            localStorage.setItem('promemoria', JSON.stringify(promemoria));
-            renderPromemoria();
-        }
-
-        function renderPromemoria() {
-            const list = document.getElementById('promemoriaList');
-            if (!promemoria.length) { list.innerHTML =
-                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">' + t('noData') +
-                    '</div>'; return; }
-            list.innerHTML = promemoria.map(p => `
-                    <div class="reminder-item">
-                        <div class="info">
-                            <h5>${p.titolo}</h5>
-                            <p>🕐 ${p.orario} ${p.ripeti!=='once'?'· '+p.ripeti:''} ${p.note?'| '+p.note:''}</p>
-                        </div>
-                        <div class="actions">
-                            <button class="btn-icon" onclick="eliminaPromemoria(${p.id})">✕</button>
-                        </div>
-                    </div>
-                `).join('');
-        }
-
-        // Controllo promemoria ogni minuto
-        function checkReminders() {
-            if (!notificheAbilitate) return;
-            const now = new Date();
-            const nowTime = now.toTimeString().slice(0, 5);
-            const oggi = getLocalDateString(now);
-            promemoria.forEach(p => {
-                if (p.orario === nowTime && p.attivo) {
-                    let deveNotificare = false;
-                    if (p.ripeti === 'once') {
-                        const key = 'reminder_' + p.id;
-                        if (!localStorage.getItem(key)) {
-                            deveNotificare = true;
-                            localStorage.setItem(key, 'true');
-                        }
-                    } else if (p.ripeti === 'daily') {
-                        const key = 'reminder_daily_' + p.id + '_' + oggi;
-                        if (!localStorage.getItem(key)) {
-                            deveNotificare = true;
-                            localStorage.setItem(key, 'true');
-                        }
-                    } else if (p.ripeti === 'weekly') {
-                        const week = Math.floor(now.getTime() / (7 * 24 * 60 * 60 * 1000));
-                        const key = 'reminder_weekly_' + p.id + '_' + week;
-                        if (!localStorage.getItem(key)) {
-                            deveNotificare = true;
-                            localStorage.setItem(key, 'true');
-                        }
-                    }
-                    if (deveNotificare && 'Notification' in window && Notification.permission === 'granted') {
-                        new Notification('⏰ ' + p.titolo, { body: p.note || 'Promemoria' });
-                    }
-                }
-            });
-        }
-        setInterval(checkReminders, 30000);
-        setTimeout(checkReminders, 5000);
-
-        // ================================================================
-        // 27. BADGE
+        // BADGE
         // ================================================================
         function controllaBadge() {
             let giorniNormali = 0;
@@ -3677,7 +3188,7 @@
         }
 
         // ================================================================
-        // 28. ALLARMI
+        // ALLARMI
         // ================================================================
         function valutaAllarmePressione(sis, dia) {
             if (sis >= 140 || sis < 90 || dia >= 90 || dia < 60) return 'red';
@@ -3708,7 +3219,7 @@
         }
 
         // ================================================================
-        // 29. DASHBOARD E GRAFICO
+        // DASHBOARD E GRAFICO
         // ================================================================
         function aggiornaDashboard() {
             if (userProfile) document.getElementById('greetingName').textContent = userProfile.nome;
@@ -3725,10 +3236,7 @@
             aggiornaWidgetAppuntamenti();
             aggiornaAllarmi();
             controllaBadge();
-            // update sleep stats if visible
-            if (document.getElementById('sonno').classList.contains('active')) {
-                aggiornaStatisticheSonno();
-            }
+            aggiornaImpostazioni();
         }
 
         function aggiornaGraficoLinee() {
@@ -3736,14 +3244,13 @@
             if (chartInstance) { chartInstance.destroy();
                 chartInstance = null; }
             if (!parametri.length) {
-                chartInstance = new Chart(ctx, { type: 'line', data: { labels: [t('noData')], datasets: [{ label: 'Sistolica',
+                chartInstance = new Chart(ctx, { type: 'line', data: { labels: ['Nessun dato'], datasets: [{ label: 'Sistolica',
                             data: [0], borderColor: '#0f4c81', pointBackgroundColor: '#0f4c81' }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
                 return;
             }
             const ultimi = parametri.slice(-30).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            const labels = ultimi.map(p => new Date(p.timestamp).toLocaleDateString(lingua === 'it' ? 'it-IT' : 'en-US') + (
-                p.ora ? ' ' + p.ora : ''));
+            const labels = ultimi.map(p => new Date(p.timestamp).toLocaleDateString('it-IT') + (p.ora ? ' ' + p.ora : ''));
             const sis = ultimi.map(p => p.sis),
                 dia = ultimi.map(p => p.dia);
             const sisColors = ultimi.map(p => { const s = valutaAllarmePressione(p.sis, p.dia); return s === 'red' ?
@@ -3772,7 +3279,7 @@
         }
 
         // ================================================================
-        // 30. CONDIVISIONE AVANZATA
+        // CONDIVISIONE AVANZATA
         // ================================================================
         function generaLinkCondivisioneAvanzato() {
             const datiCompleti = {
@@ -3781,7 +3288,6 @@
                 farmaci: farmaci,
                 vaccinazioni: vaccinazioni,
                 sintomi: sintomi,
-                sonno: sonno.slice(-30),
                 referti: referti.map(r => ({ data: r.data, ospedale: r.ospedale, specialista: r.specialista, note: r
                         .note })),
                 timestamp: new Date().toISOString()
@@ -3823,7 +3329,7 @@
         }
 
         // ================================================================
-        // 31. VISUALIZZAZIONE DATI CONDIVISI
+        // VISUALIZZAZIONE DATI CONDIVISI
         // ================================================================
         (function checkSharedView() {
             const params = new URLSearchParams(window.location.search);
@@ -3954,17 +3460,6 @@
                     `;
             }
 
-            if (dati.sonno && dati.sonno.length) {
-                const ultimoSonno = dati.sonno[dati.sonno.length - 1];
-                html += `
-                        <div style="background:white;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                            <h3 style="font-size:16px;margin-bottom:8px;">😴 Sonno (ultimi 30)</h3>
-                            <p>Ultima notte: ${ultimoSonno.data} – ${ultimoSonno.ore} ore, qualità ${ultimoSonno.qualita}/5</p>
-                            <p style="font-size:12px;color:#7a8aa0;">${dati.sonno.length} registrazioni totali</p>
-                        </div>
-                    `;
-            }
-
             if (dati.referti && dati.referti.length) {
                 html += `
                         <div style="background:white;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
@@ -3991,14 +3486,14 @@
         }
 
         // ================================================================
-        // 32. STAMPA PDF MEDICO
+        // STAMPA PDF MEDICO
         // ================================================================
         function stampaPDFMedico() {
             window.print();
         }
 
         // ================================================================
-        // 33. COPIA LINK
+        // COPIA LINK
         // ================================================================
         function copiaLink() {
             const input = document.getElementById('linkOutput');
@@ -4008,178 +3503,69 @@
         }
 
         // ================================================================
-        // 34. ESPORTA REPORT PDF (FIXATO)
+        // ESPORTA REPORT PDF
         // ================================================================
         function esportaReport() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
-
-            doc.setFontSize(20);
+            doc.setFontSize(18);
             doc.setTextColor(15, 76, 129);
-            doc.text('Report Sanitario', 20, 22);
-            doc.setFontSize(10);
+            doc.text('Report Sanitario', 20, 20);
+            doc.setFontSize(9);
             doc.setTextColor(100, 116, 139);
-            doc.text('Generato il ' + new Date().toLocaleDateString('it-IT'), 20, 30);
-
-            let y = 40;
-
-            // Parametri
-            if (parametri.length > 0) {
-                doc.setFontSize(14);
+            doc.text('Generato il ' + new Date().toLocaleDateString('it-IT'), 20, 28);
+            let y = 38;
+            if (parametri.length) {
+                doc.setFontSize(13);
                 doc.setTextColor(15, 76, 129);
                 doc.text('📊 Parametri', 20, y);
                 y += 6;
                 const headers = [
                     ['Data', 'Ora', 'Pressione', 'BPM', 'SpO₂', 'Temp', 'Acqua']
                 ];
-                const data = parametri.slice(-20).reverse().map(p => [
-                    p.data,
-                    p.ora || '--:--',
-                    `${p.sis}/${p.dia}`,
-                    p.bpm || '-',
-                    p.spo2 ? p.spo2 + '%' : '-',
-                    p.temp ? p.temp + '°C' : '-',
-                    p.acqua || '-'
+                const data = parametri.slice(-10).reverse().map(p => [
+                    p.data, p.ora || '--:--', `${p.sis}/${p.dia}`, p.bpm + '', p.spo2 + '%',
+                    p.temp ? p.temp + '°C' : '', p.acqua + ''
                 ]);
-                doc.autoTable({
-                    head: headers,
-                    body: data,
-                    startY: y,
-                    theme: 'striped',
-                    styles: { fontSize: 8, font: 'helvetica' },
-                    headStyles: { fillColor: [15, 76, 129] }
-                });
-                y = doc.lastAutoTable.finalY + 8;
+                doc.autoTable({ head: headers, body: data, startY: y, theme: 'striped', styles: { fontSize: 7 },
+                    headStyles: { fillColor: [15, 76, 129] } });
+                y = doc.lastAutoTable.finalY + 6;
             }
-
-            // Referti
-            if (referti.length > 0) {
-                doc.setFontSize(14);
-                doc.setTextColor(15, 76, 129);
+            if (referti.length) {
+                doc.setFontSize(13);
                 doc.text('📄 Referti', 20, y);
                 y += 6;
                 const headers = [
-                    ['Data', 'Ospedale', 'Specialista', 'Note']
+                    ['Data', 'Ospedale', 'Specialista']
                 ];
-                const data = referti.slice().reverse().map(r => [
-                    r.data,
-                    r.ospedale,
-                    r.specialista || '-',
-                    r.note || '-'
-                ]);
-                doc.autoTable({
-                    head: headers,
-                    body: data,
-                    startY: y,
-                    theme: 'striped',
-                    styles: { fontSize: 7 },
-                    headStyles: { fillColor: [15, 76, 129] }
-                });
-                y = doc.lastAutoTable.finalY + 8;
+                const data = referti.slice().reverse().map(r => [r.data, r.ospedale, r.specialista || '-']);
+                doc.autoTable({ head: headers, body: data, startY: y, theme: 'striped', styles: { fontSize: 7 },
+                    headStyles: { fillColor: [15, 76, 129] } });
+                y = doc.lastAutoTable.finalY + 6;
             }
-
-            // Farmaci
-            if (farmaci.length > 0) {
-                doc.setFontSize(14);
-                doc.setTextColor(15, 76, 129);
+            if (farmaci.length) {
+                doc.setFontSize(13);
                 doc.text('💊 Farmaci', 20, y);
                 y += 6;
                 const headers = [
-                    ['Nome', 'Dosaggio', 'Orario', 'Periodo']
+                    ['Nome', 'Dosaggio', 'Orario']
                 ];
-                const data = farmaci.map(f => [
-                    f.nome,
-                    f.dosaggio,
-                    f.orario,
-                    f.inizio + (f.fine ? ' → ' + f.fine : '')
-                ]);
-                doc.autoTable({
-                    head: headers,
-                    body: data,
-                    startY: y,
-                    theme: 'striped',
-                    styles: { fontSize: 7 },
-                    headStyles: { fillColor: [15, 76, 129] }
-                });
-                y = doc.lastAutoTable.finalY + 8;
+                const data = farmaci.map(f => [f.nome, f.dosaggio, f.orario]);
+                doc.autoTable({ head: headers, body: data, startY: y, theme: 'striped', styles: { fontSize: 7 },
+                    headStyles: { fillColor: [15, 76, 129] } });
+                y = doc.lastAutoTable.finalY + 6;
             }
-
-            // Vaccinazioni
-            if (vaccinazioni.length > 0) {
-                doc.setFontSize(14);
-                doc.setTextColor(15, 76, 129);
+            if (vaccinazioni.length) {
+                doc.setFontSize(13);
                 doc.text('💉 Vaccinazioni', 20, y);
                 y += 6;
                 const headers = [
-                    ['Vaccino', 'Data', 'Scadenza', 'Note']
+                    ['Vaccino', 'Data', 'Scadenza']
                 ];
-                const data = vaccinazioni.slice().reverse().map(v => [
-                    v.nome,
-                    v.data,
-                    v.scadenza || '-',
-                    v.note || '-'
-                ]);
-                doc.autoTable({
-                    head: headers,
-                    body: data,
-                    startY: y,
-                    theme: 'striped',
-                    styles: { fontSize: 7 },
-                    headStyles: { fillColor: [15, 76, 129] }
-                });
-                y = doc.lastAutoTable.finalY + 8;
+                const data = vaccinazioni.slice().reverse().map(v => [v.nome, v.data, v.scadenza || '']);
+                doc.autoTable({ head: headers, body: data, startY: y, theme: 'striped', styles: { fontSize: 7 },
+                    headStyles: { fillColor: [15, 76, 129] } });
             }
-
-            // Sintomi
-            if (sintomi.length > 0) {
-                doc.setFontSize(14);
-                doc.setTextColor(15, 76, 129);
-                doc.text('🤒 Sintomi', 20, y);
-                y += 6;
-                const headers = [
-                    ['Data', 'Tipo', 'Note']
-                ];
-                const data = sintomi.slice().reverse().map(s => [
-                    s.data,
-                    s.tipo,
-                    s.note || '-'
-                ]);
-                doc.autoTable({
-                    head: headers,
-                    body: data,
-                    startY: y,
-                    theme: 'striped',
-                    styles: { fontSize: 7 },
-                    headStyles: { fillColor: [15, 76, 129] }
-                });
-                y = doc.lastAutoTable.finalY + 8;
-            }
-
-            // Sonno
-            if (sonno.length > 0) {
-                doc.setFontSize(14);
-                doc.setTextColor(15, 76, 129);
-                doc.text('😴 Sonno', 20, y);
-                y += 6;
-                const headers = [
-                    ['Data', 'Ore', 'Qualità', 'Note']
-                ];
-                const data = sonno.slice(-20).reverse().map(s => [
-                    s.data,
-                    s.ore.toFixed(1),
-                    s.qualita + '/5',
-                    s.note || '-'
-                ]);
-                doc.autoTable({
-                    head: headers,
-                    body: data,
-                    startY: y,
-                    theme: 'striped',
-                    styles: { fontSize: 7 },
-                    headStyles: { fillColor: [15, 76, 129] }
-                });
-            }
-
             const blob = doc.output('blob');
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -4192,11 +3578,49 @@
         }
 
         // ================================================================
-        // 35. DATI COMPLETI
+        // IMPOSTAZIONI
         // ================================================================
-        function esportaDatiCompletiJSON() {
-            const data = { profilo: userProfile, parametri, referti, appuntamenti, farmaci, vaccinazioni, sintomi, sonno,
-                promemoria, badge, esportato: new Date().toISOString() };
+        function aggiornaImpostazioni() {
+            if (userProfile) {
+                document.getElementById('settingsNome').value = userProfile.nome || '';
+                document.getElementById('settingsSesso').value = userProfile.sesso || 'Maschio';
+                document.getElementById('settingsNascita').value = userProfile.nascita || '';
+                document.getElementById('settingsPin').value = pinSalvato !== '1234' ? pinSalvato : '';
+                // Aggiorna hero
+                const heroName = document.getElementById('settingsHeroName');
+                const heroAvatar = document.getElementById('settingsAvatar');
+                if (heroName) heroName.textContent = userProfile.nome || 'Utente';
+                if (heroAvatar) {
+                    const initial = (userProfile.nome || 'U').charAt(0).toUpperCase();
+                    heroAvatar.textContent = initial;
+                }
+            }
+            // Toggle vecchi
+            const sw = document.getElementById('darkToggleSwitch');
+            if (sw) sw.className = 'toggle-switch' + (darkMode ? ' active' : '');
+            const swN = document.getElementById('notifToggle');
+            if (swN) swN.className = 'toggle-switch' + (notificheAbilitate ? ' active' : '');
+            // Toggle nuovi iOS
+            const sw2 = document.getElementById('darkToggleSwitch2');
+            if (sw2) sw2.className = 'ios-toggle' + (darkMode ? ' active' : '');
+            const swN2 = document.getElementById('notifToggle2');
+            if (swN2) swN2.className = 'ios-toggle' + (notificheAbilitate ? ' active' : '');
+            document.getElementById('gdprStatus').textContent = gdprConsent ? '✅ Accettato' : '❌ Non accettato';
+            document.getElementById('datiSalvatiInfo').textContent = (JSON.stringify(localStorage).length / 1024).toFixed(1) + ' KB';
+            document.getElementById('webdavUrl').value = webdavUrl;
+            document.getElementById('webdavUser').value = webdavUser;
+            document.getElementById('webdavPass').value = webdavPass;
+            const gcStatus = document.getElementById('gcStatusSettings');
+            if (gcToken) {
+                if(gcStatus) { gcStatus.textContent = '✅ Connesso'; gcStatus.className = 'gc-connected'; }
+            } else {
+                if(gcStatus) { gcStatus.textContent = '❌ Disconnesso'; gcStatus.className = 'gc-disconnected'; }
+            }
+        }
+
+function esportaDatiCompletiJSON() {
+            const data = { profilo: userProfile, parametri, referti, appuntamenti, farmaci, vaccinazioni, sintomi, badge,
+                esportato: new Date().toISOString() };
             scaricaFile(JSON.stringify(data, null, 2), 'application/json', `backup_${getLocalDateString(new Date())}.json`);
         }
 
@@ -4211,22 +3635,18 @@
             farmaci.forEach(f => { csv += `Farmaci,${f.inizio},"${f.nome} | ${f.dosaggio} | ${f.orario}"\n`; });
             vaccinazioni.forEach(v => { csv += `Vaccinazioni,${v.data},"${v.nome} | ${v.scadenza||''} | ${v.note||''}"\n`; });
             sintomi.forEach(s => { csv += `Sintomi,${s.data},"${s.tipo} | ${s.note||''}"\n`; });
-            sonno.forEach(s => { csv += `Sonno,${s.data},"${s.ore} ore | Qualità ${s.qualita}/5 | ${s.note||''}"\n`; });
-            promemoria.forEach(p => { csv += `Promemoria,${p.orario},"${p.titolo} | ${p.ripeti} | ${p.note||''}"\n`; });
             scaricaFile(csv, 'text/csv', `dati_${getLocalDateString(new Date())}.csv`);
         }
 
         function cancellaTuttiIDati() {
-            if (!confirm(t('confirmDelete'))) return;
-            if (!confirm(t('confirmDeleteFinal'))) return;
+            if (!confirm('⚠️ Cancellare PERMANENTEMENTE tutti i dati?')) return;
+            if (!confirm('🔴 Conferma finale?')) return;
             localStorage.removeItem('healthParams');
             localStorage.removeItem('healthReports');
             localStorage.removeItem('healthAppointments');
             localStorage.removeItem('farmaci');
             localStorage.removeItem('vaccinazioni');
             localStorage.removeItem('sintomi');
-            localStorage.removeItem('sonno');
-            localStorage.removeItem('promemoria');
             localStorage.removeItem('badge');
             parametri = [];
             referti = [];
@@ -4234,19 +3654,14 @@
             farmaci = [];
             vaccinazioni = [];
             sintomi = [];
-            sonno = [];
-            promemoria = [];
             badge = { cuore: false, acqua: false, spo2: false, referti: false };
             localStorage.setItem('badge', JSON.stringify(badge));
             renderReferti();
             renderFarmaci();
             renderVaccinazioni();
             renderSintomi();
-            renderSonno();
-            renderPromemoria();
             aggiornaDashboard();
-            alert(t('deleteSuccess'));
-            closeSettingsModal();
+            alert('✅ Tutti i dati cancellati.');
         }
 
         function mostraTermini() { document.getElementById('termsModal').classList.add('active'); }
@@ -4261,30 +3676,25 @@
             termsAccepted = false;
             document.getElementById('gdprStatus').textContent = '❌ Non accettato';
             alert('Consenso revocato. Riavvia per riaccettare.');
-            closeSettingsModal();
         }
 
         function aboutApp() {
-            alert('HealthApp v3.1 (PWA+Cloud)\n\n' +
+            alert('HealthApp v3.0 (PWA+Cloud)\n\n' +
                 '• Parametri (pressione, peso, SpO₂, glicemia, temperatura)\n' +
                 '• Referti con PDF\n' +
-                '• Appuntamenti con calendario\n' +
+                '• Appuntamenti con calendario e Google Calendar\n' +
                 '• Farmaci (120+ principi attivi + scanner)\n' +
                 '• Vaccinazioni con scadenze\n' +
                 '• Sintomi con foto\n' +
-                '• Sonno (ore, qualità, grafico)\n' +
-                '• Promemoria personalizzati (una volta, giornalieri, settimanali)\n' +
                 '• Condivisione avanzata (tutti i dati, password, scadenza)\n' +
-                '• Backup WebDAV + automatico (ogni 12 ore)\n' +
-                '• Widget Home personalizzabili\n' +
-                '• Multi-lingua (Italiano/English)\n' +
+                '• Backup WebDAV su cloud\n' +
                 '• PWA (offline, installabile)\n' +
                 '• GDPR compliant\n\n' +
                 'Dati salvati in locale.');
         }
 
         // ================================================================
-        // 36. WEBDAV BACKUP
+        // WEBDAV BACKUP
         // ================================================================
         function webdavSaveConfig() {
             webdavUrl = document.getElementById('webdavUrl').value.trim();
@@ -4312,18 +3722,17 @@
             if (!auth.url || !auth.user) { alert('Configura URL e username.'); return; }
             const status = document.getElementById('webdavStatus');
             status.textContent = '⏳ Test...';
-            status.className = 'backup-status wait';
+            status.className = 'webdav-status wait';
             fetch(auth.url, {
                 method: 'PROPFIND',
                 headers: { 'Authorization': 'Basic ' + btoa(auth.user + ':' + auth.pass) },
                 mode: 'cors'
             }).then(r => {
-                if (r.ok) { status.textContent = t('webdavTestOk');
-                    status.className = 'backup-status ok'; } else { status.textContent = t('webdavTestErr') + ' ' + r
-                        .status;
-                    status.className = 'backup-status err'; }
-            }).catch(e => { status.textContent = t('webdavTestErr') + ' ' + e.message;
-                status.className = 'backup-status err'; });
+                if (r.ok) { status.textContent = '✅ Connesso!';
+                    status.className = 'webdav-status ok'; } else { status.textContent = '❌ Errore ' + r.status;
+                    status.className = 'webdav-status err'; }
+            }).catch(e => { status.textContent = '❌ ' + e.message;
+                status.className = 'webdav-status err'; });
         }
 
         function webdavBackup() {
@@ -4331,7 +3740,7 @@
             if (!auth.url || !auth.user) { alert('Configura WebDAV.'); return; }
             const status = document.getElementById('webdavStatus');
             status.textContent = '⏳ Backup...';
-            status.className = 'backup-status wait';
+            status.className = 'webdav-status wait';
             const data = {
                 profilo: userProfile,
                 parametri,
@@ -4340,8 +3749,6 @@
                 farmaci,
                 vaccinazioni,
                 sintomi,
-                sonno,
-                promemoria,
                 badge,
                 timestamp: new Date().toISOString()
             };
@@ -4357,12 +3764,11 @@
                 body: json,
                 mode: 'cors'
             }).then(r => {
-                if (r.ok) { status.textContent = t('webdavBackupOk');
-                    status.className = 'backup-status ok'; } else { status.textContent = t('webdavBackupErr') +
-                        ' ' + r.status;
-                    status.className = 'backup-status err'; }
-            }).catch(e => { status.textContent = t('webdavBackupErr') + ' ' + e.message;
-                status.className = 'backup-status err'; });
+                if (r.ok) { status.textContent = '✅ Backup completato!';
+                    status.className = 'webdav-status ok'; } else { status.textContent = '❌ Errore ' + r.status;
+                    status.className = 'webdav-status err'; }
+            }).catch(e => { status.textContent = '❌ ' + e.message;
+                status.className = 'webdav-status err'; });
         }
 
         function webdavRestore() {
@@ -4371,11 +3777,11 @@
             if (!confirm('⚠️ Ripristinare i dati dal cloud? Sostituirà i dati locali.')) return;
             const status = document.getElementById('webdavStatus');
             status.textContent = '⏳ Ripristino...';
-            status.className = 'backup-status wait';
+            status.className = 'webdav-status wait';
             const filename = prompt('Nome file da ripristinare (es. healthapp_backup_2026-08-13.json):',
                 `healthapp_backup_${getLocalDateString(new Date())}.json`);
             if (!filename) { status.textContent = '❌ Annullato';
-                status.className = 'backup-status err'; return; }
+                status.className = 'webdav-status err'; return; }
             const url = auth.url.endsWith('/') ? auth.url + filename : auth.url + '/' + filename;
             fetch(url, {
                 method: 'GET',
@@ -4391,8 +3797,6 @@
                 if (data.farmaci) farmaci = data.farmaci;
                 if (data.vaccinazioni) vaccinazioni = data.vaccinazioni;
                 if (data.sintomi) sintomi = data.sintomi;
-                if (data.sonno) sonno = data.sonno;
-                if (data.promemoria) promemoria = data.promemoria;
                 if (data.badge) badge = data.badge;
                 if (data.profilo) { userProfile = data.profilo;
                     localStorage.setItem('userProfile', JSON.stringify(userProfile));
@@ -4403,25 +3807,102 @@
                 localStorage.setItem('farmaci', JSON.stringify(farmaci));
                 localStorage.setItem('vaccinazioni', JSON.stringify(vaccinazioni));
                 localStorage.setItem('sintomi', JSON.stringify(sintomi));
-                localStorage.setItem('sonno', JSON.stringify(sonno));
-                localStorage.setItem('promemoria', JSON.stringify(promemoria));
                 localStorage.setItem('badge', JSON.stringify(badge));
                 renderReferti();
                 renderFarmaci();
                 renderVaccinazioni();
                 renderSintomi();
-                renderSonno();
-                renderPromemoria();
                 aggiornaDashboard();
-                status.textContent = t('webdavRestoreOk');
-                status.className = 'backup-status ok';
-                alert(t('webdavRestoreOk'));
-            }).catch(e => { status.textContent = t('webdavRestoreErr') + ' ' + e.message;
-                status.className = 'backup-status err'; });
+                status.textContent = '✅ Ripristino completato!';
+                status.className = 'webdav-status ok';
+                alert('✅ Dati ripristinati!');
+            }).catch(e => { status.textContent = '❌ ' + e.message;
+                status.className = 'webdav-status err'; });
         }
 
         // ================================================================
-        // 37. SERVICE WORKER
+        // GOOGLE CALENDAR
+        // ================================================================
+        let gcClient = null;
+
+        function connettiGoogleCalendar() {
+            if (typeof gapi === 'undefined') { alert('Google API non caricata.'); return; }
+            const clientId = '1052442839315-7lqnfjrl49jcrlvo5tfc1jnlt9qm1b3p.apps.googleusercontent.com';
+            const apiKey = 'AIzaSyBmJdPxCOTW29O4hRrOePNYn9MxxWH-pOQ';
+            const scope = 'https://www.googleapis.com/auth/calendar.events';
+
+            gapi.load('client:auth2', function() {
+                gapi.auth2.init({
+                    client_id: clientId,
+                    scope: scope
+                }).then(() => {
+                    const authInstance = gapi.auth2.getAuthInstance();
+                    authInstance.signIn().then(() => {
+                        const token = authInstance.currentUser.get().getAuthResponse().access_token;
+                        gcToken = token;
+                        localStorage.setItem('gcToken', token);
+                        alert('✅ Connesso!');
+                        aggiornaImpostazioni();
+                        sincronizzaGoogleCalendar();
+                    }, () => { alert('❌ Login annullato.'); });
+                }, () => { alert('❌ Errore inizializzazione.'); });
+            });
+        }
+
+        function disconnettiGoogleCalendar() {
+            if (!confirm('Disconnettere?')) return;
+            if (gapi && gapi.auth2) { try { gapi.auth2.getAuthInstance().signOut(); } catch (e) {} }
+            gcToken = null;
+            localStorage.removeItem('gcToken');
+            aggiornaImpostazioni();
+            alert('✅ Disconnesso.');
+        }
+
+        function sincronizzaGoogleCalendar() {
+            if (!gcToken) { alert('Connetti prima Google Calendar.'); return; }
+            const status = document.getElementById('gcStatus');
+            status.textContent = '⏳ Sincronizzazione...';
+            const now = new Date();
+            const events = appuntamenti.filter(a => new Date(a.data + 'T' + (a.orario || '00:00')) >= now);
+            if (!events.length) { status.textContent = '✅ Nessun appuntamento da sincronizzare.';
+                document.getElementById('gcStatusSettings').textContent = '✅ Connesso'; return; }
+            let syncCount = 0;
+            const total = events.length;
+            events.forEach((app, idx) => {
+                const dt = new Date(app.data + 'T' + (app.orario || '00:00'));
+                const endDt = new Date(dt.getTime() + 60 * 60 * 1000);
+                const eventData = {
+                    'summary': app.titolo,
+                    'description': app.note || 'Appuntamento da HealthApp',
+                    'start': { 'dateTime': dt.toISOString(), 'timeZone': Intl.DateTimeFormat().resolvedOptions()
+                            .timeZone },
+                    'end': { 'dateTime': endDt.toISOString(), 'timeZone': Intl.DateTimeFormat().resolvedOptions()
+                            .timeZone }
+                };
+                fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + gcToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(eventData)
+                }).then(res => {
+                    if (res.ok) syncCount++;
+                    if (idx === total - 1) {
+                        status.textContent = `✅ Sincronizzati ${syncCount}/${total} eventi.`;
+                        document.getElementById('gcStatusSettings').textContent = '✅ Connesso';
+                        document.getElementById('gcStatusSettings').className = 'gc-connected';
+                    }
+                }).catch(() => {
+                    if (idx === total - 1) {
+                        status.textContent = `⚠️ Sincronizzati ${syncCount}/${total} eventi.`;
+                    }
+                });
+            });
+        }
+
+        // ================================================================
+        // SERVICE WORKER
         // ================================================================
         function registraServiceWorker() {
             if ('serviceWorker' in navigator) {
@@ -4435,7 +3916,9 @@
                                         'https://cdn.jsdelivr.net/npm/chart.js',
                                         'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
                                         'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js',
-                                        'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js'
+                                        'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js',
+                                        'https://accounts.google.com/gsi/client',
+                                        'https://apis.google.com/js/api.js'
                                     ]);
                                 })
                             );
@@ -4466,39 +3949,21 @@
         }
 
         // ================================================================
-        // 38. AVVIO APP
+        // AVVIO APP
         // ================================================================
         function avviaApp() {
             if (darkMode) document.documentElement.setAttribute('data-theme', 'dark');
             document.getElementById('darkToggle').textContent = darkMode ? '☀️' : '🌙';
-            applyLanguage();
             aggiornaHeader();
-
-            // Widget home stati
-            const savedWidgets = JSON.parse(localStorage.getItem('widgetStati'));
-            if (savedWidgets) {
-                widgetStati = savedWidgets;
-                Object.keys(widgetStati).forEach(id => {
-                    const el = document.getElementById('widget' + id.charAt(0).toUpperCase() + id.slice(1));
-                    if (el) el.classList.toggle('visible', widgetStati[id]);
-                    document.querySelectorAll('.widget-option').forEach(opt => {
-                        if (opt.dataset.widget === id) opt.classList.toggle('active', widgetStati[id]);
-                    });
-                });
-            }
-
             if (today.getMonth() === currentMonth && today.getFullYear() === currentYear) {
                 selectedDate = todayStrLocal;
             } else {
                 selectedDate = getLocalDateString(new Date(currentYear, currentMonth, 1));
             }
-
             renderReferti();
             renderFarmaci();
             renderVaccinazioni();
             renderSintomi();
-            renderSonno();
-            renderPromemoria();
             riempiListaFarmaci();
             aggiornaDashboard();
             renderCalendario();
@@ -4513,13 +3978,9 @@
             document.getElementById('farmInizio').valueAsDate = new Date();
             document.getElementById('symData').valueAsDate = new Date();
             document.getElementById('vaccData').valueAsDate = new Date();
-            document.getElementById('sleepData').valueAsDate = new Date();
-
             if (notificheAbilitate && 'Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();
             }
-
-            // Promemoria farmaci (esistente)
             setInterval(() => {
                 if (!notificheAbilitate) return;
                 const now = new Date(),
@@ -4534,8 +3995,6 @@
                     }
                 });
             }, 60000);
-
-            // Scadenze vaccini
             setInterval(() => {
                 if (!notificheAbilitate) return;
                 const oggi = new Date();
@@ -4548,20 +4007,18 @@
                     }
                 });
             }, 43200000);
-
             webdavUrl = localStorage.getItem('webdavUrl') || '';
             webdavUser = localStorage.getItem('webdavUser') || '';
             webdavPass = localStorage.getItem('webdavPass') || '';
-            backupAutomatico = localStorage.getItem('backupAutomatico') === 'true';
-            if (backupAutomatico) avviaBackupAutomatico();
-
+            gcToken = localStorage.getItem('gcToken') || null;
             registraServiceWorker();
-            console.log('✅ HealthApp v3.1 avviata!');
+            console.log('✅ HealthApp v3.0 avviata!');
             console.log('💊 Farmaci:', Object.keys(getFullDrugDB()).length);
             console.log('🔐 PIN:', pinSalvato);
             console.log('☁️ WebDAV:', webdavUrl ? 'configurato' : 'non configurato');
-            console.log('🌍 Lingua:', lingua);
+            console.log('📅 Google Calendar:', gcToken ? 'connesso' : 'disconnesso');
 
+            // Mostra banner installazione PWA
             if (window.navigator && window.navigator.standalone !== true && !window.matchMedia('(display-mode: standalone)')
                 .matches) {
                 const banner = document.getElementById('installBanner');
@@ -4569,6 +4026,9 @@
             }
         }
 
+        // ================================================================
+        // INSTALLA PWA
+        // ================================================================
         function installaPWA() {
             if (window.deferredPrompt) {
                 window.deferredPrompt.prompt();
@@ -4581,11 +4041,14 @@
         }
 
         // ================================================================
-        // 39. INIT
+        // INIT
         // ================================================================
         initOnboarding();
         console.log('✅ App pronta!');
 
+        // ================================================================
+        // PWA install banner handler
+        // ================================================================
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             window.deferredPrompt = e;

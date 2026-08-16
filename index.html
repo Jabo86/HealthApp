@@ -193,7 +193,7 @@
             }
         }
 
-        /* ===== HOME GRID (con emoji) ===== */
+        /* ===== HOME GRID ===== */
         .home-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -232,15 +232,6 @@
             font-weight: 600;
             color: var(--text);
             margin-top: 4px;
-        }
-        .home-grid .home-item .badge-count {
-            font-size: 9px;
-            background: var(--danger);
-            color: white;
-            padding: 1px 8px;
-            border-radius: 12px;
-            margin-top: 2px;
-            font-weight: 600;
         }
         /* ===== CARD ===== */
         .card {
@@ -1382,6 +1373,87 @@
             min-width: 80px;
         }
 
+        /* ===== SLEEP STATS ===== */
+        .sleep-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .sleep-stat {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 10px 6px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .sleep-stat .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .sleep-stat .label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* ===== LINGUA SELECTOR ===== */
+        .lang-selector {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .lang-btn {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text);
+            font-family: var(--font);
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+        .lang-btn:hover {
+            border-color: var(--primary);
+        }
+
+        /* ===== REMINDER ITEM ===== */
+        .reminder-item {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--accent);
+        }
+        .reminder-item .info h5 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .reminder-item .info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        .reminder-item .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
         /* ===== TABLET LAYOUT ===== */
         @media (min-width: 768px) {
             .app-container {
@@ -1451,8 +1523,8 @@
         <div class="modal-box">
             <div class="onboarding-logo">🏥</div>
             <div class="onboarding-title">HealthApp</div>
-            <div class="onboarding-sub">Il tuo diario sanitario personale</div>
-            <div class="terms-text">
+            <div class="onboarding-sub" data-i18n="onboarding_sub">Il tuo diario sanitario personale</div>
+            <div class="terms-text" data-i18n="terms_text">
                 <strong>Termini e Condizioni</strong><br>
                 L'app è fornita "così com'è". I dati sono salvati in locale.<br><br>
                 <strong>GDPR</strong><br>
@@ -1462,13 +1534,13 @@
             </div>
             <div class="checkbox-group">
                 <input type="checkbox" id="termsCheck1">
-                <label for="termsCheck1">Accetto i <strong>Termini</strong></label>
+                <label for="termsCheck1" data-i18n="terms_check1">Accetto i <strong>Termini</strong></label>
             </div>
             <div class="checkbox-group">
                 <input type="checkbox" id="termsCheck2">
-                <label for="termsCheck2">Acconsento al trattamento dati (<strong>GDPR</strong>)</label>
+                <label for="termsCheck2" data-i18n="terms_check2">Acconsento al trattamento dati (<strong>GDPR</strong>)</label>
             </div>
-            <button class="btn btn-success" id="acceptTermsBtn" disabled style="opacity:0.6;">Accetta e continua</button>
+            <button class="btn btn-success" id="acceptTermsBtn" data-i18n="accept_continue">Accetta e continua</button>
         </div>
     </div>
 
@@ -1476,12 +1548,12 @@
     <div class="modal-overlay" id="pinModal">
         <div class="modal-box" style="text-align:center;">
             <h2>🔒 PIN</h2>
-            <p>Inserisci il codice a 4 cifre.</p>
+            <p data-i18n="pin_desc">Inserisci il codice a 4 cifre.</p>
             <div class="input-group">
                 <input type="password" id="pinInput" class="pin-input" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="****">
             </div>
-            <button class="btn btn-success" onclick="verificaPIN()">🔓 Sblocca</button>
-            <p style="margin-top:8px;font-size:11px;color:var(--text-secondary);">PIN predefinito: <strong>1234</strong></p>
+            <button class="btn btn-success" onclick="verificaPIN()" data-i18n="unlock">🔓 Sblocca</button>
+            <p style="margin-top:8px;font-size:11px;color:var(--text-secondary);" data-i18n="pin_default">PIN predefinito: <strong>1234</strong></p>
         </div>
     </div>
 
@@ -1511,41 +1583,41 @@
             <!-- HOME -->
             <div id="home" class="screen active">
                 <div class="install-banner" id="installBanner" style="display:none;">
-                    <span>📲 Installa HealthApp</span>
-                    <button class="btn" onclick="installaPWA()">Installa</button>
+                    <span data-i18n="install_app">📲 Installa HealthApp</span>
+                    <button class="btn" onclick="installaPWA()" data-i18n="install">Installa</button>
                 </div>
 
-                <div class="greeting">Ciao, <span id="greetingName">Utente</span> 👋</div>
+                <div class="greeting"><span data-i18n="hello">Ciao</span>, <span id="greetingName">Utente</span> 👋</div>
                 <div class="sub-greeting">
-                    <span>Oggi, <span id="dataOggi"></span></span>
-                    <button class="btn-outline btn-sm" onclick="esportaReport()">📄 PDF</button>
+                    <span><span data-i18n="today">Oggi</span>, <span id="dataOggi"></span></span>
+                    <button class="btn-outline btn-sm" onclick="esportaReport()" data-i18n="pdf_export">📄 PDF</button>
                 </div>
 
                 <div class="daily-appointments-widget">
-                    <div class="widget-title">📅 Appuntamenti oggi</div>
+                    <div class="widget-title" data-i18n="appointments_today">📅 Appuntamenti oggi</div>
                     <div id="widgetAppuntamentiList">Caricamento...</div>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="value" id="sTotReferti">0</div><div class="label">Referti</div></div>
-                    <div class="stat-card"><div class="value" id="sUltimaPress">--/--</div><div class="label">Pressione</div><div class="alert-badge" id="alertPressione" style="display:none;">🟢</div></div>
+                    <div class="stat-card"><div class="value" id="sTotReferti">0</div><div class="label" data-i18n="reports">Referti</div></div>
+                    <div class="stat-card"><div class="value" id="sUltimaPress">--/--</div><div class="label" data-i18n="pressure">Pressione</div><div class="alert-badge" id="alertPressione" style="display:none;">🟢</div></div>
                     <div class="stat-card"><div class="value" id="sSpO2">--%</div><div class="label">SpO₂</div><div class="alert-badge" id="alertSpO2" style="display:none;">🟢</div></div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">📈 Pressione (ultimi 30)</div>
+                    <div class="card-title" data-i18n="pressure_chart">📈 Pressione (ultimi 30)</div>
                     <div class="chart-container"><canvas id="pressioneChart"></canvas></div>
                 </div>
 
                 <div class="card" style="background:var(--bg);border-left:4px solid var(--success);">
                     <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <div><strong>💡 Consiglio</strong><br><span style="font-size:12px;color:var(--text-secondary);">SpO₂ > 95%, 2L acqua/giorno.</span></div>
-                        <span class="tag">Buono</span>
+                        <div><strong data-i18n="tip">💡 Consiglio</strong><br><span style="font-size:12px;color:var(--text-secondary);" data-i18n="tip_text">SpO₂ > 95%, 2L acqua/giorno.</span></div>
+                        <span class="tag" data-i18n="good">Buono</span>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">🏅 Badge</div>
+                    <div class="card-title" data-i18n="badges">🏅 Badge</div>
                     <div class="badge-container" id="badgeContainer">
                         <div class="badge-item locked" id="badgeCuore">❤️ Cuore</div>
                         <div class="badge-item locked" id="badgeAcqua">💧 Idratato</div>
@@ -1554,47 +1626,47 @@
                     </div>
                 </div>
 
-                <!-- GRIGLIA HOME (con EMOJI) -->
+                <!-- GRIGLIA HOME -->
                 <div class="home-grid">
                     <div class="home-item" onclick="switchTab('parametri')">
                         <div class="icon">📋</div>
-                        <div class="label">Parametri</div>
+                        <div class="label" data-i18n="parameters">Parametri</div>
                     </div>
                     <div class="home-item" onclick="switchTab('referti')">
                         <div class="icon">📁</div>
-                        <div class="label">Referti</div>
+                        <div class="label" data-i18n="reports">Referti</div>
                     </div>
                     <div class="home-item" onclick="switchTab('appuntamenti')">
                         <div class="icon">📅</div>
-                        <div class="label">Appuntamenti</div>
+                        <div class="label" data-i18n="appointments">Appuntamenti</div>
                     </div>
                     <div class="home-item" onclick="switchTab('farmaci')">
                         <div class="icon">💊</div>
-                        <div class="label">Farmaci</div>
+                        <div class="label" data-i18n="drugs">Farmaci</div>
                     </div>
                     <div class="home-item" onclick="switchTab('vaccinazioni')">
                         <div class="icon">💉</div>
-                        <div class="label">Vaccinazioni</div>
+                        <div class="label" data-i18n="vaccinations">Vaccinazioni</div>
                     </div>
                     <div class="home-item" onclick="switchTab('sintomi')">
                         <div class="icon">🤒</div>
-                        <div class="label">Sintomi</div>
+                        <div class="label" data-i18n="symptoms">Sintomi</div>
                     </div>
                     <div class="home-item" onclick="switchTab('sonno')">
                         <div class="icon">😴</div>
-                        <div class="label">Sonno</div>
+                        <div class="label" data-i18n="sleep">Sonno</div>
                     </div>
                     <div class="home-item" onclick="switchTab('condividi')">
                         <div class="icon">🔗</div>
-                        <div class="label">Condividi</div>
+                        <div class="label" data-i18n="share">Condividi</div>
                     </div>
                     <div class="home-item" onclick="switchTab('promemoria')">
                         <div class="icon">⏰</div>
-                        <div class="label">Promemoria</div>
+                        <div class="label" data-i18n="reminders">Promemoria</div>
                     </div>
                     <div class="home-item" onclick="switchTab('impostazioni')">
                         <div class="icon">⚙️</div>
-                        <div class="label">Impostazioni</div>
+                        <div class="label" data-i18n="settings">Impostazioni</div>
                     </div>
                 </div>
             </div>
@@ -1603,21 +1675,21 @@
             <div id="referti" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">📁 Nuovo referto</div>
-                    <div class="input-group"><label>Data</label><input type="date" id="refData"></div>
-                    <div class="input-group"><label>Ospedale</label><input type="text" id="refOspedale" placeholder="Ospedale"></div>
-                    <div class="input-group"><label>Specialista</label><input type="text" id="refSpecialista" placeholder="Specialista"></div>
-                    <div class="input-group"><label>Note</label><input type="text" id="refNote" placeholder="Diagnosi..."></div>
+                    <div class="card-title" data-i18n="new_report">📁 Nuovo referto</div>
+                    <div class="input-group"><label data-i18n="date">Data</label><input type="date" id="refData"></div>
+                    <div class="input-group"><label data-i18n="hospital">Ospedale</label><input type="text" id="refOspedale" placeholder="Ospedale"></div>
+                    <div class="input-group"><label data-i18n="specialist">Specialista</label><input type="text" id="refSpecialista" placeholder="Specialista"></div>
+                    <div class="input-group"><label data-i18n="notes">Note</label><input type="text" id="refNote" placeholder="Diagnosi..."></div>
                     <div class="form-row" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-                        <div class="input-group" style="margin-bottom:0;"><label>PDF</label><input type="file" id="refFile" accept="application/pdf"></div>
-                        <div class="input-group" style="margin-bottom:0;"><label>Scatta</label><button class="btn btn-accent btn-sm" onclick="apriFotocamera()">📸</button></div>
+                        <div class="input-group" style="margin-bottom:0;"><label data-i18n="pdf_file">PDF</label><input type="file" id="refFile" accept="application/pdf"></div>
+                        <div class="input-group" style="margin-bottom:0;"><label data-i18n="take_photo">Scatta</label><button class="btn btn-accent btn-sm" onclick="apriFotocamera()">📸</button></div>
                     </div>
-                    <button class="btn btn-success" onclick="aggiungiReferto()">💾 Salva</button>
+                    <button class="btn btn-success" onclick="aggiungiReferto()" data-i18n="save">💾 Salva</button>
                 </div>
-                <div class="section-title">I tuoi referti</div>
+                <div class="section-title" data-i18n="your_reports">I tuoi referti</div>
                 <div id="refertiList"></div>
             </div>
 
@@ -1625,41 +1697,41 @@
             <div id="parametri" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">📋 Nuova rilevazione</div>
-                    <div class="input-group"><label>Data</label><input type="date" id="parData"></div>
-                    <div class="input-group"><label>Ora</label><input type="time" id="parOra" value="12:00"></div>
+                    <div class="card-title" data-i18n="new_measurement">📋 Nuova rilevazione</div>
+                    <div class="input-group"><label data-i18n="date">Data</label><input type="date" id="parData"></div>
+                    <div class="input-group"><label data-i18n="time">Ora</label><input type="time" id="parOra" value="12:00"></div>
                     <div class="form-row">
-                        <div class="input-group"><label>Peso (kg)</label><input type="number" id="parPeso" placeholder="75" step="0.1"></div>
+                        <div class="input-group"><label data-i18n="weight">Peso (kg)</label><input type="number" id="parPeso" placeholder="75" step="0.1"></div>
                         <div class="input-group"><label>SpO₂ (%)</label><input type="number" id="parSpo2" placeholder="98" min="70" max="100"></div>
                     </div>
                     <div class="form-row">
-                        <div class="input-group"><label>Sistolica</label><input type="number" id="parSis" placeholder="120"></div>
-                        <div class="input-group"><label>Diastolica</label><input type="number" id="parDia" placeholder="80"></div>
+                        <div class="input-group"><label data-i18n="systolic">Sistolica</label><input type="number" id="parSis" placeholder="120"></div>
+                        <div class="input-group"><label data-i18n="diastolic">Diastolica</label><input type="number" id="parDia" placeholder="80"></div>
                     </div>
                     <div class="form-row">
-                        <div class="input-group"><label>Battito (bpm)</label><input type="number" id="parBpm" placeholder="70"></div>
-                        <div class="input-group"><label>Glicemia (mg/dL)</label><input type="number" id="parGlu" placeholder="95"></div>
+                        <div class="input-group"><label data-i18n="bpm">Battito (bpm)</label><input type="number" id="parBpm" placeholder="70"></div>
+                        <div class="input-group"><label data-i18n="glycemia">Glicemia (mg/dL)</label><input type="number" id="parGlu" placeholder="95"></div>
                     </div>
                     <div class="form-row">
-                        <div class="input-group"><label>Temperatura (°C)</label><input type="number" id="parTemp" placeholder="36.5" step="0.1"></div>
-                        <div class="input-group"><label>Acqua (bicch.)</label><input type="number" id="parAcqua" placeholder="8" min="0"></div>
+                        <div class="input-group"><label data-i18n="temperature">Temperatura (°C)</label><input type="number" id="parTemp" placeholder="36.5" step="0.1"></div>
+                        <div class="input-group"><label data-i18n="water">Acqua (bicch.)</label><input type="number" id="parAcqua" placeholder="8" min="0"></div>
                     </div>
-                    <div class="input-group"><label>Note</label><input type="text" id="parNote" placeholder="Sintomi..."></div>
-                    <button class="btn btn-success" onclick="aggiungiParametro()">💾 Salva</button>
+                    <div class="input-group"><label data-i18n="notes">Note</label><input type="text" id="parNote" placeholder="Sintomi..."></div>
+                    <button class="btn btn-success" onclick="aggiungiParametro()" data-i18n="save">💾 Salva</button>
                 </div>
                 <div class="card">
-                    <div class="card-title">📅 Storico</div>
+                    <div class="card-title" data-i18n="history">📅 Storico</div>
                     <div class="input-group" style="margin-bottom:0;"><input type="date" id="storicoData"></div>
                     <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
-                        <button class="btn-outline btn-sm" onclick="aggiornaStoricoPerData()">Visualizza</button>
+                        <button class="btn-outline btn-sm" onclick="aggiornaStoricoPerData()" data-i18n="view">Visualizza</button>
                         <button class="btn-outline btn-sm" onclick="esportaCSV()">📊 CSV</button>
                         <button class="btn-outline btn-sm" onclick="esportaJSON()">📦 JSON</button>
                     </div>
                 </div>
-                <div class="section-title">Storico del <span id="storicoDataLabel">--/--/----</span></div>
+                <div class="section-title"><span data-i18n="history_of">Storico del</span> <span id="storicoDataLabel">--/--/----</span></div>
                 <div id="parametriList"></div>
             </div>
 
@@ -1667,10 +1739,10 @@
             <div id="appuntamenti" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">📅 Calendario</div>
+                    <div class="card-title" data-i18n="calendar">📅 Calendario</div>
                     <div class="calendar-header">
                         <button class="calendar-nav-btn" onclick="cambiaMese(-1)">
                             <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
@@ -1683,16 +1755,16 @@
                     <div class="calendar-grid" id="calendarGrid"></div>
                 </div>
                 <div class="card">
-                    <div class="card-title">✏️ Nuovo appuntamento</div>
-                    <div class="input-group"><label>Data</label><input type="date" id="appData"></div>
+                    <div class="card-title" data-i18n="new_appointment">✏️ Nuovo appuntamento</div>
+                    <div class="input-group"><label data-i18n="date">Data</label><input type="date" id="appData"></div>
                     <div class="form-row">
-                        <div class="input-group"><label>Orario</label><input type="time" id="appOrario" value="09:00"></div>
-                        <div class="input-group"><label>Titolo</label><input type="text" id="appTitolo" placeholder="Visita"></div>
+                        <div class="input-group"><label data-i18n="time">Orario</label><input type="time" id="appOrario" value="09:00"></div>
+                        <div class="input-group"><label data-i18n="title">Titolo</label><input type="text" id="appTitolo" placeholder="Visita"></div>
                     </div>
-                    <div class="input-group"><label>Note</label><input type="text" id="appNote" placeholder="Note..."></div>
-                    <button class="btn btn-success" onclick="aggiungiAppuntamento()">💾 Salva</button>
+                    <div class="input-group"><label data-i18n="notes">Note</label><input type="text" id="appNote" placeholder="Note..."></div>
+                    <button class="btn btn-success" onclick="aggiungiAppuntamento()" data-i18n="save">💾 Salva</button>
                 </div>
-                <div class="section-title">Appuntamenti del <span id="giornoSelezionatoLabel">--/--/----</span></div>
+                <div class="section-title"><span data-i18n="appointments_of">Appuntamenti del</span> <span id="giornoSelezionatoLabel">--/--/----</span></div>
                 <div id="appuntamentiList"></div>
             </div>
 
@@ -1700,32 +1772,32 @@
             <div id="farmaci" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">💊 Nuovo farmaco</div>
-                    <div class="input-group"><label>Nome</label>
+                    <div class="card-title" data-i18n="new_drug">💊 Nuovo farmaco</div>
+                    <div class="input-group"><label data-i18n="name">Nome</label>
                         <input type="text" id="farmNome" placeholder="Amlodipina" list="drugList" oninput="cercaFarmaco(this.value)">
                         <datalist id="drugList"></datalist>
                     </div>
                     <div id="drugInfoDisplay"></div>
                     <div class="form-row">
-                        <div class="input-group"><label>Dosaggio</label><input type="text" id="farmDosaggio" placeholder="5 mg"></div>
-                        <div class="input-group"><label>Orario</label><input type="time" id="farmOrario" value="08:00"></div>
+                        <div class="input-group"><label data-i18n="dosage">Dosaggio</label><input type="text" id="farmDosaggio" placeholder="5 mg"></div>
+                        <div class="input-group"><label data-i18n="time">Orario</label><input type="time" id="farmOrario" value="08:00"></div>
                     </div>
                     <div class="form-row">
-                        <div class="input-group"><label>Inizio</label><input type="date" id="farmInizio"></div>
-                        <div class="input-group"><label>Fine</label><input type="date" id="farmFine"></div>
+                        <div class="input-group"><label data-i18n="start">Inizio</label><input type="date" id="farmInizio"></div>
+                        <div class="input-group"><label data-i18n="end">Fine</label><input type="date" id="farmFine"></div>
                     </div>
                     <div style="display:flex;gap:6px;">
-                        <button class="btn btn-success" onclick="aggiungiFarmaco()" style="flex:1;">💾 Salva</button>
-                        <button class="btn btn-accent btn-sm" onclick="apriScannerFarmaci()" style="flex:1;">📷 Scanner</button>
+                        <button class="btn btn-success" onclick="aggiungiFarmaco()" style="flex:1;" data-i18n="save">💾 Salva</button>
+                        <button class="btn btn-accent btn-sm" onclick="apriScannerFarmaci()" style="flex:1;" data-i18n="scanner">📷 Scanner</button>
                     </div>
                 </div>
-                <div class="section-title">I tuoi farmaci</div>
+                <div class="section-title" data-i18n="your_drugs">I tuoi farmaci</div>
                 <div id="farmaciList"></div>
                 <div class="card" style="background:#fef2f2;border-color:#fecaca;display:none;" id="interazioniCard">
-                    <div class="card-title">⚠️ Interazioni</div>
+                    <div class="card-title" data-i18n="interactions">⚠️ Interazioni</div>
                     <div id="interazioniOutput"></div>
                 </div>
             </div>
@@ -1734,19 +1806,19 @@
             <div id="vaccinazioni" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">💉 Nuova vaccinazione</div>
-                    <div class="input-group"><label>Vaccino</label><input type="text" id="vaccNome" placeholder="Pfizer"></div>
+                    <div class="card-title" data-i18n="new_vaccination">💉 Nuova vaccinazione</div>
+                    <div class="input-group"><label data-i18n="vaccine">Vaccino</label><input type="text" id="vaccNome" placeholder="Pfizer"></div>
                     <div class="form-row">
-                        <div class="input-group"><label>Data</label><input type="date" id="vaccData"></div>
-                        <div class="input-group"><label>Scadenza</label><input type="date" id="vaccScadenza"></div>
+                        <div class="input-group"><label data-i18n="date">Data</label><input type="date" id="vaccData"></div>
+                        <div class="input-group"><label data-i18n="expiry">Scadenza</label><input type="date" id="vaccScadenza"></div>
                     </div>
-                    <div class="input-group"><label>Note</label><input type="text" id="vaccNote" placeholder="Lotto..."></div>
-                    <button class="btn btn-success" onclick="aggiungiVaccinazione()">💾 Salva</button>
+                    <div class="input-group"><label data-i18n="notes">Note</label><input type="text" id="vaccNote" placeholder="Lotto..."></div>
+                    <button class="btn btn-success" onclick="aggiungiVaccinazione()" data-i18n="save">💾 Salva</button>
                 </div>
-                <div class="section-title">Le tue vaccinazioni</div>
+                <div class="section-title" data-i18n="your_vaccinations">Le tue vaccinazioni</div>
                 <div id="vaccinazioniList"></div>
             </div>
 
@@ -1754,17 +1826,17 @@
             <div id="sintomi" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">🤒 Nuovo sintomo</div>
-                    <div class="input-group"><label>Data</label><input type="date" id="symData"></div>
-                    <div class="input-group"><label>Tipo</label><input type="text" id="symTipo" placeholder="Eruzione"></div>
-                    <div class="input-group"><label>Note</label><input type="text" id="symNote" placeholder="Dettagli"></div>
-                    <div class="input-group"><label>Foto</label><input type="file" id="symFoto" accept="image/*"></div>
-                    <button class="btn btn-success" onclick="aggiungiSintomo()">💾 Salva</button>
+                    <div class="card-title" data-i18n="new_symptom">🤒 Nuovo sintomo</div>
+                    <div class="input-group"><label data-i18n="date">Data</label><input type="date" id="symData"></div>
+                    <div class="input-group"><label data-i18n="type">Tipo</label><input type="text" id="symTipo" placeholder="Eruzione"></div>
+                    <div class="input-group"><label data-i18n="notes">Note</label><input type="text" id="symNote" placeholder="Dettagli"></div>
+                    <div class="input-group"><label data-i18n="photo">Foto</label><input type="file" id="symFoto" accept="image/*"></div>
+                    <button class="btn btn-success" onclick="aggiungiSintomo()" data-i18n="save">💾 Salva</button>
                 </div>
-                <div class="section-title">Diario sintomi</div>
+                <div class="section-title" data-i18n="symptom_diary">Diario sintomi</div>
                 <div id="sintomiList"></div>
             </div>
 
@@ -1772,28 +1844,28 @@
             <div id="sonno" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">😴 Nuova registrazione sonno</div>
-                    <div class="input-group"><label>Data</label><input type="date" id="sleepData"></div>
+                    <div class="card-title" data-i18n="new_sleep">😴 Nuova registrazione sonno</div>
+                    <div class="input-group"><label data-i18n="date">Data</label><input type="date" id="sleepData"></div>
                     <div class="form-row">
-                        <div class="input-group"><label>Ore di sonno</label><input type="number" id="sleepOre" placeholder="7.5" step="0.5" min="0" max="24"></div>
-                        <div class="input-group"><label>Qualità (1-5)</label><input type="number" id="sleepQualita" placeholder="4" min="1" max="5" step="1"></div>
+                        <div class="input-group"><label data-i18n="hours">Ore di sonno</label><input type="number" id="sleepOre" placeholder="7.5" step="0.5" min="0" max="24"></div>
+                        <div class="input-group"><label data-i18n="quality">Qualità (1-5)</label><input type="number" id="sleepQualita" placeholder="4" min="1" max="5" step="1"></div>
                     </div>
-                    <div class="input-group"><label>Note</label><input type="text" id="sleepNote" placeholder="Sogni, risvegli..."></div>
-                    <button class="btn btn-success" onclick="aggiungiSonno()">💾 Salva</button>
+                    <div class="input-group"><label data-i18n="notes">Note</label><input type="text" id="sleepNote" placeholder="Sogni, risvegli..."></div>
+                    <button class="btn btn-success" onclick="aggiungiSonno()" data-i18n="save">💾 Salva</button>
                 </div>
                 <div class="card">
-                    <div class="card-title">📊 Statistiche sonno (ultimi 30)</div>
+                    <div class="card-title" data-i18n="sleep_stats">📊 Statistiche sonno (ultimi 30)</div>
                     <div class="sleep-stats" id="sleepStats">
-                        <div class="sleep-stat"><div class="value" id="sleepMedia">--</div><div class="label">Media ore</div></div>
-                        <div class="sleep-stat"><div class="value" id="sleepQualitaMedia">--</div><div class="label">Qualità media</div></div>
-                        <div class="sleep-stat"><div class="value" id="sleepTotale">--</div><div class="label">Notti totali</div></div>
+                        <div class="sleep-stat"><div class="value" id="sleepMedia">--</div><div class="label" data-i18n="avg_hours">Media ore</div></div>
+                        <div class="sleep-stat"><div class="value" id="sleepQualitaMedia">--</div><div class="label" data-i18n="avg_quality">Qualità media</div></div>
+                        <div class="sleep-stat"><div class="value" id="sleepTotale">--</div><div class="label" data-i18n="total_nights">Notti totali</div></div>
                     </div>
                     <div class="chart-container" style="height:120px;"><canvas id="sleepChart"></canvas></div>
                 </div>
-                <div class="section-title">Storico sonno</div>
+                <div class="section-title" data-i18n="sleep_history">Storico sonno</div>
                 <div id="sonnoList"></div>
             </div>
 
@@ -1801,25 +1873,25 @@
             <div id="promemoria" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">⏰ Nuovo promemoria</div>
-                    <div class="input-group"><label>Titolo</label><input type="text" id="remTitolo" placeholder="Prendi pasto"></div>
+                    <div class="card-title" data-i18n="new_reminder">⏰ Nuovo promemoria</div>
+                    <div class="input-group"><label data-i18n="title">Titolo</label><input type="text" id="remTitolo" placeholder="Prendi pasto"></div>
                     <div class="form-row">
-                        <div class="input-group"><label>Orario</label><input type="time" id="remOrario" value="12:00"></div>
-                        <div class="input-group"><label>Ripeti</label>
+                        <div class="input-group"><label data-i18n="time">Orario</label><input type="time" id="remOrario" value="12:00"></div>
+                        <div class="input-group"><label data-i18n="repeat">Ripeti</label>
                             <select id="remRipeti">
-                                <option value="once">Una volta</option>
-                                <option value="daily">Giornaliero</option>
-                                <option value="weekly">Settimanale</option>
+                                <option value="once" data-i18n="once">Una volta</option>
+                                <option value="daily" data-i18n="daily">Giornaliero</option>
+                                <option value="weekly" data-i18n="weekly">Settimanale</option>
                             </select>
                         </div>
                     </div>
-                    <div class="input-group"><label>Note</label><input type="text" id="remNote" placeholder="Dettagli..."></div>
-                    <button class="btn btn-success" onclick="aggiungiPromemoria()">💾 Salva</button>
+                    <div class="input-group"><label data-i18n="notes">Note</label><input type="text" id="remNote" placeholder="Dettagli..."></div>
+                    <button class="btn btn-success" onclick="aggiungiPromemoria()" data-i18n="save">💾 Salva</button>
                 </div>
-                <div class="section-title">I tuoi promemoria</div>
+                <div class="section-title" data-i18n="your_reminders">I tuoi promemoria</div>
                 <div id="promemoriaList"></div>
             </div>
 
@@ -1827,53 +1899,53 @@
             <div id="condividi" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
                 <div class="card">
-                    <div class="card-title">🔗 Condividi con il medico</div>
-                    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">Genera un link con tutti i tuoi dati sanitari (parametri, farmaci, vaccinazioni, sintomi, referti).</p>
+                    <div class="card-title" data-i18n="share_with_doctor">🔗 Condividi con il medico</div>
+                    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;" data-i18n="share_desc">Genera un link con tutti i tuoi dati sanitari (parametri, farmaci, vaccinazioni, sintomi, referti).</p>
                     <div class="share-options">
                         <div class="option-row">
-                            <label>Scadenza</label>
+                            <label data-i18n="expiry_label">Scadenza</label>
                             <select id="shareExpiry">
-                                <option value="1">1 giorno</option>
-                                <option value="7" selected>7 giorni</option>
-                                <option value="30">30 giorni</option>
-                                <option value="0">Mai</option>
+                                <option value="1" data-i18n="1day">1 giorno</option>
+                                <option value="7" selected data-i18n="7days">7 giorni</option>
+                                <option value="30" data-i18n="30days">30 giorni</option>
+                                <option value="0" data-i18n="never">Mai</option>
                             </select>
                         </div>
                         <div class="option-row">
-                            <label>Password</label>
+                            <label data-i18n="password">Password</label>
                             <input type="text" id="sharePassword" placeholder="Opzionale" maxlength="20">
                         </div>
                     </div>
-                    <button class="btn btn-success" onclick="generaLinkCondivisioneAvanzato()">🔗 Genera link</button>
+                    <button class="btn btn-success" onclick="generaLinkCondivisioneAvanzato()" data-i18n="generate_link">🔗 Genera link</button>
                     <div id="linkContainer" style="margin-top:14px;display:none;">
                         <div class="qr-container">
                             <div id="qrcode"></div>
                             <input type="text" id="linkOutput" readonly>
                             <div style="display:flex;gap:6px;margin-top:6px;">
-                                <button class="btn-outline btn-sm" onclick="copiaLink()">📋 Copia</button>
-                                <button class="btn-outline btn-sm" onclick="stampaPDFMedico()">🖨️ Stampa PDF</button>
+                                <button class="btn-outline btn-sm" onclick="copiaLink()" data-i18n="copy">📋 Copia</button>
+                                <button class="btn-outline btn-sm" onclick="stampaPDFMedico()" data-i18n="print_pdf">🖨️ Stampa PDF</button>
                             </div>
-                            <p style="font-size:10px;color:var(--text-secondary);margin-top:6px;">Scansiona il QR o copia il link. Il medico vedrà tutti i tuoi dati.</p>
+                            <p style="font-size:10px;color:var(--text-secondary);margin-top:6px;" data-i18n="qr_help">Scansiona il QR o copia il link. Il medico vedrà tutti i tuoi dati.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- IMPOSTAZIONI (con icone SVG professionali) -->
+            <!-- IMPOSTAZIONI -->
             <div id="impostazioni" class="screen">
                 <button class="back-btn" onclick="goToHome()">
                     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    Home
+                    <span data-i18n="home">Home</span>
                 </button>
 
                 <div class="settings-hero">
                     <div class="avatar" id="settingsAvatar">👤</div>
                     <h3 id="settingsHeroName">Utente</h3>
                     <p id="settingsHeroSub">HealthApp Premium</p>
-                    <button class="edit-btn" onclick="document.getElementById('settingsNome').focus()">✏️ Modifica profilo</button>
+                    <button class="edit-btn" onclick="document.getElementById('settingsNome').focus()" data-i18n="edit_profile">✏️ Modifica profilo</button>
                 </div>
 
                 <div class="settings-grid">
@@ -1884,8 +1956,8 @@
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5.3 18.3C6.8 16.5 9.2 15 12 15s5.2 1.5 6.7 3.3"/></svg>
                             </div>
                             <div>
-                                <h4>Profilo</h4>
-                                <p class="subtitle">I tuoi dati personali</p>
+                                <h4 data-i18n="profile">Profilo</h4>
+                                <p class="subtitle" data-i18n="profile_sub">I tuoi dati personali</p>
                             </div>
                         </div>
                         <div class="settings-row">
@@ -1894,7 +1966,7 @@
                                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">Nome</span>
+                                    <span class="label" data-i18n="name">Nome</span>
                                 </div>
                             </div>
                             <input type="text" id="settingsNome" placeholder="Mario Rossi" style="width:140px;text-align:right;">
@@ -1905,11 +1977,11 @@
                                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">Sesso</span>
+                                    <span class="label" data-i18n="gender">Sesso</span>
                                 </div>
                             </div>
                             <select id="settingsSesso">
-                                <option>Maschio</option><option>Femmina</option><option>Altro</option>
+                                <option data-i18n="male">Maschio</option><option data-i18n="female">Femmina</option><option data-i18n="other">Altro</option>
                             </select>
                         </div>
                         <div class="settings-row">
@@ -1918,7 +1990,7 @@
                                     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">Data di nascita</span>
+                                    <span class="label" data-i18n="birthdate">Data di nascita</span>
                                 </div>
                             </div>
                             <input type="date" id="settingsNascita" style="width:auto;">
@@ -1929,16 +2001,35 @@
                                     <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">PIN</span>
-                                    <span class="desc">4 cifre (hashato)</span>
+                                    <span class="label" data-i18n="pin">PIN</span>
+                                    <span class="desc" data-i18n="pin_desc_short">4 cifre (hashato)</span>
                                 </div>
                             </div>
                             <input type="password" id="settingsPin" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="****" style="width:70px;text-align:center;">
                         </div>
-                        <button class="btn btn-success" style="margin-top:8px;" onclick="salvaImpostazioniProfilo()">
+                        <button class="btn btn-success" style="margin-top:8px;" onclick="salvaImpostazioniProfilo()" data-i18n="save_profile">
                             <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                             Salva profilo
                         </button>
+                    </div>
+
+                    <!-- LINGUA -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="icon-box" style="background:#dbeafe;color:#1a4b7a;">
+                                <svg viewBox="0 0 24 24"><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="2" x2="22" y2="22"/><line x1="22" y1="2" x2="2" y2="22"/></svg>
+                            </div>
+                            <div>
+                                <h4 data-i18n="language">Lingua</h4>
+                                <p class="subtitle" data-i18n="language_sub">Seleziona la tua lingua</p>
+                            </div>
+                        </div>
+                        <div class="settings-row" style="justify-content:center;gap:12px;border:none;padding:8px 0;">
+                            <div class="lang-selector">
+                                <button class="lang-btn active" data-lang="it" onclick="setLanguage('it')">🇮🇹 Italiano</button>
+                                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇬🇧 English</button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- ASPETTO -->
@@ -1948,8 +2039,8 @@
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.2 4.2l1.4 1.4"/><path d="M18.4 18.4l1.4 1.4"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.2 19.8l1.4-1.4"/><path d="M18.4 5.6l1.4-1.4"/></svg>
                             </div>
                             <div>
-                                <h4>Aspetto</h4>
-                                <p class="subtitle">Personalizza l'app</p>
+                                <h4 data-i18n="appearance">Aspetto</h4>
+                                <p class="subtitle" data-i18n="appearance_sub">Personalizza l'app</p>
                             </div>
                         </div>
                         <div class="settings-row">
@@ -1958,8 +2049,8 @@
                                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.2 4.2l1.4 1.4"/><path d="M18.4 18.4l1.4 1.4"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.2 19.8l1.4-1.4"/><path d="M18.4 5.6l1.4-1.4"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">Modalità scura</span>
-                                    <span class="desc">Riduce l'affaticamento visivo</span>
+                                    <span class="label" data-i18n="dark_mode">Modalità scura</span>
+                                    <span class="desc" data-i18n="dark_mode_desc">Riduce l'affaticamento visivo</span>
                                 </div>
                             </div>
                             <div class="ios-toggle" id="darkToggleSwitch2" onclick="toggleDarkMode()"></div>
@@ -1970,74 +2061,33 @@
                                     <svg viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8z"/><polyline points="22 9 12 15 2 9"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">Notifiche</span>
-                                    <span class="desc">Promemoria farmaci e vaccini</span>
+                                    <span class="label" data-i18n="notifications">Notifiche</span>
+                                    <span class="desc" data-i18n="notifications_desc">Promemoria farmaci e vaccini</span>
                                 </div>
                             </div>
                             <div class="ios-toggle active" id="notifToggle2" onclick="toggleNotifiche()"></div>
                         </div>
                     </div>
 
-                    <!-- CLOUD BACKUP (WebDAV) -->
+                    <!-- BACKUP LOCALE -->
                     <div class="settings-card">
                         <div class="settings-card-header">
                             <div class="icon-box" style="background:#e0f2fe;color:#0369a1;">
                                 <svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
                             </div>
                             <div>
-                                <h4>Backup Cloud</h4>
-                                <p class="subtitle">WebDAV remoto</p>
+                                <h4 data-i18n="backup">Backup Locale</h4>
+                                <p class="subtitle" data-i18n="backup_sub">Salva e ripristina i tuoi dati</p>
                             </div>
                         </div>
-                        <div class="settings-row">
-                            <div class="row-left">
-                                <div class="row-icon">
-                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                                </div>
-                                <div class="row-text">
-                                    <span class="label">Server URL</span>
-                                </div>
+                        <div class="settings-row" style="flex-direction:column;align-items:stretch;gap:8px;border:none;padding:8px 0;">
+                            <button class="btn btn-success btn-sm" onclick="backupLocale()" data-i18n="backup_download">📥 Scarica backup (JSON)</button>
+                            <div style="display:flex;gap:8px;align-items:center;">
+                                <label style="font-size:13px;font-weight:600;color:var(--text);flex:1;" data-i18n="restore_file">Ripristina da file:</label>
+                                <input type="file" id="restoreFileInput" accept="application/json" style="flex:2;padding:6px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:12px;">
+                                <button class="btn btn-accent btn-sm" onclick="ripristinaBackupLocale()" data-i18n="restore">🔄 Ripristina</button>
                             </div>
-                            <input type="url" id="webdavUrl" placeholder="https://..." style="width:180px;">
-                        </div>
-                        <div class="settings-row">
-                            <div class="row-left">
-                                <div class="row-icon">
-                                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                </div>
-                                <div class="row-text">
-                                    <span class="label">Username</span>
-                                </div>
-                            </div>
-                            <input type="text" id="webdavUser" placeholder="utente" style="width:120px;">
-                        </div>
-                        <div class="settings-row">
-                            <div class="row-left">
-                                <div class="row-icon">
-                                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                </div>
-                                <div class="row-text">
-                                    <span class="label">Password</span>
-                                </div>
-                            </div>
-                            <input type="password" id="webdavPass" placeholder="••••" style="width:120px;">
-                        </div>
-                        <div class="btn-row">
-                            <button class="btn btn-success btn-sm" onclick="webdavBackup()">
-                                <svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><line x1="12" y1="11" x2="12" y2="17"/><polyline points="9 14 12 17 15 14"/></svg>
-                                Backup
-                            </button>
-                            <button class="btn-outline btn-sm" onclick="webdavRestore()">
-                                <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                Ripristina
-                            </button>
-                            <button class="btn-outline btn-sm" onclick="webdavTest()">
-                                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                Test
-                            </button>
-                        </div>
-                        <div style="margin-top:8px;text-align:center;">
-                            <span id="webdavStatus" class="webdav-status wait">Non configurato</span>
+                            <div id="backupStatus" style="text-align:center;font-size:12px;color:var(--text-secondary);"></div>
                         </div>
                     </div>
 
@@ -2048,8 +2098,8 @@
                                 <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
                             </div>
                             <div>
-                                <h4>Privacy & Dati</h4>
-                                <p class="subtitle">GDPR e gestione dati</p>
+                                <h4 data-i18n="privacy">Privacy & Dati</h4>
+                                <p class="subtitle" data-i18n="privacy_sub">GDPR e gestione dati</p>
                             </div>
                         </div>
                         <div class="settings-row">
@@ -2058,31 +2108,19 @@
                                     <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">Consenso GDPR</span>
+                                    <span class="label" data-i18n="gdpr_consent">Consenso GDPR</span>
                                     <span class="desc" id="gdprStatus">✅ Accettato</span>
                                 </div>
                             </div>
-                            <button class="btn-outline btn-sm" onclick="revocaConsensoGDPR()">Revoca</button>
+                            <button class="btn-outline btn-sm" onclick="revocaConsensoGDPR()" data-i18n="revoke">Revoca</button>
                         </div>
                         <div class="btn-row">
-                            <button class="btn-outline btn-sm" onclick="esportaDatiCompletiJSON()">
-                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M12 18v-4"/><path d="M8 16h8"/></svg>
-                                JSON
-                            </button>
-                            <button class="btn-outline btn-sm" onclick="esportaDatiCompletiCSV()">
-                                <svg viewBox="0 0 24 24"><path d="M21 12v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h7"/><polyline points="15 3 21 3 21 9"/><line x1="9" y1="15" x2="15" y2="9"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                                CSV
-                            </button>
-                            <button class="btn-danger btn-sm" onclick="cancellaTuttiIDati()">
-                                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                                Cancella
-                            </button>
+                            <button class="btn-outline btn-sm" onclick="esportaDatiCompletiJSON()" data-i18n="export_json">📦 JSON</button>
+                            <button class="btn-outline btn-sm" onclick="esportaDatiCompletiCSV()" data-i18n="export_csv">📊 CSV</button>
+                            <button class="btn-danger btn-sm" onclick="cancellaTuttiIDati()" data-i18n="delete_all">🗑️ Cancella</button>
                         </div>
                         <div style="margin-top:8px;">
-                            <button class="btn-outline btn-sm" style="width:100%;" onclick="mostraTermini()">
-                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-                                Leggi Termini e Privacy
-                            </button>
+                            <button class="btn-outline btn-sm" style="width:100%;" onclick="mostraTermini()" data-i18n="read_terms">📄 Leggi Termini e Privacy</button>
                         </div>
                     </div>
 
@@ -2093,8 +2131,8 @@
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                             </div>
                             <div>
-                                <h4>Informazioni</h4>
-                                <p class="subtitle">Versione e dettagli app</p>
+                                <h4 data-i18n="info">Informazioni</h4>
+                                <p class="subtitle" data-i18n="info_sub">Versione e dettagli app</p>
                             </div>
                         </div>
                         <div class="settings-row">
@@ -2103,10 +2141,10 @@
                                     <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">Versione</span>
+                                    <span class="label" data-i18n="version">Versione</span>
                                 </div>
                             </div>
-                            <span style="font-size:13px;color:var(--text-secondary);font-weight:600;">v3.1 (Sicura)</span>
+                            <span style="font-size:13px;color:var(--text-secondary);font-weight:600;">v3.2 (Locale)</span>
                         </div>
                         <div class="settings-row">
                             <div class="row-left">
@@ -2114,7 +2152,7 @@
                                     <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9-4-18-3 9H2"/></svg>
                                 </div>
                                 <div class="row-text">
-                                    <span class="label">Dati salvati</span>
+                                    <span class="label" data-i18n="data_saved">Dati salvati</span>
                                 </div>
                             </div>
                             <span style="font-size:13px;color:var(--text-secondary);font-weight:600;" id="datiSalvatiInfo">0 KB</span>
@@ -2126,14 +2164,11 @@
                                 </div>
                                 <div class="row-text">
                                     <span class="label">HealthApp</span>
-                                    <span class="desc">Monitoraggio sanitario</span>
+                                    <span class="desc" data-i18n="app_desc">Monitoraggio sanitario</span>
                                 </div>
                             </div>
                         </div>
-                        <button class="btn-outline btn-sm" style="width:100%;margin-top:4px;" onclick="aboutApp()">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                            Info app
-                        </button>
+                        <button class="btn-outline btn-sm" style="width:100%;margin-top:4px;" onclick="aboutApp()" data-i18n="about">ℹ️ Info app</button>
                     </div>
                 </div>
             </div>
@@ -2143,23 +2178,23 @@
         <nav class="bottom-nav" id="bottomNav">
             <button class="bottom-nav-item active" onclick="switchTabBottom('home')" data-tab="home">
                 <span class="icon">🏠</span>
-                <span>Home</span>
+                <span data-i18n="home">Home</span>
             </button>
             <button class="bottom-nav-item" onclick="switchTabBottom('parametri')" data-tab="parametri">
                 <span class="icon">📋</span>
-                <span>Parametri</span>
+                <span data-i18n="parameters">Parametri</span>
             </button>
             <button class="bottom-nav-item" onclick="switchTabBottom('appuntamenti')" data-tab="appuntamenti">
                 <span class="icon">📅</span>
-                <span>Agenda</span>
+                <span data-i18n="agenda">Agenda</span>
             </button>
             <button class="bottom-nav-item" onclick="switchTabBottom('farmaci')" data-tab="farmaci">
                 <span class="icon">💊</span>
-                <span>Farmaci</span>
+                <span data-i18n="drugs">Farmaci</span>
             </button>
             <button class="bottom-nav-item" onclick="switchTabBottom('impostazioni')" data-tab="impostazioni">
                 <span class="icon">⚙️</span>
-                <span>Impostazioni</span>
+                <span data-i18n="settings">Impostazioni</span>
             </button>
         </nav>
     </div>
@@ -2168,15 +2203,15 @@
     <div class="modal-overlay" id="scannerModal">
         <div class="modal-box">
             <h2>📷 Scanner</h2>
-            <p>Inquadra il codice a barre o inseriscilo.</p>
+            <p data-i18n="scanner_desc">Inquadra il codice a barre o inseriscilo.</p>
             <video id="scannerVideo" autoplay playsinline style="width:100%;border-radius:10px;background:#000;"></video>
             <div class="input-group" style="margin-top:8px;">
-                <label>Codice</label>
+                <label data-i18n="code">Codice</label>
                 <input type="text" id="barcodeInput" placeholder="8012345678901">
             </div>
             <div style="display:flex;gap:6px;">
-                <button class="btn btn-success" onclick="cercaFarmacoPerCodice()" style="flex:1;">🔍 Cerca</button>
-                <button class="btn btn-danger" onclick="chiudiScannerFarmaci()" style="flex:1;">✕</button>
+                <button class="btn btn-success" onclick="cercaFarmacoPerCodice()" style="flex:1;" data-i18n="search">🔍 Cerca</button>
+                <button class="btn btn-danger" onclick="chiudiScannerFarmaci()" style="flex:1;" data-i18n="close">✕</button>
             </div>
             <div id="scannerResult" class="scan-result" style="margin-top:8px;padding:10px;background:var(--bg);border-radius:8px;border:1px solid var(--border);font-size:13px;text-align:center;"></div>
         </div>
@@ -2185,7 +2220,7 @@
     <div class="modal-overlay" id="termsModal">
         <div class="modal-box">
             <h2>📄 Termini e Privacy</h2>
-            <div class="terms-text" style="max-height:300px;height:auto;">
+            <div class="terms-text" style="max-height:300px;height:auto;" data-i18n="terms_full">
                 <strong>Termini e Condizioni</strong><br><br>
                 L'utilizzo di HealthApp è soggetto alle seguenti condizioni:<br>
                 • L'app è fornita "così com'è".<br>
@@ -2200,18 +2235,18 @@
                 • <strong>Conservazione:</strong> Solo sul dispositivo (localStorage).<br>
                 • <strong>Diritti:</strong> Accesso, rettifica, cancellazione, limitazione, opposizione.
             </div>
-            <button class="btn" onclick="chiudiTermsModal()">Chiudi</button>
+            <button class="btn" onclick="chiudiTermsModal()" data-i18n="close">Chiudi</button>
         </div>
     </div>
 
     <div class="modal-overlay" id="cameraModal">
         <div class="modal-box" style="max-width:400px;text-align:center;">
-            <h3 style="margin-bottom:8px;">📸 Scatta</h3>
+            <h3 style="margin-bottom:8px;" data-i18n="take_photo">📸 Scatta</h3>
             <video id="video" autoplay playsinline style="width:100%;border-radius:10px;background:#000;"></video>
             <canvas id="canvas" style="display:none;"></canvas>
             <div style="display:flex;gap:8px;margin-top:10px;justify-content:center;">
-                <button class="btn btn-danger btn-sm" onclick="chiudiFotocamera()">✕</button>
-                <button class="btn btn-success btn-sm" onclick="catturaFoto()">📷 Scatta</button>
+                <button class="btn btn-danger btn-sm" onclick="chiudiFotocamera()" data-i18n="close">✕</button>
+                <button class="btn btn-success btn-sm" onclick="catturaFoto()" data-i18n="capture">📷 Scatta</button>
             </div>
             <div id="fotoAnteprima" style="margin-top:8px;"></div>
         </div>
@@ -2222,7 +2257,355 @@
     <!-- ================================================================ -->
     <script>
         // ================================================================
-        // DATABASE FARMACI (120+ reali)
+        // TRADUZIONI
+        // ================================================================
+        const translations = {
+            it: {
+                home: "Home",
+                parameters: "Parametri",
+                reports: "Referti",
+                appointments: "Appuntamenti",
+                drugs: "Farmaci",
+                vaccinations: "Vaccinazioni",
+                symptoms: "Sintomi",
+                sleep: "Sonno",
+                share: "Condividi",
+                reminders: "Promemoria",
+                settings: "Impostazioni",
+                hello: "Ciao",
+                today: "Oggi",
+                pdf_export: "📄 PDF",
+                appointments_today: "📅 Appuntamenti oggi",
+                pressure: "Pressione",
+                pressure_chart: "📈 Pressione (ultimi 30)",
+                tip: "💡 Consiglio",
+                tip_text: "SpO₂ > 95%, 2L acqua/giorno.",
+                good: "Buono",
+                badges: "🏅 Badge",
+                new_report: "📁 Nuovo referto",
+                date: "Data",
+                hospital: "Ospedale",
+                specialist: "Specialista",
+                notes: "Note",
+                pdf_file: "PDF",
+                take_photo: "Scatta",
+                save: "💾 Salva",
+                your_reports: "I tuoi referti",
+                new_measurement: "📋 Nuova rilevazione",
+                time: "Ora",
+                weight: "Peso (kg)",
+                systolic: "Sistolica",
+                diastolic: "Diastolica",
+                bpm: "Battito (bpm)",
+                glycemia: "Glicemia (mg/dL)",
+                temperature: "Temperatura (°C)",
+                water: "Acqua (bicch.)",
+                history: "📅 Storico",
+                view: "Visualizza",
+                history_of: "Storico del",
+                calendar: "📅 Calendario",
+                new_appointment: "✏️ Nuovo appuntamento",
+                title: "Titolo",
+                appointments_of: "Appuntamenti del",
+                new_drug: "💊 Nuovo farmaco",
+                name: "Nome",
+                dosage: "Dosaggio",
+                start: "Inizio",
+                end: "Fine",
+                scanner: "📷 Scanner",
+                your_drugs: "I tuoi farmaci",
+                interactions: "⚠️ Interazioni",
+                new_vaccination: "💉 Nuova vaccinazione",
+                vaccine: "Vaccino",
+                expiry: "Scadenza",
+                your_vaccinations: "Le tue vaccinazioni",
+                new_symptom: "🤒 Nuovo sintomo",
+                type: "Tipo",
+                photo: "Foto",
+                symptom_diary: "Diario sintomi",
+                new_sleep: "😴 Nuova registrazione sonno",
+                hours: "Ore di sonno",
+                quality: "Qualità (1-5)",
+                sleep_stats: "📊 Statistiche sonno (ultimi 30)",
+                avg_hours: "Media ore",
+                avg_quality: "Qualità media",
+                total_nights: "Notti totali",
+                sleep_history: "Storico sonno",
+                new_reminder: "⏰ Nuovo promemoria",
+                repeat: "Ripeti",
+                once: "Una volta",
+                daily: "Giornaliero",
+                weekly: "Settimanale",
+                your_reminders: "I tuoi promemoria",
+                share_with_doctor: "🔗 Condividi con il medico",
+                share_desc: "Genera un link con tutti i tuoi dati sanitari (parametri, farmaci, vaccinazioni, sintomi, referti).",
+                expiry_label: "Scadenza",
+                1day: "1 giorno",
+                7days: "7 giorni",
+                30days: "30 giorni",
+                never: "Mai",
+                password: "Password",
+                generate_link: "🔗 Genera link",
+                copy: "📋 Copia",
+                print_pdf: "🖨️ Stampa PDF",
+                qr_help: "Scansiona il QR o copia il link. Il medico vedrà tutti i tuoi dati.",
+                profile: "Profilo",
+                profile_sub: "I tuoi dati personali",
+                gender: "Sesso",
+                male: "Maschio",
+                female: "Femmina",
+                other: "Altro",
+                birthdate: "Data di nascita",
+                pin: "PIN",
+                pin_desc_short: "4 cifre (hashato)",
+                save_profile: "Salva profilo",
+                language: "Lingua",
+                language_sub: "Seleziona la tua lingua",
+                appearance: "Aspetto",
+                appearance_sub: "Personalizza l'app",
+                dark_mode: "Modalità scura",
+                dark_mode_desc: "Riduce l'affaticamento visivo",
+                notifications: "Notifiche",
+                notifications_desc: "Promemoria farmaci e vaccini",
+                backup: "Backup Locale",
+                backup_sub: "Salva e ripristina i tuoi dati",
+                backup_download: "📥 Scarica backup (JSON)",
+                restore_file: "Ripristina da file:",
+                restore: "🔄 Ripristina",
+                privacy: "Privacy & Dati",
+                privacy_sub: "GDPR e gestione dati",
+                gdpr_consent: "Consenso GDPR",
+                revoke: "Revoca",
+                export_json: "📦 JSON",
+                export_csv: "📊 CSV",
+                delete_all: "🗑️ Cancella",
+                read_terms: "📄 Leggi Termini e Privacy",
+                info: "Informazioni",
+                info_sub: "Versione e dettagli app",
+                version: "Versione",
+                data_saved: "Dati salvati",
+                app_desc: "Monitoraggio sanitario",
+                about: "ℹ️ Info app",
+                agenda: "Agenda",
+                close: "Chiudi",
+                capture: "📷 Scatta",
+                search: "🔍 Cerca",
+                code: "Codice",
+                scanner_desc: "Inquadra il codice a barre o inseriscilo.",
+                edit_profile: "✏️ Modifica profilo",
+                install_app: "📲 Installa HealthApp",
+                install: "Installa",
+                accept_continue: "Accetta e continua",
+                onboarding_sub: "Il tuo diario sanitario personale",
+                terms_check1: "Accetto i Termini",
+                terms_check2: "Acconsento al trattamento dati (GDPR)",
+                terms_text: "Termini e Condizioni\nL'app è fornita 'così com'è'. I dati sono salvati in locale.\n\nGDPR\nDati: nome, parametri, referti, farmaci, vaccinazioni, sintomi.\nConservazione: solo sul dispositivo.\nDiritti: accesso, rettifica, cancellazione.",
+                terms_full: "Termini e Condizioni...",
+                unlock: "🔓 Sblocca",
+                pin_default: "PIN predefinito: 1234",
+                pin_desc: "Inserisci il codice a 4 cifre.",
+                restore_success: "✅ Backup ripristinato con successo!",
+                restore_error: "❌ Errore nel ripristino: file non valido.",
+                backup_success: "✅ Backup scaricato!",
+                no_data: "Nessun dato da esportare.",
+                delete_confirm: "⚠️ Cancellare PERMANENTEMENTE tutti i dati?",
+                delete_confirm2: "🔴 Conferma finale?",
+                deleted: "✅ Tutti i dati cancellati.",
+                revoke_confirm: "Revocare il consenso? Dovrai riaccettare i termini.",
+                gdpr_revoked: "Consenso revocato. Riavvia per riaccettare.",
+                about_text: "HealthApp v3.2 (Locale)\n\n• Parametri (pressione, peso, SpO₂, glicemia, temperatura)\n• Referti con PDF e foto\n• Appuntamenti con calendario\n• Farmaci (120+ principi attivi + scanner)\n• Vaccinazioni con scadenze\n• Sintomi con foto\n• Sonno (ore, qualità, grafico)\n• Promemoria personalizzati\n• Condivisione avanzata (tutti i dati, password, scadenza)\n• Backup locale (JSON)\n• PWA (offline, installabile)\n• GDPR compliant\n• PIN hashato (SHA-256)\n• Multilingua (IT/EN)\n\nDati salvati in locale. Nessuna chiave API esposta."
+            },
+            en: {
+                home: "Home",
+                parameters: "Parameters",
+                reports: "Reports",
+                appointments: "Appointments",
+                drugs: "Drugs",
+                vaccinations: "Vaccinations",
+                symptoms: "Symptoms",
+                sleep: "Sleep",
+                share: "Share",
+                reminders: "Reminders",
+                settings: "Settings",
+                hello: "Hello",
+                today: "Today",
+                pdf_export: "📄 PDF",
+                appointments_today: "📅 Today's appointments",
+                pressure: "Pressure",
+                pressure_chart: "📈 Pressure (last 30)",
+                tip: "💡 Tip",
+                tip_text: "SpO₂ > 95%, 2L water/day.",
+                good: "Good",
+                badges: "🏅 Badges",
+                new_report: "📁 New report",
+                date: "Date",
+                hospital: "Hospital",
+                specialist: "Specialist",
+                notes: "Notes",
+                pdf_file: "PDF",
+                take_photo: "Take photo",
+                save: "💾 Save",
+                your_reports: "Your reports",
+                new_measurement: "📋 New measurement",
+                time: "Time",
+                weight: "Weight (kg)",
+                systolic: "Systolic",
+                diastolic: "Diastolic",
+                bpm: "Heart rate (bpm)",
+                glycemia: "Glycemia (mg/dL)",
+                temperature: "Temperature (°C)",
+                water: "Water (glasses)",
+                history: "📅 History",
+                view: "View",
+                history_of: "History of",
+                calendar: "📅 Calendar",
+                new_appointment: "✏️ New appointment",
+                title: "Title",
+                appointments_of: "Appointments of",
+                new_drug: "💊 New drug",
+                name: "Name",
+                dosage: "Dosage",
+                start: "Start",
+                end: "End",
+                scanner: "📷 Scanner",
+                your_drugs: "Your drugs",
+                interactions: "⚠️ Interactions",
+                new_vaccination: "💉 New vaccination",
+                vaccine: "Vaccine",
+                expiry: "Expiry",
+                your_vaccinations: "Your vaccinations",
+                new_symptom: "🤒 New symptom",
+                type: "Type",
+                photo: "Photo",
+                symptom_diary: "Symptom diary",
+                new_sleep: "😴 New sleep record",
+                hours: "Hours of sleep",
+                quality: "Quality (1-5)",
+                sleep_stats: "📊 Sleep stats (last 30)",
+                avg_hours: "Avg hours",
+                avg_quality: "Avg quality",
+                total_nights: "Total nights",
+                sleep_history: "Sleep history",
+                new_reminder: "⏰ New reminder",
+                repeat: "Repeat",
+                once: "Once",
+                daily: "Daily",
+                weekly: "Weekly",
+                your_reminders: "Your reminders",
+                share_with_doctor: "🔗 Share with doctor",
+                share_desc: "Generate a link with all your health data (parameters, drugs, vaccinations, symptoms, reports).",
+                expiry_label: "Expiry",
+                1day: "1 day",
+                7days: "7 days",
+                30days: "30 days",
+                never: "Never",
+                password: "Password",
+                generate_link: "🔗 Generate link",
+                copy: "📋 Copy",
+                print_pdf: "🖨️ Print PDF",
+                qr_help: "Scan the QR or copy the link. The doctor will see all your data.",
+                profile: "Profile",
+                profile_sub: "Your personal data",
+                gender: "Gender",
+                male: "Male",
+                female: "Female",
+                other: "Other",
+                birthdate: "Birth date",
+                pin: "PIN",
+                pin_desc_short: "4 digits (hashed)",
+                save_profile: "Save profile",
+                language: "Language",
+                language_sub: "Select your language",
+                appearance: "Appearance",
+                appearance_sub: "Customize the app",
+                dark_mode: "Dark mode",
+                dark_mode_desc: "Reduces eye strain",
+                notifications: "Notifications",
+                notifications_desc: "Drug & vaccine reminders",
+                backup: "Local Backup",
+                backup_sub: "Save and restore your data",
+                backup_download: "📥 Download backup (JSON)",
+                restore_file: "Restore from file:",
+                restore: "🔄 Restore",
+                privacy: "Privacy & Data",
+                privacy_sub: "GDPR and data management",
+                gdpr_consent: "GDPR consent",
+                revoke: "Revoke",
+                export_json: "📦 JSON",
+                export_csv: "📊 CSV",
+                delete_all: "🗑️ Delete",
+                read_terms: "📄 Read Terms & Privacy",
+                info: "Information",
+                info_sub: "Version and app details",
+                version: "Version",
+                data_saved: "Data saved",
+                app_desc: "Health monitoring",
+                about: "ℹ️ About",
+                agenda: "Agenda",
+                close: "Close",
+                capture: "📷 Capture",
+                search: "🔍 Search",
+                code: "Code",
+                scanner_desc: "Scan the barcode or enter it.",
+                edit_profile: "✏️ Edit profile",
+                install_app: "📲 Install HealthApp",
+                install: "Install",
+                accept_continue: "Accept and continue",
+                onboarding_sub: "Your personal health diary",
+                terms_check1: "I accept the Terms",
+                terms_check2: "I consent to data processing (GDPR)",
+                terms_text: "Terms and Conditions\nApp is provided 'as is'. Data is stored locally.\n\nGDPR\nData: name, parameters, reports, drugs, vaccinations, symptoms.\nStorage: only on device.\nRights: access, rectification, deletion.",
+                terms_full: "Terms and Conditions...",
+                unlock: "🔓 Unlock",
+                pin_default: "Default PIN: 1234",
+                pin_desc: "Enter the 4-digit code.",
+                restore_success: "✅ Backup restored successfully!",
+                restore_error: "❌ Restore error: invalid file.",
+                backup_success: "✅ Backup downloaded!",
+                no_data: "No data to export.",
+                delete_confirm: "⚠️ Delete ALL data PERMANENTLY?",
+                delete_confirm2: "🔴 Final confirmation?",
+                deleted: "✅ All data deleted.",
+                revoke_confirm: "Revoke consent? You'll need to re-accept terms.",
+                gdpr_revoked: "Consent revoked. Restart to re-accept.",
+                about_text: "HealthApp v3.2 (Local)\n\n• Parameters (pressure, weight, SpO₂, glycemia, temperature)\n• Reports with PDF and photos\n• Appointments with calendar\n• Drugs (120+ active ingredients + scanner)\n• Vaccinations with expiry\n• Symptoms with photos\n• Sleep (hours, quality, chart)\n• Custom reminders\n• Advanced sharing (all data, password, expiry)\n• Local backup (JSON)\n• PWA (offline, installable)\n• GDPR compliant\n• Hashed PIN (SHA-256)\n• Multilingual (IT/EN)\n\nData stored locally. No API keys exposed."
+            }
+        };
+
+        let currentLang = localStorage.getItem('appLang') || 'it';
+
+        function t(key) {
+            return translations[currentLang]?.[key] || key;
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('appLang', lang);
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+            translateUI();
+        }
+
+        function translateUI() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const text = t(key);
+                if (text) el.textContent = text;
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                const text = t(key);
+                if (text) el.placeholder = text;
+            });
+            document.querySelectorAll('select option[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const text = t(key);
+                if (text) el.textContent = text;
+            });
+            aggiornaMeseTitolo();
+        }
+
+        // ================================================================
+        // DATABASE FARMACI
         // ================================================================
         const drugDB = {
             "Acetaminofene": { desc: "Analgesico", uso: "Dolore e febbre.", effetti: "Nausea, eruzione." },
@@ -2450,11 +2833,6 @@
         let termsAccepted = localStorage.getItem('termsAccepted') === 'true';
         let gdprConsent = localStorage.getItem('gdprConsent') === 'true';
 
-        // WebDAV
-        let webdavUrl = localStorage.getItem('webdavUrl') || '';
-        let webdavUser = localStorage.getItem('webdavUser') || '';
-        let webdavPass = localStorage.getItem('webdavPass') || '';
-
         // ================================================================
         // UTILITY
         // ================================================================
@@ -2500,7 +2878,7 @@
         }
 
         // ================================================================
-        // HASH PIN (SHA-256) per sicurezza
+        // HASH PIN
         // ================================================================
         async function hashPIN(pin) {
             const encoder = new TextEncoder();
@@ -2523,21 +2901,29 @@
         updateClock();
 
         // ================================================================
-        // ONBOARDING
+        // ONBOARDING (FIX: pulsante sempre attivo, controllo al click)
         // ================================================================
         function initOnboarding() {
-            const c1 = document.getElementById('termsCheck1'),
-                c2 = document.getElementById('termsCheck2'),
-                btn = document.getElementById('acceptTermsBtn');
+            const c1 = document.getElementById('termsCheck1');
+            const c2 = document.getElementById('termsCheck2');
+            const btn = document.getElementById('acceptTermsBtn');
 
-            function update() {
-                if (c1.checked && c2.checked) { btn.disabled = false;
-                    btn.style.opacity = '1'; } else { btn.disabled = true;
-                    btn.style.opacity = '0.6'; }
+            // Se già accettati, salta il modal
+            if (localStorage.getItem('termsAccepted') === 'true' && localStorage.getItem('gdprConsent') === 'true') {
+                document.getElementById('onboardingModal').classList.remove('active');
+                document.getElementById('appContainer').style.display = 'flex';
+                if (pinAbilitato && pinSalvatoHash) setTimeout(mostraPIN, 300);
+                aggiornaHeader();
+                avviaApp();
+                return;
             }
-            c1.addEventListener('change', update);
-            c2.addEventListener('change', update);
+
+            // Al click, verifica le checkbox
             btn.addEventListener('click', function() {
+                if (!c1.checked || !c2.checked) {
+                    alert('Devi accettare entrambe le condizioni per continuare.');
+                    return;
+                }
                 localStorage.setItem('termsAccepted', 'true');
                 localStorage.setItem('gdprConsent', 'true');
                 termsAccepted = true;
@@ -2548,13 +2934,6 @@
                 aggiornaHeader();
                 avviaApp();
             });
-            if (termsAccepted && gdprConsent) {
-                document.getElementById('onboardingModal').classList.remove('active');
-                document.getElementById('appContainer').style.display = 'flex';
-                if (pinAbilitato && pinSalvatoHash) setTimeout(mostraPIN, 300);
-                aggiornaHeader();
-                avviaApp();
-            }
         }
 
         // ================================================================
@@ -2573,7 +2952,7 @@
                 document.getElementById('appContainer').style.display = 'flex';
                 document.getElementById('pinInput').value = '';
             } else {
-                alert('PIN errato.');
+                alert(t('pin_error') || 'PIN errato.');
                 document.getElementById('pinInput').value = '';
             }
         }
@@ -2609,8 +2988,7 @@
                     localStorage.setItem('pinAbilitato', 'false');
                 }
             }
-            closeSettingsModal();
-            setTimeout(() => openSettingsModal('profilo'), 100);
+            aggiornaImpostazioni();
         }
 
         // ================================================================
@@ -2670,8 +3048,8 @@
                     heroAvatar.textContent = initial;
                 }
             }
-            document.getElementById('dataOggi').textContent = new Date().toLocaleDateString('it-IT', { weekday: 'long',
-                day: 'numeric', month: 'long' });
+            document.getElementById('dataOggi').textContent = new Date().toLocaleDateString(currentLang === 'en' ? 'en-US' :
+                'it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
         }
 
         // ================================================================
@@ -2682,6 +3060,17 @@
             currentYear = today.getFullYear(),
             selectedDate = null;
         const todayStrLocal = getLocalDateString(today);
+
+        function aggiornaMeseTitolo() {
+            const months = currentLang === 'en' ?
+                ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+                    'November', 'December'
+                ] :
+                ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre',
+                    'Novembre', 'Dicembre'
+                ];
+            document.getElementById('meseAnnoTitolo').textContent = `${months[currentMonth]} ${currentYear}`;
+        }
 
         // ================================================================
         // NAVIGAZIONE
@@ -2726,6 +3115,8 @@
                 document.getElementById('giornoSelezionatoLabel').textContent = formatDateForDisplay(selectedDate);
             }
             if (tabId === 'referti') { renderReferti(); }
+            if (tabId === 'condividi') { /* nothing special */ }
+            translateUI();
         }
 
         function switchTabBottom(tabId) {
@@ -2739,17 +3130,19 @@
         // FOTOCAMERA
         // ================================================================
         function apriFotocamera() {
-            if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-                alert('⚠️ HTTPS richiesto.'); return;
+            if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+                alert('⚠️ HTTPS richiesto per la fotocamera.');
+                return;
             }
-            if (!navigator.mediaDevices?.getUserMedia) { alert('Browser non supporta.'); return; }
+            if (!navigator.mediaDevices?.getUserMedia) { alert('Browser non supporta la fotocamera.'); return; }
             document.getElementById('cameraModal').classList.add('active');
             document.getElementById('fotoAnteprima').innerHTML = '';
             fotoScattataData = null;
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 },
+                        height: { ideal: 720 } } })
                 .then(s => { stream = s;
                     document.getElementById('video').srcObject = s; })
-                .catch(err => { alert(err.message);
+                .catch(err => { alert('Errore fotocamera: ' + err.message);
                     chiudiFotocamera(); });
         }
 
@@ -2762,56 +3155,67 @@
 
         function catturaFoto() {
             const video = document.getElementById('video');
-            if (!video.videoWidth) { alert('Attendi.'); return; }
+            if (!video.videoWidth) { alert('Attendi l'avvio della fotocamera.'); return; }
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             ctx.drawImage(video, 0, 0);
-            const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+            const dataURL = canvas.toDataURL('image/jpeg', 0.85);
             fotoScattataData = dataURL;
             document.getElementById('fotoAnteprima').innerHTML = `
-                    <div style="background:var(--bg);border-radius:10px;padding:10px;">
-                        <img src="${dataURL}" style="max-width:100%;border-radius:6px;margin:6px 0;">
-                        <div style="display:flex;gap:6px;justify-content:center;">
-                            <button class="btn btn-success btn-sm" onclick="convertiFotoInPDF()">📄 PDF</button>
-                            <button class="btn btn-danger btn-sm" onclick="annullaFoto()">Rifai</button>
+                    <div style="background:var(--bg);border-radius:10px;padding:10px;margin-top:8px;">
+                        <img src="${dataURL}" style="max-width:100%;border-radius:6px;margin:4px 0;max-height:200px;object-fit:contain;">
+                        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:6px;">
+                            <button class="btn btn-success btn-sm" onclick="convertiFotoInPDF()">📄 Salva come PDF</button>
+                            <button class="btn btn-danger btn-sm" onclick="annullaFoto()">🔄 Rifai</button>
                         </div>
                     </div>
                 `;
             chiudiFotocamera();
         }
 
-        function annullaFoto() { fotoScattataData = null;
+        function annullaFoto() {
+            fotoScattataData = null;
             document.getElementById('fotoAnteprima').innerHTML = '';
-            apriFotocamera(); }
+            apriFotocamera();
+        }
 
         function convertiFotoInPDF() {
-            if (!fotoScattataData) return;
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
-            const imgProps = doc.getImageProperties(fotoScattataData);
-            const w = 190,
-                h = (imgProps.height / imgProps.width) * w;
-            if (h > 277) { const s = 277 / h;
-                doc.addImage(fotoScattataData, 'JPEG', 10, 10, w * s, h * s); } else { doc.addImage(fotoScattataData,
-                    'JPEG', 10, 10, w, h); }
-            const pdfBlob = doc.output('blob');
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                window.pdfDaSalvare = e.target.result;
-                document.getElementById('fotoAnteprima').innerHTML = '';
-                fotoScattataData = null;
-                document.getElementById('refData').value = getLocalDateString(new Date());
-                const msg = document.createElement('div');
-                msg.style.cssText =
-                    'background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px;margin:8px 0;';
-                msg.innerHTML = '✅ PDF generato! Compila e salva.';
-                document.getElementById('refertiList').prepend(msg);
-                setTimeout(() => msg.remove(), 4000);
-                switchTab('referti');
-            };
-            reader.readAsDataURL(pdfBlob);
+            if (!fotoScattataData) {
+                alert('Nessuna foto da convertire.');
+                return;
+            }
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', 'a4');
+                const imgProps = doc.getImageProperties(fotoScattataData);
+                const w = 190,
+                    h = (imgProps.height / imgProps.width) * w;
+                if (h > 277) { const s = 277 / h;
+                    doc.addImage(fotoScattataData, 'JPEG', 10, 10, w * s, h * s); } else { doc.addImage(fotoScattataData,
+                        'JPEG', 10, 10, w, h); }
+                const pdfBlob = doc.output('blob');
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    window.pdfDaSalvare = e.target.result;
+                    document.getElementById('fotoAnteprima').innerHTML = `
+                            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px;margin-top:6px;text-align:center;font-size:13px;">
+                                ✅ PDF generato! Ora compila i campi e salva il referto.
+                            </div>
+                        `;
+                    fotoScattataData = null;
+                    document.getElementById('refData').value = getLocalDateString(new Date());
+                    switchTab('referti');
+                    setTimeout(() => {
+                        const msg = document.getElementById('fotoAnteprima');
+                        if (msg) msg.innerHTML = '';
+                    }, 5000);
+                };
+                reader.readAsDataURL(pdfBlob);
+            } catch (e) {
+                alert('Errore durante la conversione: ' + e.message);
+            }
         }
 
         // ================================================================
@@ -2819,29 +3223,36 @@
         // ================================================================
         function aggiungiReferto() {
             const data = document.getElementById('refData').value,
-                osp = document.getElementById('refOspedale').value,
-                spec = document.getElementById('refSpecialista').value,
-                note = document.getElementById('refNote').value,
+                osp = document.getElementById('refOspedale').value.trim(),
+                spec = document.getElementById('refSpecialista').value.trim(),
+                note = document.getElementById('refNote').value.trim(),
                 fileInput = document.getElementById('refFile');
-            if (!data || !osp) { alert('Data e ospedale.'); return; }
+            if (!data || !osp) { alert('Data e ospedale obbligatori.'); return; }
+
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
-                if (file.type !== 'application/pdf') { alert('PDF richiesto.'); return; }
+                if (file.type !== 'application/pdf') { alert('Carica un file PDF.'); return; }
                 const reader = new FileReader();
-                reader.onload = (e) => { salvaReferto(data, osp, spec, note, e.target.result, file.name); };
+                reader.onload = (e) => {
+                    salvaReferto(data, osp, spec, note, e.target.result, file.name);
+                    fileInput.value = '';
+                };
                 reader.readAsDataURL(file);
                 return;
             }
+
             if (window.pdfDaSalvare) {
-                salvaReferto(data, osp, spec, note, window.pdfDaSalvare, 'Referto_scattato.pdf');
+                salvaReferto(data, osp, spec, note, window.pdfDaSalvare, 'Referto_foto.pdf');
                 window.pdfDaSalvare = null;
                 return;
             }
+
             salvaReferto(data, osp, spec, note, null, null);
         }
 
         function salvaReferto(data, osp, spec, note, fileData, fileName) {
-            referti.push({ data, ospedale: osp, specialista: spec, note, id: Date.now(), fileData, fileName });
+            referti.push({ data, ospedale: osp, specialista: spec || 'Generico', note, id: Date.now(), fileData,
+                fileName });
             localStorage.setItem('healthReports', JSON.stringify(referti));
             document.getElementById('refData').value = '';
             document.getElementById('refOspedale').value = '';
@@ -2852,10 +3263,11 @@
             renderReferti();
             aggiornaDashboard();
             controllaBadge();
+            alert('✅ Referto salvato!');
         }
 
         function eliminaReferto(id) {
-            if (!confirm('Eliminare?')) return;
+            if (!confirm('Eliminare questo referto?')) return;
             referti = referti.filter(r => r.id !== id);
             localStorage.setItem('healthReports', JSON.stringify(referti));
             renderReferti();
@@ -2867,27 +3279,34 @@
             const ref = referti.find(r => r.id === id);
             if (ref && ref.fileData) {
                 const win = window.open();
+                if (!win) { alert('Popup bloccato. Abilita i popup per visualizzare il PDF.'); return; }
                 if (ref.fileName?.endsWith('.pdf')) {
                     win.document.write('<iframe src="' + ref.fileData + '" style="width:100%;height:100%;border:none;"></iframe>');
                 } else {
                     win.document.write('<img src="' + ref.fileData + '" style="width:100%;height:auto;">');
                 }
-            } else { alert('Nessun file.'); }
+            } else {
+                alert('Nessun file allegato a questo referto.');
+            }
         }
 
         function renderReferti() {
             const list = document.getElementById('refertiList');
-            if (!referti.length) { list.innerHTML =
-                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun referto</div>'; return; }
+            if (!referti.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">' + t('no_reports') +
+                    'Nessun referto</div>';
+                return;
+            }
             list.innerHTML = referti.slice().reverse().map(r => `
-                    <div class="list-item" onclick="apriPDF(${r.id})">
+                    <div class="list-item" onclick="apriPDF(${r.id})" style="cursor:pointer;">
                         <div class="info">
                             <h5>${r.ospedale}</h5>
                             <p>${r.specialista||'Generico'} ${r.note?'• '+r.note:''}</p>
                             <span style="font-size:11px;color:var(--text-secondary);">${r.data}</span>
                         </div>
                         <div class="actions">
-                            ${r.fileData?'<span style="background:var(--danger);color:white;font-size:9px;padding:2px 6px;border-radius:6px;">PDF</span>':''}
+                            ${r.fileData?'<span style="background:var(--success);color:white;font-size:9px;padding:2px 8px;border-radius:6px;">📄</span>':''}
                             <button class="btn-icon" onclick="event.stopPropagation();eliminaReferto(${r.id})">
                                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                             </button>
@@ -2911,7 +3330,7 @@
                 temp = document.getElementById('parTemp').value,
                 acqua = document.getElementById('parAcqua').value,
                 note = document.getElementById('parNote').value;
-            if (!data || !sis || !dia) { alert('Data e pressione.'); return; }
+            if (!data || !sis || !dia) { alert('Data e pressione obbligatori.'); return; }
             const timestamp = ora ? `${data}T${ora}` : `${data}T00:00`;
             parametri.push({
                 data,
@@ -2938,7 +3357,7 @@
         }
 
         function eliminaParametro(id) {
-            if (!confirm('Eliminare?')) return;
+            if (!confirm('Eliminare questa misurazione?')) return;
             parametri = parametri.filter(p => p.id !== id);
             localStorage.setItem('healthParams', JSON.stringify(parametri));
             aggiornaStoricoPerData();
@@ -2953,8 +3372,11 @@
             const filtered = parametri.filter(p => p.data === dataSel).sort((a, b) => new Date(a.timestamp) - new Date(b
             .timestamp));
             const list = document.getElementById('parametriList');
-            if (!filtered.length) { list.innerHTML =
-                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessuna misurazione</div>'; return; }
+            if (!filtered.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessuna misurazione</div>';
+                return;
+            }
             let html = `<div class="date-group-header">📅 ${formatDateForDisplay(dataSel)} (${filtered.length})</div>`;
             filtered.forEach(p => {
                 html += `
@@ -2973,7 +3395,7 @@
         }
 
         function esportaCSV() {
-            if (!parametri.length) { alert('Nessun parametro.'); return; }
+            if (!parametri.length) { alert(t('no_data')); return; }
             let csv = 'Data,Ora,Peso,SpO2,Sistolica,Diastolica,BPM,Glicemia,Temperatura,Acqua,Note\n';
             parametri.forEach(p => { csv +=
                     `${p.data},${p.ora||''},${p.peso||0},${p.spo2||0},${p.sis},${p.dia},${p.bpm||0},${p.glu||0},${p.temp||0},${p.acqua||0},"${p.note||''}"\n`
@@ -2982,7 +3404,7 @@
         }
 
         function esportaJSON() {
-            if (!parametri.length) { alert('Nessun parametro.'); return; }
+            if (!parametri.length) { alert(t('no_data')); return; }
             scaricaFile(JSON.stringify(parametri, null, 2), 'application/json', `parametri_${getLocalDateString(new Date())}.json`);
         }
 
@@ -2992,9 +3414,9 @@
         function aggiungiAppuntamento() {
             const data = document.getElementById('appData').value,
                 orario = document.getElementById('appOrario').value,
-                titolo = document.getElementById('appTitolo').value,
-                note = document.getElementById('appNote').value;
-            if (!data || !titolo) { alert('Data e titolo.'); return; }
+                titolo = document.getElementById('appTitolo').value.trim(),
+                note = document.getElementById('appNote').value.trim();
+            if (!data || !titolo) { alert('Data e titolo obbligatori.'); return; }
             appuntamenti.push({ data, orario, titolo, note, id: Date.now(), fatto: false });
             localStorage.setItem('healthAppointments', JSON.stringify(appuntamenti));
             document.getElementById('appData').value = '';
@@ -3014,7 +3436,7 @@
         }
 
         function eliminaAppuntamento(id) {
-            if (!confirm('Eliminare?')) return;
+            if (!confirm('Eliminare questo appuntamento?')) return;
             appuntamenti = appuntamenti.filter(a => a.id !== id);
             localStorage.setItem('healthAppointments', JSON.stringify(appuntamenti));
             renderCalendario();
@@ -3042,17 +3464,15 @@
             renderCalendario();
             renderAppuntamentiDelGiorno(selectedDate);
             document.getElementById('giornoSelezionatoLabel').textContent = formatDateForDisplay(selectedDate);
+            aggiornaMeseTitolo();
         }
 
         function renderCalendario() {
-            const grid = document.getElementById('calendarGrid'),
-                title = document.getElementById('meseAnnoTitolo');
-            const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre',
-                'Ottobre', 'Novembre', 'Dicembre'
-            ];
-            title.textContent = `${months[currentMonth]} ${currentYear}`;
+            const grid = document.getElementById('calendarGrid');
+            aggiornaMeseTitolo();
             grid.innerHTML = '';
-            ['L', 'M', 'M', 'G', 'V', 'S', 'D'].forEach(d => {
+            const days = currentLang === 'en' ? ['M', 'T', 'W', 'T', 'F', 'S', 'S'] : ['L', 'M', 'M', 'G', 'V', 'S', 'D'];
+            days.forEach(d => {
                 const div = document.createElement('div');
                 div.className = 'calendar-day-name';
                 div.textContent = d;
@@ -3092,8 +3512,11 @@
         function renderAppuntamentiDelGiorno(dateStr) {
             const list = document.getElementById('appuntamentiList');
             const apps = appuntamenti.filter(a => a.data === dateStr);
-            if (!apps.length) { list.innerHTML =
-                '<div style="text-align:center;padding:20px;color:var(--text-secondary);">Nessun appuntamento</div>'; return; }
+            if (!apps.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:20px;color:var(--text-secondary);">Nessun appuntamento</div>';
+                return;
+            }
             list.innerHTML = apps.map(a => `
                     <div class="list-item" style="border-left-color:${a.fatto?'var(--success)':'#f59e0b'};">
                         <div class="info" style="flex:1;">
@@ -3115,7 +3538,8 @@
         function aggiornaWidgetAppuntamenti() {
             const container = document.getElementById('widgetAppuntamentiList');
             const apps = appuntamenti.filter(a => a.data === todayStrLocal && !a.fatto);
-            if (!apps.length) { container.innerHTML = '<div class="empty-msg">Nessun appuntamento oggi 🎉</div>'; return; }
+            if (!apps.length) { container.innerHTML = '<div class="empty-msg">' + t('no_appointments_today') +
+                    'Nessun appuntamento oggi 🎉</div>'; return; }
             container.innerHTML = apps.map(a =>
                 `<div class="app-item"><span>${a.titolo}</span><span><span class="time">${a.orario||'--:--'}</span></span></div>`
                 ).join('');
@@ -3192,7 +3616,7 @@
         }
 
         function eliminaFarmaco(id) {
-            if (!confirm('Eliminare?')) return;
+            if (!confirm('Eliminare questo farmaco?')) return;
             farmaci = farmaci.filter(f => f.id !== id);
             localStorage.setItem('farmaci', JSON.stringify(farmaci));
             renderFarmaci();
@@ -3201,8 +3625,11 @@
 
         function renderFarmaci() {
             const list = document.getElementById('farmaciList');
-            if (!farmaci.length) { list.innerHTML =
-                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun farmaco</div>'; return; }
+            if (!farmaci.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun farmaco</div>';
+                return;
+            }
             const full = getFullDrugDB();
             list.innerHTML = farmaci.map(f => {
                 const info = full[f.nome];
@@ -3245,7 +3672,7 @@
             document.getElementById('scannerModal').classList.add('active');
             document.getElementById('barcodeInput').value = '';
             document.getElementById('scannerResult').innerHTML = '';
-            if (location.protocol === 'https:' || location.hostname === 'localhost') {
+            if (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
                 navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
                     .then(s => {
                         scannerStream = s;
@@ -3329,8 +3756,11 @@
 
         function renderVaccinazioni() {
             const list = document.getElementById('vaccinazioniList');
-            if (!vaccinazioni.length) { list.innerHTML =
-                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessuna vaccinazione</div>'; return; }
+            if (!vaccinazioni.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessuna vaccinazione</div>';
+                return;
+            }
             list.innerHTML = vaccinazioni.slice().reverse().map(v => {
                 const oggi = new Date(),
                     scad = v.scadenza ? new Date(v.scadenza) : null;
@@ -3400,8 +3830,11 @@
 
         function renderSintomi() {
             const list = document.getElementById('sintomiList');
-            if (!sintomi.length) { list.innerHTML =
-                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun sintomo</div>'; return; }
+            if (!sintomi.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun sintomo</div>';
+                return;
+            }
             list.innerHTML = sintomi.slice().reverse().map(s => `
                     <div class="list-item">
                         <div class="info">
@@ -3445,8 +3878,11 @@
 
         function renderSonno() {
             const list = document.getElementById('sonnoList');
-            if (!sonno.length) { list.innerHTML =
-                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun sonno registrato</div>'; return; }
+            if (!sonno.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun sonno registrato</div>';
+                return;
+            }
             list.innerHTML = sonno.slice().reverse().map(s => `
                     <div class="list-item">
                         <div class="info">
@@ -3486,8 +3922,8 @@
                 data: {
                     labels: labels,
                     datasets: [
-                        { label: 'Ore', data: dataOre, backgroundColor: 'rgba(26,75,122,0.6)', borderColor: '#1a4b7a',
-                            borderWidth: 1 },
+                        { label: 'Ore', data: dataOre, backgroundColor: 'rgba(26,75,122,0.6)',
+                        borderColor: '#1a4b7a', borderWidth: 1 },
                         { label: 'Qualità', data: dataQualita, backgroundColor: 'rgba(108,92,231,0.6)',
                             borderColor: '#6c5ce7', borderWidth: 1 }
                     ]
@@ -3532,8 +3968,11 @@
 
         function renderPromemoria() {
             const list = document.getElementById('promemoriaList');
-            if (!promemoria.length) { list.innerHTML =
-                '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun promemoria</div>'; return; }
+            if (!promemoria.length) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:30px;color:var(--text-secondary);">Nessun promemoria</div>';
+                return;
+            }
             list.innerHTML = promemoria.map(p => `
                     <div class="reminder-item">
                         <div class="info">
@@ -3549,7 +3988,7 @@
                 `).join('');
         }
 
-        // Controllo promemoria ogni minuto
+        // Controllo promemoria
         function checkReminders() {
             if (!notificheAbilitate) return;
             const now = new Date();
@@ -3668,6 +4107,7 @@
             if (document.getElementById('sonno').classList.contains('active')) {
                 aggiornaStatisticheSonno();
             }
+            translateUI();
         }
 
         function aggiornaGraficoLinee() {
@@ -3681,7 +4121,8 @@
                 return;
             }
             const ultimi = parametri.slice(-30).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            const labels = ultimi.map(p => new Date(p.timestamp).toLocaleDateString('it-IT') + (p.ora ? ' ' + p.ora : ''));
+            const labels = ultimi.map(p => new Date(p.timestamp).toLocaleDateString(currentLang === 'en' ? 'en-US' :
+                'it-IT') + (p.ora ? ' ' + p.ora : ''));
             const sis = ultimi.map(p => p.sis),
                 dia = ultimi.map(p => p.dia);
             const sisColors = ultimi.map(p => { const s = valutaAllarmePressione(p.sis, p.dia); return s === 'red' ?
@@ -3760,9 +4201,7 @@
             alert('✅ Link generato! Il medico potrà vedere tutti i tuoi dati.');
         }
 
-        // ================================================================
-        // VISUALIZZAZIONE DATI CONDIVISI
-        // ================================================================
+        // Visualizzazione dati condivisi
         (function checkSharedView() {
             const params = new URLSearchParams(window.location.search);
             const code = params.get('view');
@@ -3946,7 +4385,7 @@
         }
 
         // ================================================================
-        // ESPORTA REPORT PDF (FIXED)
+        // ESPORTA REPORT PDF
         // ================================================================
         function esportaReport() {
             const { jsPDF } = window.jspdf;
@@ -4124,6 +4563,84 @@
         }
 
         // ================================================================
+        // BACKUP LOCALE
+        // ================================================================
+        function backupLocale() {
+            const data = {
+                profilo: userProfile,
+                parametri,
+                referti,
+                appuntamenti,
+                farmaci,
+                vaccinazioni,
+                sintomi,
+                sonno,
+                promemoria,
+                badge,
+                timestamp: new Date().toISOString()
+            };
+            const json = JSON.stringify(data, null, 2);
+            scaricaFile(json, 'application/json', `healthapp_backup_${getLocalDateString(new Date())}.json`);
+            document.getElementById('backupStatus').textContent = '✅ ' + t('backup_success');
+            setTimeout(() => document.getElementById('backupStatus').textContent = '', 4000);
+        }
+
+        function ripristinaBackupLocale() {
+            const input = document.getElementById('restoreFileInput');
+            if (!input.files || input.files.length === 0) {
+                alert('Seleziona un file JSON di backup.');
+                return;
+            }
+            const file = input.files[0];
+            if (file.type !== 'application/json') {
+                alert('Il file deve essere JSON.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.parametri) parametri = data.parametri;
+                    if (data.referti) referti = data.referti;
+                    if (data.appuntamenti) appuntamenti = data.appuntamenti;
+                    if (data.farmaci) farmaci = data.farmaci;
+                    if (data.vaccinazioni) vaccinazioni = data.vaccinazioni;
+                    if (data.sintomi) sintomi = data.sintomi;
+                    if (data.sonno) sonno = data.sonno;
+                    if (data.promemoria) promemoria = data.promemoria;
+                    if (data.badge) badge = data.badge;
+                    if (data.profilo) { userProfile = data.profilo;
+                        localStorage.setItem('userProfile', JSON.stringify(userProfile));
+                        aggiornaHeader(); }
+                    localStorage.setItem('healthParams', JSON.stringify(parametri));
+                    localStorage.setItem('healthReports', JSON.stringify(referti));
+                    localStorage.setItem('healthAppointments', JSON.stringify(appuntamenti));
+                    localStorage.setItem('farmaci', JSON.stringify(farmaci));
+                    localStorage.setItem('vaccinazioni', JSON.stringify(vaccinazioni));
+                    localStorage.setItem('sintomi', JSON.stringify(sintomi));
+                    localStorage.setItem('sonno', JSON.stringify(sonno));
+                    localStorage.setItem('promemoria', JSON.stringify(promemoria));
+                    localStorage.setItem('badge', JSON.stringify(badge));
+                    renderReferti();
+                    renderFarmaci();
+                    renderVaccinazioni();
+                    renderSintomi();
+                    renderSonno();
+                    renderPromemoria();
+                    aggiornaDashboard();
+                    document.getElementById('backupStatus').textContent = '✅ ' + t('restore_success');
+                    setTimeout(() => document.getElementById('backupStatus').textContent = '', 4000);
+                    input.value = '';
+                    alert('✅ Backup ripristinato con successo!');
+                } catch (err) {
+                    alert('❌ Errore nel ripristino: file non valido.');
+                    document.getElementById('backupStatus').textContent = '❌ ' + t('restore_error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ================================================================
         // IMPOSTAZIONI
         // ================================================================
         function aggiornaImpostazioni() {
@@ -4147,9 +4664,8 @@
             document.getElementById('gdprStatus').textContent = gdprConsent ? '✅ Accettato' : '❌ Non accettato';
             document.getElementById('datiSalvatiInfo').textContent = (JSON.stringify(localStorage).length / 1024).toFixed(
                 1) + ' KB';
-            document.getElementById('webdavUrl').value = webdavUrl;
-            document.getElementById('webdavUser').value = webdavUser;
-            document.getElementById('webdavPass').value = webdavPass;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === currentLang));
+            translateUI();
         }
 
         // ================================================================
@@ -4178,8 +4694,8 @@
         }
 
         function cancellaTuttiIDati() {
-            if (!confirm('⚠️ Cancellare PERMANENTEMENTE tutti i dati?')) return;
-            if (!confirm('🔴 Conferma finale?')) return;
+            if (!confirm(t('delete_confirm'))) return;
+            if (!confirm(t('delete_confirm2'))) return;
             localStorage.removeItem('healthParams');
             localStorage.removeItem('healthReports');
             localStorage.removeItem('healthAppointments');
@@ -4206,7 +4722,7 @@
             renderSonno();
             renderPromemoria();
             aggiornaDashboard();
-            alert('✅ Tutti i dati cancellati.');
+            alert(t('deleted'));
         }
 
         function mostraTermini() { document.getElementById('termsModal').classList.add('active'); }
@@ -4214,166 +4730,17 @@
         function chiudiTermsModal() { document.getElementById('termsModal').classList.remove('active'); }
 
         function revocaConsensoGDPR() {
-            if (!confirm('Revocare il consenso? Dovrai riaccettare i termini.')) return;
+            if (!confirm(t('revoke_confirm'))) return;
             localStorage.setItem('gdprConsent', 'false');
             localStorage.setItem('termsAccepted', 'false');
             gdprConsent = false;
             termsAccepted = false;
             document.getElementById('gdprStatus').textContent = '❌ Non accettato';
-            alert('Consenso revocato. Riavvia per riaccettare.');
+            alert(t('gdpr_revoked'));
         }
 
         function aboutApp() {
-            alert('HealthApp v3.1 (Sicura)\n\n' +
-                '• Parametri (pressione, peso, SpO₂, glicemia, temperatura)\n' +
-                '• Referti con PDF\n' +
-                '• Appuntamenti con calendario\n' +
-                '• Farmaci (120+ principi attivi + scanner)\n' +
-                '• Vaccinazioni con scadenze\n' +
-                '• Sintomi con foto\n' +
-                '• Sonno (ore, qualità, grafico)\n' +
-                '• Promemoria personalizzati\n' +
-                '• Condivisione avanzata (tutti i dati, password, scadenza)\n' +
-                '• Backup WebDAV su cloud\n' +
-                '• PWA (offline, installabile)\n' +
-                '• GDPR compliant\n' +
-                '• PIN hashato (SHA-256) per massima sicurezza\n\n' +
-                'Dati salvati in locale. Nessuna chiave API esposta.');
-        }
-
-        // ================================================================
-        // WEBDAV BACKUP
-        // ================================================================
-        function webdavSaveConfig() {
-            webdavUrl = document.getElementById('webdavUrl').value.trim();
-            webdavUser = document.getElementById('webdavUser').value.trim();
-            webdavPass = document.getElementById('webdavPass').value.trim();
-            localStorage.setItem('webdavUrl', webdavUrl);
-            localStorage.setItem('webdavUser', webdavUser);
-            localStorage.setItem('webdavPass', webdavPass);
-        }
-
-        function webdavGetAuth() {
-            if (!webdavUrl || !webdavUser || !webdavPass) {
-                webdavUrl = document.getElementById('webdavUrl').value.trim();
-                webdavUser = document.getElementById('webdavUser').value.trim();
-                webdavPass = document.getElementById('webdavPass').value.trim();
-                localStorage.setItem('webdavUrl', webdavUrl);
-                localStorage.setItem('webdavUser', webdavUser);
-                localStorage.setItem('webdavPass', webdavPass);
-            }
-            return { url: webdavUrl, user: webdavUser, pass: webdavPass };
-        }
-
-        function webdavTest() {
-            const auth = webdavGetAuth();
-            if (!auth.url || !auth.user) { alert('Configura URL e username.'); return; }
-            const status = document.getElementById('webdavStatus');
-            status.textContent = '⏳ Test...';
-            status.className = 'webdav-status wait';
-            fetch(auth.url, {
-                method: 'PROPFIND',
-                headers: { 'Authorization': 'Basic ' + btoa(auth.user + ':' + auth.pass) },
-                mode: 'cors'
-            }).then(r => {
-                if (r.ok) { status.textContent = '✅ Connesso!';
-                    status.className = 'webdav-status ok'; } else { status.textContent = '❌ Errore ' + r.status;
-                    status.className = 'webdav-status err'; }
-            }).catch(e => { status.textContent = '❌ ' + e.message;
-                status.className = 'webdav-status err'; });
-        }
-
-        function webdavBackup() {
-            const auth = webdavGetAuth();
-            if (!auth.url || !auth.user) { alert('Configura WebDAV.'); return; }
-            const status = document.getElementById('webdavStatus');
-            status.textContent = '⏳ Backup...';
-            status.className = 'webdav-status wait';
-            const data = {
-                profilo: userProfile,
-                parametri,
-                referti,
-                appuntamenti,
-                farmaci,
-                vaccinazioni,
-                sintomi,
-                sonno,
-                promemoria,
-                badge,
-                timestamp: new Date().toISOString()
-            };
-            const json = JSON.stringify(data, null, 2);
-            const filename = `healthapp_backup_${getLocalDateString(new Date())}.json`;
-            const url = auth.url.endsWith('/') ? auth.url + filename : auth.url + '/' + filename;
-            fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Basic ' + btoa(auth.user + ':' + auth.pass),
-                    'Content-Type': 'application/json'
-                },
-                body: json,
-                mode: 'cors'
-            }).then(r => {
-                if (r.ok) { status.textContent = '✅ Backup completato!';
-                    status.className = 'webdav-status ok'; } else { status.textContent = '❌ Errore ' + r.status;
-                    status.className = 'webdav-status err'; }
-            }).catch(e => { status.textContent = '❌ ' + e.message;
-                status.className = 'webdav-status err'; });
-        }
-
-        function webdavRestore() {
-            const auth = webdavGetAuth();
-            if (!auth.url || !auth.user) { alert('Configura WebDAV.'); return; }
-            if (!confirm('⚠️ Ripristinare i dati dal cloud? Sostituirà i dati locali.')) return;
-            const status = document.getElementById('webdavStatus');
-            status.textContent = '⏳ Ripristino...';
-            status.className = 'webdav-status wait';
-            const filename = prompt('Nome file da ripristinare (es. healthapp_backup_2026-08-13.json):',
-                `healthapp_backup_${getLocalDateString(new Date())}.json`);
-            if (!filename) { status.textContent = '❌ Annullato';
-                status.className = 'webdav-status err'; return; }
-            const url = auth.url.endsWith('/') ? auth.url + filename : auth.url + '/' + filename;
-            fetch(url, {
-                method: 'GET',
-                headers: { 'Authorization': 'Basic ' + btoa(auth.user + ':' + auth.pass) },
-                mode: 'cors'
-            }).then(r => {
-                if (!r.ok) throw new Error('HTTP ' + r.status);
-                return r.json();
-            }).then(data => {
-                if (data.parametri) parametri = data.parametri;
-                if (data.referti) referti = data.referti;
-                if (data.appuntamenti) appuntamenti = data.appuntamenti;
-                if (data.farmaci) farmaci = data.farmaci;
-                if (data.vaccinazioni) vaccinazioni = data.vaccinazioni;
-                if (data.sintomi) sintomi = data.sintomi;
-                if (data.sonno) sonno = data.sonno;
-                if (data.promemoria) promemoria = data.promemoria;
-                if (data.badge) badge = data.badge;
-                if (data.profilo) { userProfile = data.profilo;
-                    localStorage.setItem('userProfile', JSON.stringify(userProfile));
-                    aggiornaHeader(); }
-                localStorage.setItem('healthParams', JSON.stringify(parametri));
-                localStorage.setItem('healthReports', JSON.stringify(referti));
-                localStorage.setItem('healthAppointments', JSON.stringify(appuntamenti));
-                localStorage.setItem('farmaci', JSON.stringify(farmaci));
-                localStorage.setItem('vaccinazioni', JSON.stringify(vaccinazioni));
-                localStorage.setItem('sintomi', JSON.stringify(sintomi));
-                localStorage.setItem('sonno', JSON.stringify(sonno));
-                localStorage.setItem('promemoria', JSON.stringify(promemoria));
-                localStorage.setItem('badge', JSON.stringify(badge));
-                renderReferti();
-                renderFarmaci();
-                renderVaccinazioni();
-                renderSintomi();
-                renderSonno();
-                renderPromemoria();
-                aggiornaDashboard();
-                status.textContent = '✅ Ripristino completato!';
-                status.className = 'webdav-status ok';
-                alert('✅ Dati ripristinati!');
-            }).catch(e => { status.textContent = '❌ ' + e.message;
-                status.className = 'webdav-status err'; });
+            alert(t('about_text'));
         }
 
         // ================================================================
@@ -4456,11 +4823,13 @@
             document.getElementById('vaccData').valueAsDate = new Date();
             document.getElementById('sleepData').valueAsDate = new Date();
 
+            const savedLang = localStorage.getItem('appLang') || 'it';
+            setLanguage(savedLang);
+
             if (notificheAbilitate && 'Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();
             }
 
-            // Promemoria farmaci
             setInterval(() => {
                 if (!notificheAbilitate) return;
                 const now = new Date(),
@@ -4476,7 +4845,6 @@
                 });
             }, 60000);
 
-            // Scadenze vaccini
             setInterval(() => {
                 if (!notificheAbilitate) return;
                 const oggi = new Date();
@@ -4490,21 +4858,19 @@
                 });
             }, 43200000);
 
-            webdavUrl = localStorage.getItem('webdavUrl') || '';
-            webdavUser = localStorage.getItem('webdavUser') || '';
-            webdavPass = localStorage.getItem('webdavPass') || '';
             registraServiceWorker();
 
-            console.log('✅ HealthApp v3.1 (Sicura) avviata!');
+            console.log('✅ HealthApp v3.2 (Locale) avviata!');
             console.log('💊 Farmaci:', Object.keys(getFullDrugDB()).length);
             console.log('🔐 PIN:', pinSalvatoHash ? 'Impostato (hashato)' : 'Non impostato');
-            console.log('☁️ WebDAV:', webdavUrl ? 'configurato' : 'non configurato');
+            console.log('🌐 Lingua:', currentLang);
 
             if (window.navigator && window.navigator.standalone !== true && !window.matchMedia('(display-mode: standalone)')
                 .matches) {
                 const banner = document.getElementById('installBanner');
                 if (banner) banner.style.display = 'flex';
             }
+            translateUI();
         }
 
         function installaPWA() {
